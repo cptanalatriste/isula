@@ -1,6 +1,7 @@
 package isula.aco.problems.flowshop;
 
 import isula.aco.Ant;
+import isula.aco.Environment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +19,16 @@ import java.util.Random;
 public class AntForFlowShop extends Ant {
 
   private int currentIndex = 0;
-  private int solution[];
-  public boolean visited[];
+
+  // private int solution[];
+  // public boolean visited[];
 
   public AntForFlowShop(int graphLenght) {
-    this.solution = new int[graphLenght];
-    this.visited = new boolean[graphLenght];
+
+    super();
+
+    this.setSolution(new int[graphLenght]);
+    this.setVisited(new boolean[graphLenght]);
   }
 
   /**
@@ -32,9 +37,10 @@ public class AntForFlowShop extends Ant {
    * @param visitedNode
    *          Visited node.
    */
+  // TODO(cgavidia): Move to base class
   public void visitNode(int visitedNode) {
-    solution[currentIndex] = visitedNode;
-    visited[visitedNode] = true;
+    getSolution()[currentIndex] = visitedNode;
+    getVisited()[visitedNode] = true;
     currentIndex++;
   }
 
@@ -45,8 +51,10 @@ public class AntForFlowShop extends Ant {
    *          Node to verify.
    * @return True if the node is already visited. False otherwise.
    */
+  // TODO(cgavidia): Move to base class
+
   public boolean isNodeVisited(int node) {
-    return visited[node];
+    return getVisited()[node];
   }
 
   /**
@@ -58,6 +66,8 @@ public class AntForFlowShop extends Ant {
    *          Problem graph.
    * @return Next node to move.
    */
+  // TODO(cgavidia): Move to base class. As abstract and including policies.
+
   public int selectNextNode(double[][] trails, double[][] graph) {
     int nextNode = 0;
     Random random = new Random();
@@ -67,11 +77,11 @@ public class AntForFlowShop extends Ant {
     if (randomValue < bestChoiceProbability) {
       double currentMaximumFeromone = -1;
       for (int i = 0; i < graph.length; i++) {
-        double currentFeromone = trails[i][currentIndex];
-        if (!isNodeVisited(i) && currentFeromone > currentMaximumFeromone) {
-          nextNode = i;
-          currentMaximumFeromone = currentFeromone;
-        }
+	double currentFeromone = trails[i][currentIndex];
+	if (!isNodeVisited(i) && currentFeromone > currentMaximumFeromone) {
+	  nextNode = i;
+	  currentMaximumFeromone = currentFeromone;
+	}
       }
       return nextNode;
     } else {
@@ -79,23 +89,14 @@ public class AntForFlowShop extends Ant {
       double r = randomValue;
       double total = 0;
       for (int i = 0; i < graph.length; i++) {
-        total += probabilities[i];
-        if (total >= r) {
-          nextNode = i;
-          return nextNode;
-        }
+	total += probabilities[i];
+	if (total >= r) {
+	  nextNode = i;
+	  return nextNode;
+	}
       }
     }
     return nextNode;
-  }
-
-  /**
-   * Gets solution build as an int array.
-   * 
-   * @return Ant's solution.
-   */
-  public int[] getSolution() {
-    return solution;
   }
 
   /**
@@ -106,23 +107,24 @@ public class AntForFlowShop extends Ant {
    *          Pheromone matrix.
    * @return Probabilities vector.
    */
+  // TODO(cgavidia): Move to base class
   private double[] getProbabilities(double[][] trails) {
-    double probabilities[] = new double[solution.length];
+    double probabilities[] = new double[getSolution().length];
 
     double denom = 0.0;
     for (int l = 0; l < trails.length; l++) {
       if (!isNodeVisited(l)) {
-        denom += trails[l][currentIndex];
+	denom += trails[l][currentIndex];
 
       }
     }
 
-    for (int j = 0; j < solution.length; j++) {
+    for (int j = 0; j < getSolution().length; j++) {
       if (isNodeVisited(j)) {
-        probabilities[j] = 0.0;
+	probabilities[j] = 0.0;
       } else {
-        double numerator = trails[j][currentIndex];
-        probabilities[j] = numerator / denom;
+	double numerator = trails[j][currentIndex];
+	probabilities[j] = numerator / denom;
       }
     }
     return probabilities;
@@ -132,8 +134,8 @@ public class AntForFlowShop extends Ant {
    * Resets the visited vector.
    */
   public void clear() {
-    for (int i = 0; i < visited.length; i++) {
-      visited[i] = false;
+    for (int i = 0; i < getVisited().length; i++) {
+      getVisited()[i] = false;
 
     }
   }
@@ -164,8 +166,8 @@ public class AntForFlowShop extends Ant {
    *          Problem graph.
    * @return Makespan of the solution.
    */
-  public double getSolutionMakespan(double[][] graph) {
-    return getScheduleMakespan(solution, graph);
+  public double getSolutionQuality(Environment environment) {
+    return getScheduleMakespan(getSolution(), environment.getProblemGraph());
   }
 
   /**
@@ -174,13 +176,13 @@ public class AntForFlowShop extends Ant {
    * @param graph
    *          Problem graph.
    */
-  public void improveSolution(double[][] graph) {
-    double makespan = getSolutionMakespan(graph);
+  public void improveSolution(Environment environment) {
+    double makespan = getSolutionQuality(environment);
 
-    int[] localSolutionJobs = new int[solution.length];
+    int[] localSolutionJobs = new int[getSolution().length];
     List<Integer> jobsList = new ArrayList<Integer>();
 
-    for (int job : solution) {
+    for (int job : getSolution()) {
       jobsList.add(job);
     }
 
@@ -189,36 +191,37 @@ public class AntForFlowShop extends Ant {
     int indexI = 0;
     boolean lessMakespan = true;
 
-    while (indexI < (solution.length) && lessMakespan) {
+    while (indexI < (getSolution().length) && lessMakespan) {
       int jobI = localSolution.get(indexI);
 
       localSolution.remove(indexI);
 
       int indexJ = 0;
 
-      while (indexJ < solution.length && lessMakespan) {
-        localSolution.add(indexJ, jobI);
+      while (indexJ < getSolution().length && lessMakespan) {
+	localSolution.add(indexJ, jobI);
 
-        int[] intermediateSolution = new int[solution.length];
-        int t = 0;
-        for (int sol : localSolution) {
-          intermediateSolution[t] = sol;
-          t++;
-        }
+	int[] intermediateSolution = new int[getSolution().length];
+	int t = 0;
+	for (int sol : localSolution) {
+	  intermediateSolution[t] = sol;
+	  t++;
+	}
 
-        double newMakespan = getScheduleMakespan(intermediateSolution, graph);
+	double newMakespan = getScheduleMakespan(intermediateSolution,
+	    environment.getProblemGraph());
 
-        if (newMakespan < makespan) {
-          makespan = newMakespan;
-          lessMakespan = false;
-        } else {
-          localSolution.remove(indexJ);
-        }
+	if (newMakespan < makespan) {
+	  makespan = newMakespan;
+	  lessMakespan = false;
+	} else {
+	  localSolution.remove(indexJ);
+	}
 
-        indexJ++;
+	indexJ++;
       }
       if (lessMakespan) {
-        localSolution.add(indexI, jobI);
+	localSolution.add(indexI, jobI);
       }
       indexI++;
     }
@@ -228,7 +231,7 @@ public class AntForFlowShop extends Ant {
       localSolutionJobs[k] = job;
       k++;
     }
-    solution = localSolutionJobs;
+    this.setSolution(localSolutionJobs);
   }
 
   /**
@@ -238,8 +241,8 @@ public class AntForFlowShop extends Ant {
    */
   public String getSolutionAsString() {
     String solutionString = new String();
-    for (int i = 0; i < solution.length; i++) {
-      solutionString = solutionString + " " + solution[i];
+    for (int i = 0; i < getSolution().length; i++) {
+      solutionString = solutionString + " " + getSolution()[i];
     }
     return solutionString;
   }
@@ -252,16 +255,16 @@ public class AntForFlowShop extends Ant {
 
     for (int job : schedule) {
       for (int i = 0; i < machines; i++) {
-        tiempo = jobInfo[job][i];
-        if (i == 0) {
-          machinesTime[i] = machinesTime[i] + tiempo;
-        } else {
-          if (machinesTime[i] > machinesTime[i - 1]) {
-            machinesTime[i] = machinesTime[i] + tiempo;
-          } else {
-            machinesTime[i] = machinesTime[i - 1] + tiempo;
-          }
-        }
+	tiempo = jobInfo[job][i];
+	if (i == 0) {
+	  machinesTime[i] = machinesTime[i] + tiempo;
+	} else {
+	  if (machinesTime[i] > machinesTime[i - 1]) {
+	    machinesTime[i] = machinesTime[i] + tiempo;
+	  } else {
+	    machinesTime[i] = machinesTime[i - 1] + tiempo;
+	  }
+	}
       }
     }
     return machinesTime[machines - 1];

@@ -1,5 +1,7 @@
 package isula.aco;
 
+import isula.aco.exception.MethodNotImplementedException;
+
 import java.util.logging.Logger;
 
 public class AntColony {
@@ -24,7 +26,20 @@ public class AntColony {
   }
 
   protected Ant createAnt() {
-    return new Ant();
+    throw new MethodNotImplementedException();
+  }
+
+  public Ant getBestPerformingAnt(Environment environment) {
+    Ant bestAnt = hive[0];
+
+    for (Ant ant : hive) {
+      if (ant.getSolutionQuality(environment) < bestAnt
+	  .getSolutionQuality(environment)) {
+	bestAnt = ant;
+      }
+    }
+
+    return bestAnt;
   }
 
   public Ant[] getHive() {

@@ -8,4 +8,6 @@ public interface MaxMinConfigurationProvider extends ConfigurationProvider {
 
   double getMinimumPheromoneValue();
 
+  double getQValue();
+
 }
