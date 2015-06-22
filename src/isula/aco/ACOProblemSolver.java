@@ -1,6 +1,6 @@
 package isula.aco;
 
-public class ACOProblemSolver {
+public abstract class ACOProblemSolver {
 
   private Environment environment;
   private AntColony antColony;
@@ -30,5 +30,9 @@ public class ACOProblemSolver {
       ConfigurationProvider configurationProvider) {
     this.configurationProvider = configurationProvider;
   }
+
+  public abstract void applyInitialConfigurationPolicies();
+
+  public abstract void applyAfterSolutionConstructionPolicies();
 
 }

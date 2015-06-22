@@ -4,4 +4,6 @@ public interface ConfigurationProvider {
 
   int getNumberOfAnts();
 
+  double getEvaporationRatio();
+
 }

@@ -1,4 +1,4 @@
-package isula.aco.flowshop;
+package isula.aco.problems.flowshop;
 
 import java.util.logging.Logger;
 

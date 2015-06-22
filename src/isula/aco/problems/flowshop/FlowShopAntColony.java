@@ -1,4 +1,4 @@
-package isula.aco.flowshop;
+package isula.aco.problems.flowshop;
 
 import isula.aco.Ant;
 import isula.aco.AntColony;
