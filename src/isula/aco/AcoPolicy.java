@@ -1,15 +1,15 @@
 package isula.aco;
 
-public abstract class ACOPolicy {
+public abstract class AcoPolicy {
 
-  private ACOPhase acoPhase;
+  private AcoPhase acoPhase;
 
-  public ACOPolicy(ACOPhase acoPhase) {
+  public AcoPolicy(AcoPhase acoPhase) {
     super();
     this.acoPhase = acoPhase;
   }
 
-  public ACOPhase getAcoPhase() {
+  public AcoPhase getAcoPhase() {
     return acoPhase;
   }
 

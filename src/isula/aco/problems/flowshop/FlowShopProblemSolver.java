@@ -1,19 +1,26 @@
 package isula.aco.problems.flowshop;
 
-import isula.aco.ACOProblemSolver;
+import isula.aco.AcoProblemSolver;
 import isula.aco.AntColony;
 import isula.aco.ConfigurationProvider;
 import isula.aco.algorithms.maxmin.MaxMinConfigurationProvider;
 import isula.aco.algorithms.maxmin.StartPheromoneMatrixPolicy;
 import isula.aco.algorithms.maxmin.UpdatePheromoneMatrixPolicy;
 import isula.aco.exception.InvalidInputException;
-import isula.aco.exception.MethodNotImplementedException;
 
-public class FlowShopProblemSolver extends ACOProblemSolver {
+public class FlowShopProblemSolver extends AcoProblemSolver {
 
+  /**
+   * Problem Solver for the Flow Shop Scheduling Problem.
+   * 
+   * @param problemGraph
+   *          Graph representation for the problem.
+   * @param configurationProvider
+   *          Configuration Provider.
+   * @throws InvalidInputException
+   */
   public FlowShopProblemSolver(double[][] problemGraph,
-      ConfigurationProvider configurationProvider)
-      throws InvalidInputException, MethodNotImplementedException {
+      ConfigurationProvider configurationProvider) throws InvalidInputException {
     FlowShopEnvironment environment = new FlowShopEnvironment(problemGraph);
 
     int numberOfAnts = configurationProvider.getNumberOfAnts();

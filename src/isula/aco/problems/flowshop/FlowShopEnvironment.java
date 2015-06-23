@@ -1,10 +1,10 @@
 package isula.aco.problems.flowshop;
 
-import java.util.logging.Logger;
-
 import isula.aco.Environment;
 import isula.aco.exception.InvalidInputException;
 import isula.aco.exception.MethodNotImplementedException;
+
+import java.util.logging.Logger;
 
 public class FlowShopEnvironment extends Environment {
 
@@ -13,8 +13,15 @@ public class FlowShopEnvironment extends Environment {
 
   private int numberOfJobs;
 
+  /**
+   * Environment for the Flow Shop Scheduling Problem.
+   * 
+   * @param problemGraph
+   *          Graph representation of the problem.
+   * @throws InvalidInputException
+   */
   public FlowShopEnvironment(double[][] problemGraph)
-      throws InvalidInputException, MethodNotImplementedException {
+      throws InvalidInputException {
     super(problemGraph);
     this.numberOfJobs = problemGraph.length;
 

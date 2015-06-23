@@ -11,8 +11,15 @@ public abstract class Environment {
   // problems, the pheromone is deposited on edges.
   private double[][] pheromoneMatrix;
 
-  public Environment(double[][] problemGraph) throws InvalidInputException,
-      MethodNotImplementedException {
+  /**
+   * Creates an Environment for the Ants to traverse.
+   * 
+   * @param problemGraph
+   *          Graph representation of the problem to be solved.
+   * @throws InvalidInputException
+   * @throws MethodNotImplementedException
+   */
+  public Environment(double[][] problemGraph) throws InvalidInputException {
     this.problemGraph = problemGraph;
     this.pheromoneMatrix = createPheromoneMatrix();
 

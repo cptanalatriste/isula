@@ -7,22 +7,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+//TODO(cgavidia): This class requires major refactoring yet.
+
 /**
  * An Ant that belongs to Colony in the context of ACO.
  * 
  * @author Carlos G. Gavidia (cgavidia@acm.org)
  * @author Adrian Pareja (adrian@pareja.com)
- * 
  */
-
-// TODO(cgavidia): This class requires major refactoring yet.
 public class AntForFlowShop extends Ant {
 
   private int currentIndex = 0;
 
-  // private int solution[];
-  // public boolean visited[];
-
+  /**
+   * Creates an Ant specialized in the Flow Shop Scheduling problem.
+   * 
+   * @param graphLenght
+   */
   public AntForFlowShop(int graphLenght) {
 
     super();
@@ -77,23 +78,23 @@ public class AntForFlowShop extends Ant {
     if (randomValue < bestChoiceProbability) {
       double currentMaximumFeromone = -1;
       for (int i = 0; i < graph.length; i++) {
-	double currentFeromone = trails[i][currentIndex];
-	if (!isNodeVisited(i) && currentFeromone > currentMaximumFeromone) {
-	  nextNode = i;
-	  currentMaximumFeromone = currentFeromone;
-	}
+        double currentFeromone = trails[i][currentIndex];
+        if (!isNodeVisited(i) && currentFeromone > currentMaximumFeromone) {
+          nextNode = i;
+          currentMaximumFeromone = currentFeromone;
+        }
       }
       return nextNode;
     } else {
-      double probabilities[] = getProbabilities(trails);
-      double r = randomValue;
+      double[] probabilities = getProbabilities(trails);
+      double value = randomValue;
       double total = 0;
       for (int i = 0; i < graph.length; i++) {
-	total += probabilities[i];
-	if (total >= r) {
-	  nextNode = i;
-	  return nextNode;
-	}
+        total += probabilities[i];
+        if (total >= value) {
+          nextNode = i;
+          return nextNode;
+        }
       }
     }
     return nextNode;
@@ -109,22 +110,22 @@ public class AntForFlowShop extends Ant {
    */
   // TODO(cgavidia): Move to base class
   private double[] getProbabilities(double[][] trails) {
-    double probabilities[] = new double[getSolution().length];
+    double[] probabilities = new double[getSolution().length];
 
     double denom = 0.0;
     for (int l = 0; l < trails.length; l++) {
       if (!isNodeVisited(l)) {
-	denom += trails[l][currentIndex];
+        denom += trails[l][currentIndex];
 
       }
     }
 
     for (int j = 0; j < getSolution().length; j++) {
       if (isNodeVisited(j)) {
-	probabilities[j] = 0.0;
+        probabilities[j] = 0.0;
       } else {
-	double numerator = trails[j][currentIndex];
-	probabilities[j] = numerator / denom;
+        double numerator = trails[j][currentIndex];
+        probabilities[j] = numerator / denom;
       }
     }
     return probabilities;
@@ -173,8 +174,7 @@ public class AntForFlowShop extends Ant {
   /**
    * Applies local search to the solution built.
    * 
-   * @param graph
-   *          Problem graph.
+   * @param environment
    */
   public void improveSolution(Environment environment) {
     double makespan = getSolutionQuality(environment);
@@ -199,37 +199,37 @@ public class AntForFlowShop extends Ant {
       int indexJ = 0;
 
       while (indexJ < getSolution().length && lessMakespan) {
-	localSolution.add(indexJ, jobI);
+        localSolution.add(indexJ, jobI);
 
-	int[] intermediateSolution = new int[getSolution().length];
-	int t = 0;
-	for (int sol : localSolution) {
-	  intermediateSolution[t] = sol;
-	  t++;
-	}
+        int[] intermediateSolution = new int[getSolution().length];
+        int anotherIndex = 0;
+        for (int sol : localSolution) {
+          intermediateSolution[anotherIndex] = sol;
+          anotherIndex++;
+        }
 
-	double newMakespan = getScheduleMakespan(intermediateSolution,
-	    environment.getProblemGraph());
+        double newMakespan = getScheduleMakespan(intermediateSolution,
+            environment.getProblemGraph());
 
-	if (newMakespan < makespan) {
-	  makespan = newMakespan;
-	  lessMakespan = false;
-	} else {
-	  localSolution.remove(indexJ);
-	}
+        if (newMakespan < makespan) {
+          makespan = newMakespan;
+          lessMakespan = false;
+        } else {
+          localSolution.remove(indexJ);
+        }
 
-	indexJ++;
+        indexJ++;
       }
       if (lessMakespan) {
-	localSolution.add(indexI, jobI);
+        localSolution.add(indexI, jobI);
       }
       indexI++;
     }
 
-    int k = 0;
+    int index = 0;
     for (int job : localSolution) {
-      localSolutionJobs[k] = job;
-      k++;
+      localSolutionJobs[index] = job;
+      index++;
     }
     this.setSolution(localSolutionJobs);
   }
@@ -248,6 +248,13 @@ public class AntForFlowShop extends Ant {
   }
 
   // TODO(cgavidia): Major refactoring here also. Comes from an utility class.
+  /**
+   * Calculates the MakeSpan for the generated schedule.
+   * 
+   * @param schedule
+   * @param jobInfo
+   * @return
+   */
   public static double getScheduleMakespan(int[] schedule, double[][] jobInfo) {
     int machines = jobInfo[0].length;
     double[] machinesTime = new double[machines];
@@ -255,16 +262,16 @@ public class AntForFlowShop extends Ant {
 
     for (int job : schedule) {
       for (int i = 0; i < machines; i++) {
-	tiempo = jobInfo[job][i];
-	if (i == 0) {
-	  machinesTime[i] = machinesTime[i] + tiempo;
-	} else {
-	  if (machinesTime[i] > machinesTime[i - 1]) {
-	    machinesTime[i] = machinesTime[i] + tiempo;
-	  } else {
-	    machinesTime[i] = machinesTime[i - 1] + tiempo;
-	  }
-	}
+        tiempo = jobInfo[job][i];
+        if (i == 0) {
+          machinesTime[i] = machinesTime[i] + tiempo;
+        } else {
+          if (machinesTime[i] > machinesTime[i - 1]) {
+            machinesTime[i] = machinesTime[i] + tiempo;
+          } else {
+            machinesTime[i] = machinesTime[i - 1] + tiempo;
+          }
+        }
       }
     }
     return machinesTime[machines - 1];

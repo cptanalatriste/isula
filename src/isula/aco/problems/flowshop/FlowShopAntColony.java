@@ -7,6 +7,14 @@ public class FlowShopAntColony extends AntColony {
 
   private int numberOfJobs;
 
+  /**
+   * Creates an Ant Colony to solve the Flow Shop Scheduling problem.
+   * 
+   * @param numberOfAnts
+   *          Ants for the colony.
+   * @param numberOfJobs
+   *          Number of jobs.
+   */
   public FlowShopAntColony(int numberOfAnts, int numberOfJobs) {
     super(numberOfAnts);
 

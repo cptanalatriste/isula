@@ -4,9 +4,9 @@ public abstract class Ant {
 
   // TODO(cgavidia): Temporarly, we're using an array of items. It will later
   // evolve to an array of solution components, or a List.
-  private int solution[];
+  private int[] solution;
 
-  private boolean visited[];
+  private boolean[] visited;
 
   public abstract double getSolutionQuality(Environment environment);
 

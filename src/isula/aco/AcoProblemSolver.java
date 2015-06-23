@@ -1,6 +1,6 @@
 package isula.aco;
 
-public abstract class ACOProblemSolver {
+public abstract class AcoProblemSolver {
 
   private Environment environment;
   private AntColony antColony;
