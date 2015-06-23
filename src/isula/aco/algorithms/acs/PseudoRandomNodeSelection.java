@@ -64,8 +64,10 @@ public class PseudoRandomNodeSelection extends AntPolicy {
    * according to pheromone matrix.
    * 
    * @param environment
+   *          Environment that ants are traversing.
    * @param ant
-   * @return
+   *          Ant who is performing this policy.
+   * @return Probabilities for the adjacent nodes.
    */
   private double[] getProbabilitiesVector(Environment environment, Ant ant) {
     int[] solution = ant.getSolution();

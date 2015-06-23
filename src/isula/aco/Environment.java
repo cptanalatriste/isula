@@ -17,7 +17,7 @@ public abstract class Environment {
    * @param problemGraph
    *          Graph representation of the problem to be solved.
    * @throws InvalidInputException
-   * @throws MethodNotImplementedException
+   *           When the problem graph is incorrectly formed.
    */
   public Environment(double[][] problemGraph) throws InvalidInputException {
     this.problemGraph = problemGraph;

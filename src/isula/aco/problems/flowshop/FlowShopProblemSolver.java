@@ -18,6 +18,7 @@ public class FlowShopProblemSolver extends AcoProblemSolver {
    * @param configurationProvider
    *          Configuration Provider.
    * @throws InvalidInputException
+   *           When the problem graph is incorrectly formed.
    */
   public FlowShopProblemSolver(double[][] problemGraph,
       ConfigurationProvider configurationProvider) throws InvalidInputException {

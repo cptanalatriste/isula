@@ -45,7 +45,7 @@ public class AntColony {
    * 
    * @param environment
    *          Environment where the Ants are building solutions.
-   * @return
+   * @return Best performing Ant.
    */
   public Ant getBestPerformingAnt(Environment environment) {
     Ant bestAnt = hive[0];

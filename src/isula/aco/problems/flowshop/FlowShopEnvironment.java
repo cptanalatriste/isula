@@ -19,6 +19,7 @@ public class FlowShopEnvironment extends Environment {
    * @param problemGraph
    *          Graph representation of the problem.
    * @throws InvalidInputException
+   *           When the graph is incorrectly formed.
    */
   public FlowShopEnvironment(double[][] problemGraph)
       throws InvalidInputException {
