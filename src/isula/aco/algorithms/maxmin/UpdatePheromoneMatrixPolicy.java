@@ -1,14 +1,14 @@
 package isula.aco.algorithms.maxmin;
 
 import isula.aco.AcoPhase;
-import isula.aco.AcoPolicy;
 import isula.aco.Ant;
 import isula.aco.AntColony;
+import isula.aco.AntColonyPolicy;
 import isula.aco.Environment;
 
 import java.util.logging.Logger;
 
-public class UpdatePheromoneMatrixPolicy extends AcoPolicy {
+public class UpdatePheromoneMatrixPolicy extends AntColonyPolicy {
 
   private static Logger logger = Logger
       .getLogger(UpdatePheromoneMatrixPolicy.class.getName());
@@ -18,7 +18,8 @@ public class UpdatePheromoneMatrixPolicy extends AcoPolicy {
   /**
    * Instantiates the Update Pheromone Matrix Policy.
    * 
-   * @param configurationProvider Configuration provider.
+   * @param configurationProvider
+   *          Configuration provider.
    */
   public UpdatePheromoneMatrixPolicy(
       MaxMinConfigurationProvider configurationProvider) {

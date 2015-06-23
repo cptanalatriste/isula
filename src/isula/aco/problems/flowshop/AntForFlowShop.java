@@ -1,11 +1,13 @@
 package isula.aco.problems.flowshop;
 
 import isula.aco.Ant;
+import isula.aco.ConfigurationProvider;
 import isula.aco.Environment;
+import isula.aco.algorithms.acs.AcsConfigurationProvider;
+import isula.aco.algorithms.acs.PseudoRandomNodeSelection;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 //TODO(cgavidia): This class requires major refactoring yet.
 
@@ -17,22 +19,19 @@ import java.util.Random;
  */
 public class AntForFlowShop extends Ant {
 
-  //private int currentIndex = 0;
-
+  // TODO(cgavidia): Maybe a more generic parameter would be an Environment
+  // instance.
   /**
    * Creates an Ant specialized in the Flow Shop Scheduling problem.
    * 
    * @param graphLenght
+   *          Number of rows of the Problem Graph.
    */
   public AntForFlowShop(int graphLenght) {
-
     super();
-
     this.setSolution(new int[graphLenght]);
     this.setVisited(new boolean[graphLenght]);
   }
-
-
 
   /**
    * Resets the visited vector.
@@ -43,8 +42,6 @@ public class AntForFlowShop extends Ant {
 
     }
   }
-
-  
 
   /**
    * Gets the makespan of the Ants built solution.
@@ -61,6 +58,7 @@ public class AntForFlowShop extends Ant {
    * Applies local search to the solution built.
    * 
    * @param environment
+   *          Environment where the Ant is building a solution.
    */
   public void improveSolution(Environment environment) {
     double makespan = getSolutionQuality(environment);
@@ -138,8 +136,10 @@ public class AntForFlowShop extends Ant {
    * Calculates the MakeSpan for the generated schedule.
    * 
    * @param schedule
+   *          Schedule
    * @param jobInfo
-   * @return
+   *          Job Info.
+   * @return Makespan.
    */
   public static double getScheduleMakespan(int[] schedule, double[][] jobInfo) {
     int machines = jobInfo[0].length;
@@ -162,80 +162,15 @@ public class AntForFlowShop extends Ant {
     }
     return machinesTime[machines - 1];
   }
-  
-  
-  /**
-   * Selects the next node to move while building a solution,
-   * 
-   * @param trails
-   *          Pheromone matrix.
-   * @param graph
-   *          Problem graph.
-   * @return Next node to move.
-   */
-  // TODO(jcaballero): Check for generic ACO functionality and split 
 
-  public int selectNextNode(double[][] trails, double[][] graph) {
-    int nextNode = 0;
-    Random random = new Random();
-    double randomValue = random.nextDouble();
-    // Probability Setting from Paper
-    double bestChoiceProbability = ((double) graph.length - 4) / graph.length;
-    if (randomValue < bestChoiceProbability) {
-      double currentMaximumFeromone = -1;
-      for (int i = 0; i < graph.length; i++) {
-        double currentFeromone = trails[i][this.getCurrentIndex()];
-        if (!isNodeVisited(i) && currentFeromone > currentMaximumFeromone) {
-          nextNode = i;
-          currentMaximumFeromone = currentFeromone;
-        }
-      }
-      return nextNode;
-    } else {
-      double[] probabilities = getProbabilities(trails);
-      double value = randomValue;
-      double total = 0;
-      for (int i = 0; i < graph.length; i++) {
-        total += probabilities[i];
-        if (total >= value) {
-          nextNode = i;
-          return nextNode;
-        }
-      }
-    }
-    return nextNode;
+  @Override
+  public void selectNextNode(Environment environment,
+      ConfigurationProvider configurationProvider) {
+
+    // TODO(cgavidia): Policies should be grouped and classified. Maybe a Policy
+    // super type? An enum?
+    PseudoRandomNodeSelection pseudoRandomNodeSelection = new PseudoRandomNodeSelection(
+        (AcsConfigurationProvider) configurationProvider);
+    pseudoRandomNodeSelection.applyPolicy(environment, this);
   }
-  
-  /**
-   * Gets a probabilities vector, containing probabilities to move to each node
-   * according to pheromone matrix.
-   * 
-   * @param trails
-   *          Pheromone matrix.
-   * @return Probabilities vector.
-   */
-//TODO(jcaballero): Check for generic ACO functionality and split 
-  private double[] getProbabilities(double[][] trails) {
-    double[] probabilities = new double[getSolution().length];
-
-    double denom = 0.0;
-    for (int l = 0; l < trails.length; l++) {
-      if (!isNodeVisited(l)) {
-        denom += trails[l][this.getCurrentIndex()];
-
-      }
-    }
-
-    for (int j = 0; j < getSolution().length; j++) {
-      if (isNodeVisited(j)) {
-        probabilities[j] = 0.0;
-      } else {
-        double numerator = trails[j][this.getCurrentIndex()];
-        probabilities[j] = numerator / denom;
-      }
-    }
-    return probabilities;
-  }
-  
-  
 }

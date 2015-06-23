@@ -1,14 +1,14 @@
 package isula.aco.algorithms.maxmin;
 
 import isula.aco.AcoPhase;
-import isula.aco.AcoPolicy;
 import isula.aco.AntColony;
+import isula.aco.AntColonyPolicy;
 import isula.aco.Environment;
 
 import java.util.logging.Logger;
 
 //TODO(cgavidia): Maybe it is conveniente to have a Max-Min Policy base class.
-public class StartPheromoneMatrixPolicy extends AcoPolicy {
+public class StartPheromoneMatrixPolicy extends AntColonyPolicy {
 
   private static Logger logger = Logger
       .getLogger(StartPheromoneMatrixPolicy.class.getName());

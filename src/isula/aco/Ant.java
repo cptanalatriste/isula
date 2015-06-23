@@ -1,11 +1,10 @@
 package isula.aco;
 
-import java.util.Random;
 
 public abstract class Ant {
 
   private int currentIndex = 0;
- 
+
   /**
    * Mark a node as visited.
    * 
@@ -17,7 +16,7 @@ public abstract class Ant {
     getVisited()[visitedNode] = true;
     currentIndex++;
   }
-  
+
   /**
    * Verifies if a node is visited.
    * 
@@ -29,8 +28,7 @@ public abstract class Ant {
   public boolean isNodeVisited(int node) {
     return getVisited()[node];
   }
-  
-  
+
   /**
    * Sets the current index for the Ant.
    * 
@@ -49,8 +47,7 @@ public abstract class Ant {
   public int getCurrentIndex() {
     return currentIndex;
   }
-  
- 
+
   // TODO(cgavidia): Temporarly, we're using an array of items. It will later
   // evolve to an array of solution components, or a List.
   private int[] solution;
@@ -76,7 +73,18 @@ public abstract class Ant {
   public void setVisited(boolean[] visited) {
     this.visited = visited;
   }
-  
-  
+
+  // TODO(cgavidia): Maybe the parameter for this method should be a Policy.
+  // Also, evaluate if it is required to be public.
+  /**
+   * Selects a node and marks it as visited.
+   * 
+   * @param environment
+   *          Environment where the ant is building a solution.
+   * @param configurationProvider
+   *          Configuration provider.
+   */
+  public abstract void selectNextNode(Environment environment,
+      ConfigurationProvider configurationProvider);
 
 }
