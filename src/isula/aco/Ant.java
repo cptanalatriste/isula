@@ -112,4 +112,6 @@ public abstract class Ant {
     this.visited = visited;
   }
 
+  public abstract boolean isSolutionReady(Environment environment);
+
 }

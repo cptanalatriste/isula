@@ -30,6 +30,7 @@ public class StartPheromoneMatrixPolicy extends AntColonyPolicy {
 
   @Override
   public void applyPolicy(Environment environment, AntColony antColony) {
+    logger.info("INITIALIZING PHEROMONE MATRIX");
 
     double initialPheromoneValue = configurationProvider
         .getMaximumPheromoneValue();

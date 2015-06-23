@@ -6,8 +6,6 @@ import isula.aco.Environment;
 import isula.aco.algorithms.acs.AcsConfigurationProvider;
 import isula.aco.algorithms.acs.PseudoRandomNodeSelection;
 
-//TODO(cgavidia): This class requires major refactoring yet.
-
 /**
  * An Ant that belongs to Colony in the context of ACO.
  * 
@@ -28,6 +26,12 @@ public class AntForFlowShop extends Ant {
     super();
     this.setSolution(new int[graphLenght]);
     this.setVisited(new boolean[graphLenght]);
+  }
+
+  @Override
+  public boolean isSolutionReady(Environment environment) {
+    FlowShopEnvironment flowShopEnvironment = (FlowShopEnvironment) environment;
+    return getCurrentIndex() == flowShopEnvironment.getNumberOfJobs();
   }
 
   /**

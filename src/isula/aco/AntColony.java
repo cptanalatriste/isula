@@ -64,4 +64,51 @@ public class AntColony {
     return hive;
   }
 
+  /**
+   * Clears solution build for every Ant in the colony.
+   */
+  public void clearAntSolutions() {
+    logger.info("CLEARING ANT SOLUTIONS");
+
+    for (Ant ant : hive) {
+      ant.setCurrentIndex(0);
+      ant.clear();
+    }
+
+  }
+
+  /**
+   * Puts every ant in the colony to build a solution.
+   * 
+   * @param environment
+   *          Environment that represents the problem.
+   * @param configurationProvider
+   *          Configuration provider.
+   */
+  public void buildSolutions(Environment environment,
+      ConfigurationProvider configurationProvider) {
+    logger.info("BUILDING ANT SOLUTIONS");
+
+    int antCounter = 0;
+    for (Ant ant : hive) {
+      logger.info("Current ant: " + antCounter);
+
+      while (!ant.isSolutionReady(environment)) {
+        ant.selectNextNode(environment, configurationProvider);
+      }
+
+      logger.info("Original Solution > Makespan: "
+          + ant.getSolutionQuality(environment) + ", Schedule: "
+          + ant.getSolutionAsString());
+
+      ant.improveSolution(environment);
+
+      logger.info("After Local Search > Makespan: "
+          + ant.getSolutionQuality(environment) + ", Schedule: "
+          + ant.getSolutionAsString());
+
+      antCounter++;
+    }
+  }
+
 }

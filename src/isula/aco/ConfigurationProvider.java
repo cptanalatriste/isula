@@ -6,4 +6,6 @@ public interface ConfigurationProvider {
 
   double getEvaporationRatio();
 
+  int getNumberOfIterations();
+
 }
