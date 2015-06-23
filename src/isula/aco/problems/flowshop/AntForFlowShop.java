@@ -31,24 +31,26 @@ public class AntForFlowShop extends Ant {
   }
 
   /**
-   * Resets the visited vector.
-   */
-  public void clear() {
-    for (int i = 0; i < getVisited().length; i++) {
-      getVisited()[i] = false;
-
-    }
-  }
-
-  /**
    * Gets the makespan of the Ants built solution.
    * 
    * @param graph
    *          Problem graph.
    * @return Makespan of the solution.
    */
+  @Override
   public double getSolutionQuality(Environment environment) {
     return getScheduleMakespan(getSolution(), environment.getProblemGraph());
+  }
+
+  @Override
+  public void selectNextNode(Environment environment,
+      ConfigurationProvider configurationProvider) {
+
+    // TODO(cgavidia): Policies should be grouped and classified. Maybe a Policy
+    // super type? An enum?
+    PseudoRandomNodeSelection pseudoRandomNodeSelection = new PseudoRandomNodeSelection(
+        (AcsConfigurationProvider) configurationProvider);
+    pseudoRandomNodeSelection.applyPolicy(environment, this);
   }
 
   /**
@@ -57,26 +59,13 @@ public class AntForFlowShop extends Ant {
    * @param environment
    *          Environment where the Ant is building a solution.
    */
+  @Override
   public void improveSolution(Environment environment) {
     // TODO(cgavidia): Again, this set of policies should be configurable.
     LocalSearchPolicy localSearchPolicy = new LocalSearchPolicy();
     localSearchPolicy.applyPolicy(environment, this);
   }
 
-  /**
-   * Gets th solution built as a String.
-   * 
-   * @return Solution as a String.
-   */
-  public String getSolutionAsString() {
-    String solutionString = new String();
-    for (int i = 0; i < getSolution().length; i++) {
-      solutionString = solutionString + " " + getSolution()[i];
-    }
-    return solutionString;
-  }
-
-  // TODO(cgavidia): Major refactoring here also. Comes from an utility class.
   /**
    * Calculates the MakeSpan for the generated schedule.
    * 
@@ -108,14 +97,4 @@ public class AntForFlowShop extends Ant {
     return machinesTime[machines - 1];
   }
 
-  @Override
-  public void selectNextNode(Environment environment,
-      ConfigurationProvider configurationProvider) {
-
-    // TODO(cgavidia): Policies should be grouped and classified. Maybe a Policy
-    // super type? An enum?
-    PseudoRandomNodeSelection pseudoRandomNodeSelection = new PseudoRandomNodeSelection(
-        (AcsConfigurationProvider) configurationProvider);
-    pseudoRandomNodeSelection.applyPolicy(environment, this);
-  }
 }

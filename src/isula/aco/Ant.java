@@ -22,6 +22,28 @@ public abstract class Ant {
     currentIndex++;
   }
 
+  /**
+   * Resets the visited vector.
+   */
+  public void clear() {
+    for (int i = 0; i < getVisited().length; i++) {
+      visited[i] = false;
+    }
+  }
+
+  /**
+   * Gets th solution built as a String.
+   * 
+   * @return Solution as a String.
+   */
+  public String getSolutionAsString() {
+    String solutionString = new String();
+    for (int i = 0; i < solution.length; i++) {
+      solutionString = solutionString + " " + solution[i];
+    }
+    return solutionString;
+  }
+
   public abstract double getSolutionQuality(Environment environment);
 
   // TODO(cgavidia): Maybe the parameter for this method should be a Policy.
@@ -36,6 +58,10 @@ public abstract class Ant {
    */
   public abstract void selectNextNode(Environment environment,
       ConfigurationProvider configurationProvider);
+
+  // TODO(cgavidia): Not every algorithm improve solution after is built. Maybe
+  // we should reconsider making this abstract.
+  public abstract void improveSolution(Environment environment);
 
   /**
    * Verifies if a node is visited.
