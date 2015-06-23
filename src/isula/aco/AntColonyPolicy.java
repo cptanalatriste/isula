@@ -2,14 +2,14 @@ package isula.aco;
 
 public abstract class AntColonyPolicy {
 
-  private AcoPhase acoPhase;
+  private AntColonyPhase acoPhase;
 
-  public AntColonyPolicy(AcoPhase acoPhase) {
+  public AntColonyPolicy(AntColonyPhase acoPhase) {
     super();
     this.acoPhase = acoPhase;
   }
 
-  public AcoPhase getAcoPhase() {
+  public AntColonyPhase getAcoPhase() {
     return acoPhase;
   }
 

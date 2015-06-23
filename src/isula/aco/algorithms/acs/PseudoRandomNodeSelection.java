@@ -1,6 +1,7 @@
 package isula.aco.algorithms.acs;
 
 import isula.aco.Ant;
+import isula.aco.AntPhase;
 import isula.aco.AntPolicy;
 import isula.aco.Environment;
 
@@ -12,6 +13,7 @@ public class PseudoRandomNodeSelection extends AntPolicy {
 
   public PseudoRandomNodeSelection(
       AcsConfigurationProvider configurationProvider) {
+    super(AntPhase.SOLUTION_CONSTRUCTION);
     this.configurationProvider = configurationProvider;
   }
 

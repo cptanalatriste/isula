@@ -6,9 +6,6 @@ import isula.aco.Environment;
 import isula.aco.algorithms.acs.AcsConfigurationProvider;
 import isula.aco.algorithms.acs.PseudoRandomNodeSelection;
 
-import java.util.ArrayList;
-import java.util.List;
-
 //TODO(cgavidia): This class requires major refactoring yet.
 
 /**
@@ -61,61 +58,9 @@ public class AntForFlowShop extends Ant {
    *          Environment where the Ant is building a solution.
    */
   public void improveSolution(Environment environment) {
-    double makespan = getSolutionQuality(environment);
-
-    int[] localSolutionJobs = new int[getSolution().length];
-    List<Integer> jobsList = new ArrayList<Integer>();
-
-    for (int job : getSolution()) {
-      jobsList.add(job);
-    }
-
-    List<Integer> localSolution = jobsList;
-
-    int indexI = 0;
-    boolean lessMakespan = true;
-
-    while (indexI < (getSolution().length) && lessMakespan) {
-      int jobI = localSolution.get(indexI);
-
-      localSolution.remove(indexI);
-
-      int indexJ = 0;
-
-      while (indexJ < getSolution().length && lessMakespan) {
-        localSolution.add(indexJ, jobI);
-
-        int[] intermediateSolution = new int[getSolution().length];
-        int anotherIndex = 0;
-        for (int sol : localSolution) {
-          intermediateSolution[anotherIndex] = sol;
-          anotherIndex++;
-        }
-
-        double newMakespan = getScheduleMakespan(intermediateSolution,
-            environment.getProblemGraph());
-
-        if (newMakespan < makespan) {
-          makespan = newMakespan;
-          lessMakespan = false;
-        } else {
-          localSolution.remove(indexJ);
-        }
-
-        indexJ++;
-      }
-      if (lessMakespan) {
-        localSolution.add(indexI, jobI);
-      }
-      indexI++;
-    }
-
-    int index = 0;
-    for (int job : localSolution) {
-      localSolutionJobs[index] = job;
-      index++;
-    }
-    this.setSolution(localSolutionJobs);
+    // TODO(cgavidia): Again, this set of policies should be configurable.
+    LocalSearchPolicy localSearchPolicy = new LocalSearchPolicy();
+    localSearchPolicy.applyPolicy(environment, this);
   }
 
   /**
@@ -141,7 +86,7 @@ public class AntForFlowShop extends Ant {
    *          Job Info.
    * @return Makespan.
    */
-  public static double getScheduleMakespan(int[] schedule, double[][] jobInfo) {
+  public double getScheduleMakespan(int[] schedule, double[][] jobInfo) {
     int machines = jobInfo[0].length;
     double[] machinesTime = new double[machines];
     double tiempo = 0;

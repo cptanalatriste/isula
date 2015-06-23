@@ -1,8 +1,8 @@
 package isula.aco.algorithms.maxmin;
 
-import isula.aco.AcoPhase;
 import isula.aco.Ant;
 import isula.aco.AntColony;
+import isula.aco.AntColonyPhase;
 import isula.aco.AntColonyPolicy;
 import isula.aco.Environment;
 
@@ -23,7 +23,7 @@ public class UpdatePheromoneMatrixPolicy extends AntColonyPolicy {
    */
   public UpdatePheromoneMatrixPolicy(
       MaxMinConfigurationProvider configurationProvider) {
-    super(AcoPhase.AFTER_SOLUTION_CONSTRUCTION);
+    super(AntColonyPhase.AFTER_SOLUTION_CONSTRUCTION);
 
     this.configurationProvider = configurationProvider;
   }
