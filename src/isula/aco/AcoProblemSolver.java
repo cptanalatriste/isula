@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
-public abstract class AcoProblemSolver {
+public class AcoProblemSolver {
 
   private static Logger logger = Logger.getLogger(AcoProblemSolver.class
       .getName());
@@ -62,10 +62,10 @@ public abstract class AcoProblemSolver {
       iteration++;
     }
 
-    System.out.println("Finishing computation at: " + new Date());
+    logger.info("Finishing computation at: " + new Date());
     long endTime = System.nanoTime();
     double executionTime = (endTime - startTime) / 1000000000.0;
-    System.out.println("Duration (in seconds): " + executionTime);
+    logger.info("Duration (in seconds): " + executionTime);
 
     logger.info("EXECUTION FINISHED");
     logger.info("Best schedule makespam: " + bestSolutionQuality);
