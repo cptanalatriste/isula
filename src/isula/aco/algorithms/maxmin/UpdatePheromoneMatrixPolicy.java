@@ -1,19 +1,17 @@
 package isula.aco.algorithms.maxmin;
 
 import isula.aco.Ant;
-import isula.aco.AntColony;
-import isula.aco.AntColonyPhase;
-import isula.aco.AntColonyPolicy;
-import isula.aco.Environment;
+import isula.aco.ConfigurationProvider;
+import isula.aco.DaemonAction;
+import isula.aco.DaemonActionType;
 
 import java.util.logging.Logger;
 
-public class UpdatePheromoneMatrixPolicy extends AntColonyPolicy {
+//TODO(cgavidia): Generics can be used on Configuration Provider types.
+public class UpdatePheromoneMatrixPolicy extends DaemonAction {
 
   private static Logger logger = Logger
       .getLogger(UpdatePheromoneMatrixPolicy.class.getName());
-
-  private MaxMinConfigurationProvider configurationProvider;
 
   /**
    * Instantiates the Update Pheromone Matrix Policy.
@@ -21,15 +19,15 @@ public class UpdatePheromoneMatrixPolicy extends AntColonyPolicy {
    * @param configurationProvider
    *          Configuration provider.
    */
-  public UpdatePheromoneMatrixPolicy(
-      MaxMinConfigurationProvider configurationProvider) {
-    super(AntColonyPhase.AFTER_SOLUTION_CONSTRUCTION);
+  public UpdatePheromoneMatrixPolicy() {
+    super(DaemonActionType.AFTER_ITERATION_CONSTRUCTION);
 
-    this.configurationProvider = configurationProvider;
   }
 
   @Override
-  public void applyPolicy(Environment environment, AntColony antColony) {
+  public void applyDaemonAction(ConfigurationProvider provider) {
+
+    MaxMinConfigurationProvider configurationProvider = (MaxMinConfigurationProvider) provider;
     logger.info("UPDATING PHEROMONE TRAILS");
 
     logger.info("Performing evaporation on all edges");
@@ -40,7 +38,7 @@ public class UpdatePheromoneMatrixPolicy extends AntColonyPolicy {
     // the data structure access code yet because dependencies on the client
     // project
 
-    double[][] pheromoneMatrix = environment.getPheromoneMatrix();
+    double[][] pheromoneMatrix = getEnvironment().getPheromoneMatrix();
     int matrixRows = pheromoneMatrix.length;
     int matrixColumns = pheromoneMatrix.length;
 
@@ -60,9 +58,9 @@ public class UpdatePheromoneMatrixPolicy extends AntColonyPolicy {
 
     logger.info("Depositing pheromone on Best Ant trail.");
 
-    Ant bestAnt = antColony.getBestPerformingAnt(environment);
+    Ant bestAnt = getAntColony().getBestPerformingAnt(getEnvironment());
     double contribution = configurationProvider.getQValue()
-        / bestAnt.getSolutionQuality(environment);
+        / bestAnt.getSolutionQuality(getEnvironment());
 
     logger.info("Contibution for best ant: " + contribution);
 

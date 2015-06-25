@@ -1,19 +1,16 @@
 package isula.aco.algorithms.maxmin;
 
-import isula.aco.AntColony;
-import isula.aco.AntColonyPhase;
-import isula.aco.AntColonyPolicy;
-import isula.aco.Environment;
+import isula.aco.ConfigurationProvider;
+import isula.aco.DaemonAction;
+import isula.aco.DaemonActionType;
 
 import java.util.logging.Logger;
 
-//TODO(cgavidia): Maybe it is conveniente to have a Max-Min Policy base class.
-public class StartPheromoneMatrixPolicy extends AntColonyPolicy {
+//TODO(cgavidia): Maybe it is convenient to have a Max-Min Policy base class.
+public class StartPheromoneMatrixPolicy extends DaemonAction {
 
   private static Logger logger = Logger
       .getLogger(StartPheromoneMatrixPolicy.class.getName());
-
-  private MaxMinConfigurationProvider configurationProvider;
 
   /**
    * Instantiates the Start Pheromone Matrix Policy.
@@ -21,17 +18,16 @@ public class StartPheromoneMatrixPolicy extends AntColonyPolicy {
    * @param configurationProvider
    *          Configuration provider.
    */
-  public StartPheromoneMatrixPolicy(
-      MaxMinConfigurationProvider configurationProvider) {
-    super(AntColonyPhase.INITIAL_CONFIGURATION);
+  public StartPheromoneMatrixPolicy() {
+    super(DaemonActionType.INITIAL_CONFIGURATION);
 
-    this.configurationProvider = configurationProvider;
   }
 
   @Override
-  public void applyPolicy(Environment environment, AntColony antColony) {
+  public void applyDaemonAction(ConfigurationProvider provider) {
     logger.info("INITIALIZING PHEROMONE MATRIX");
 
+    MaxMinConfigurationProvider configurationProvider = (MaxMinConfigurationProvider) provider;
     double initialPheromoneValue = configurationProvider
         .getMaximumPheromoneValue();
 
@@ -39,7 +35,7 @@ public class StartPheromoneMatrixPolicy extends AntColonyPolicy {
 
     // TODO(cgavidia): Again, we shouldn't handle the data structure directly.
 
-    double[][] pheromoneMatrix = environment.getPheromoneMatrix();
+    double[][] pheromoneMatrix = getEnvironment().getPheromoneMatrix();
     int matrixRows = pheromoneMatrix.length;
     int matrixColumns = pheromoneMatrix.length;
 

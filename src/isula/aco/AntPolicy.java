@@ -3,16 +3,25 @@ package isula.aco;
 public abstract class AntPolicy {
 
   // TODO(cgavidia): This should be used to program the execution of activities.
-  private AntPhase antPhase;
+  private AntPolicyType policyType;
+  private Ant ant;
 
-  public AntPolicy(AntPhase antPhase) {
-    this.antPhase = antPhase;
+  public AntPolicy(AntPolicyType antPhase) {
+    this.policyType = antPhase;
   }
 
-  public AntPhase getAntPhase() {
-    return antPhase;
+  public AntPolicyType getPolicyType() {
+    return policyType;
   }
 
-  public abstract void applyPolicy(Environment environment, Ant ant);
+  public void setAnt(Ant ant) {
+    this.ant = ant;
+  }
 
+  public Ant getAnt() {
+    return ant;
+  }
+
+  public abstract void applyPolicy(Environment environment,
+      ConfigurationProvider configurationProvider);
 }

@@ -23,7 +23,8 @@ public class FlowShopAntColony extends AntColony {
 
   @Override
   protected Ant createAnt() {
-    return new AntForFlowShop(numberOfJobs);
+    AntForFlowShop ant = new AntForFlowShop(numberOfJobs);
+    return ant;
   }
 
 }

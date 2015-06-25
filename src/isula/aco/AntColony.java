@@ -101,7 +101,7 @@ public class AntColony {
           + ant.getSolutionQuality(environment) + ", Schedule: "
           + ant.getSolutionAsString());
 
-      ant.improveSolution(environment);
+      ant.improveSolution(environment, configurationProvider);
 
       logger.info("After Local Search > Makespan: "
           + ant.getSolutionQuality(environment) + ", Schedule: "

@@ -1,10 +1,7 @@
 package isula.aco.problems.flowshop;
 
 import isula.aco.Ant;
-import isula.aco.ConfigurationProvider;
 import isula.aco.Environment;
-import isula.aco.algorithms.acs.AcsConfigurationProvider;
-import isula.aco.algorithms.acs.PseudoRandomNodeSelection;
 
 /**
  * An Ant that belongs to Colony in the context of ACO.
@@ -44,30 +41,6 @@ public class AntForFlowShop extends Ant {
   @Override
   public double getSolutionQuality(Environment environment) {
     return getScheduleMakespan(getSolution(), environment.getProblemGraph());
-  }
-
-  @Override
-  public void selectNextNode(Environment environment,
-      ConfigurationProvider configurationProvider) {
-
-    // TODO(cgavidia): Policies should be grouped and classified. Maybe a Policy
-    // super type? An enum?
-    PseudoRandomNodeSelection pseudoRandomNodeSelection = new PseudoRandomNodeSelection(
-        (AcsConfigurationProvider) configurationProvider);
-    pseudoRandomNodeSelection.applyPolicy(environment, this);
-  }
-
-  /**
-   * Applies local search to the solution built.
-   * 
-   * @param environment
-   *          Environment where the Ant is building a solution.
-   */
-  @Override
-  public void improveSolution(Environment environment) {
-    // TODO(cgavidia): Again, this set of policies should be configurable.
-    LocalSearchPolicy localSearchPolicy = new LocalSearchPolicy();
-    localSearchPolicy.applyPolicy(environment, this);
   }
 
   /**

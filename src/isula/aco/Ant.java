@@ -1,13 +1,23 @@
 package isula.aco;
 
+import isula.aco.exception.ConfigurationException;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Ant {
 
+  private static final int DONT_CHECK_NUMBERS = -1;
+
+  private static final int ONE_POLICY = 1;
+
   private int currentIndex = 0;
+
+  private List<AntPolicy> policies = new ArrayList<AntPolicy>();
 
   // TODO(cgavidia): Temporarly, we're using an array of items. It will later
   // evolve to an array of solution components, or a List.
   private int[] solution;
-
   private boolean[] visited;
 
   /**
@@ -44,10 +54,31 @@ public abstract class Ant {
     return solutionString;
   }
 
-  public abstract double getSolutionQuality(Environment environment);
+  public void addPolicy(AntPolicy antPolicy) {
+    antPolicy.setAnt(this);
+    this.policies.add(antPolicy);
+  }
 
-  // TODO(cgavidia): Maybe the parameter for this method should be a Policy.
-  // Also, evaluate if it is required to be public.
+  private AntPolicy getAntPolicy(AntPolicyType policyType, int expectedNumber) {
+    int numberOfPolicies = 0;
+    AntPolicy selectedPolicy = null;
+
+    for (AntPolicy policy : policies) {
+      if (policyType.equals(policy.getPolicyType())) {
+        selectedPolicy = policy;
+        numberOfPolicies += 1;
+      }
+    }
+
+    if (expectedNumber > 0 && numberOfPolicies != expectedNumber) {
+      throw new ConfigurationException("The number of " + policyType
+          + " policies was " + numberOfPolicies + ". We were expecting "
+          + expectedNumber);
+    }
+
+    return selectedPolicy;
+  }
+
   /**
    * Selects a node and marks it as visited.
    * 
@@ -56,12 +87,31 @@ public abstract class Ant {
    * @param configurationProvider
    *          Configuration provider.
    */
-  public abstract void selectNextNode(Environment environment,
-      ConfigurationProvider configurationProvider);
+  public void selectNextNode(Environment environment,
+      ConfigurationProvider configurationProvider) {
 
-  // TODO(cgavidia): Not every algorithm improve solution after is built. Maybe
-  // we should reconsider making this abstract.
-  public abstract void improveSolution(Environment environment);
+    AntPolicy selectNodePolicity = getAntPolicy(AntPolicyType.NODE_SELECTION,
+        ONE_POLICY);
+    selectNodePolicity.applyPolicy(environment, configurationProvider);
+  }
+
+  /**
+   * Improves the quality of the solution produced.
+   * 
+   * @param environment
+   *          Environment where the ant is building a solution.
+   * @param configurationProvider
+   *          Configuration provider.
+   */
+  public void improveSolution(Environment environment,
+      ConfigurationProvider configurationProvider) {
+    AntPolicy selectNodePolicity = getAntPolicy(
+        AntPolicyType.SOLUTION_IMPROVEMENT, DONT_CHECK_NUMBERS);
+
+    if (selectNodePolicity != null) {
+      selectNodePolicity.applyPolicy(environment, configurationProvider);
+    }
+  }
 
   /**
    * Verifies if a node is visited.
@@ -111,6 +161,8 @@ public abstract class Ant {
   public void setVisited(boolean[] visited) {
     this.visited = visited;
   }
+
+  public abstract double getSolutionQuality(Environment environment);
 
   public abstract boolean isSolutionReady(Environment environment);
 

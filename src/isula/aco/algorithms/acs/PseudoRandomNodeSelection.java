@@ -1,27 +1,26 @@
 package isula.aco.algorithms.acs;
 
-import isula.aco.Ant;
-import isula.aco.AntPhase;
 import isula.aco.AntPolicy;
+import isula.aco.AntPolicyType;
+import isula.aco.ConfigurationProvider;
 import isula.aco.Environment;
 
 import java.util.Random;
 
 public class PseudoRandomNodeSelection extends AntPolicy {
 
-  private AcsConfigurationProvider configurationProvider;
-
-  public PseudoRandomNodeSelection(
-      AcsConfigurationProvider configurationProvider) {
-    super(AntPhase.SOLUTION_CONSTRUCTION);
-    this.configurationProvider = configurationProvider;
+  public PseudoRandomNodeSelection() {
+    super(AntPolicyType.NODE_SELECTION);
   }
 
   @Override
-  public void applyPolicy(Environment environment, Ant ant) {
+  public void applyPolicy(Environment environment,
+      ConfigurationProvider configuration) {
     int nextNode = 0;
     Random random = new Random();
     double randomValue = random.nextDouble();
+
+    AcsConfigurationProvider configurationProvider = (AcsConfigurationProvider) configuration;
 
     double[][] problemGraph = environment.getProblemGraph();
     double[][] pheromoneMatrix = environment.getPheromoneMatrix();
@@ -33,17 +32,18 @@ public class PseudoRandomNodeSelection extends AntPolicy {
       double currentMaximumFeromone = -1;
 
       for (int i = 0; i < problemGraph.length; i++) {
-        double currentPheromone = pheromoneMatrix[i][ant.getCurrentIndex()];
+        double currentPheromone = pheromoneMatrix[i][getAnt().getCurrentIndex()];
 
-        if (!ant.isNodeVisited(i) && currentPheromone > currentMaximumFeromone) {
+        if (!getAnt().isNodeVisited(i)
+            && currentPheromone > currentMaximumFeromone) {
           nextNode = i;
           currentMaximumFeromone = currentPheromone;
         }
 
-        ant.visitNode(nextNode);
+        getAnt().visitNode(nextNode);
       }
     } else {
-      double[] probabilities = this.getProbabilitiesVector(environment, ant);
+      double[] probabilities = this.getProbabilitiesVector(environment);
       double value = randomValue;
       double total = 0;
 
@@ -52,7 +52,7 @@ public class PseudoRandomNodeSelection extends AntPolicy {
 
         if (total >= value) {
           nextNode = i;
-          ant.visitNode(nextNode);
+          getAnt().visitNode(nextNode);
           return;
         }
       }
@@ -65,27 +65,25 @@ public class PseudoRandomNodeSelection extends AntPolicy {
    * 
    * @param environment
    *          Environment that ants are traversing.
-   * @param ant
-   *          Ant who is performing this policy.
    * @return Probabilities for the adjacent nodes.
    */
-  private double[] getProbabilitiesVector(Environment environment, Ant ant) {
-    int[] solution = ant.getSolution();
+  private double[] getProbabilitiesVector(Environment environment) {
+    int[] solution = getAnt().getSolution();
     double[][] pheromoneMatrix = environment.getPheromoneMatrix();
     double[] probabilities = new double[solution.length];
 
     double denominator = 0.0;
     for (int l = 0; l < pheromoneMatrix.length; l++) {
-      if (ant.isNodeVisited(l)) {
-        denominator += pheromoneMatrix[l][ant.getCurrentIndex()];
+      if (getAnt().isNodeVisited(l)) {
+        denominator += pheromoneMatrix[l][getAnt().getCurrentIndex()];
       }
     }
 
     for (int j = 0; j < solution.length; j++) {
-      if (ant.isNodeVisited(j)) {
+      if (getAnt().isNodeVisited(j)) {
         probabilities[j] = 0.0;
       } else {
-        double numerator = pheromoneMatrix[j][ant.getCurrentIndex()];
+        double numerator = pheromoneMatrix[j][getAnt().getCurrentIndex()];
         probabilities[j] = numerator / denominator;
       }
     }

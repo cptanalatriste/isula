@@ -1,5 +1,8 @@
 package isula.aco;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 public abstract class AcoProblemSolver {
@@ -15,36 +18,29 @@ public abstract class AcoProblemSolver {
   private AntColony antColony;
   private ConfigurationProvider configurationProvider;
 
-  public Environment getEnvironment() {
-    return environment;
-  }
+  private List<DaemonAction> daemonActions = new ArrayList<DaemonAction>();
 
-  public void setEnvironment(Environment environment) {
-    this.environment = environment;
-  }
+  /**
+   * Adds a Daemon Action for the current solver.
+   * 
+   * @param daemonAction
+   *          Daemon action.
+   */
+  public void addDaemonAction(DaemonAction daemonAction) {
 
-  public AntColony getAntColony() {
-    return antColony;
-  }
-
-  public void setAntColony(AntColony antColony) {
-    this.antColony = antColony;
-  }
-
-  public ConfigurationProvider getConfigurationProvider() {
-    return configurationProvider;
-  }
-
-  public void setConfigurationProvider(
-      ConfigurationProvider configurationProvider) {
-    this.configurationProvider = configurationProvider;
+    daemonAction.setAntColony(antColony);
+    daemonAction.setEnvironment(environment);
+    daemonActions.add(daemonAction);
   }
 
   /**
    * Solves an optimization problem using a Colony of Ants.
    */
   public void solveProblem() {
-    applyInitialConfigurationPolicies();
+    logger.info("Starting computation at: " + new Date());
+    final long startTime = System.nanoTime();
+
+    applyDaemonActions(DaemonActionType.INITIAL_CONFIGURATION);
 
     int iteration = 0;
 
@@ -60,11 +56,16 @@ public abstract class AcoProblemSolver {
 
       // TODO(cgavidia): This should reference the Update Pheromone routine.
       // Maybe with the Policy hierarchy.
-      applyAfterSolutionConstructionPolicies();
-      updateBestSolution(environment);
+      applyDaemonActions(DaemonActionType.AFTER_ITERATION_CONSTRUCTION);
 
+      updateBestSolution(environment);
       iteration++;
     }
+
+    System.out.println("Finishing computation at: " + new Date());
+    long endTime = System.nanoTime();
+    double executionTime = (endTime - startTime) / 1000000000.0;
+    System.out.println("Duration (in seconds): " + executionTime);
 
     logger.info("EXECUTION FINISHED");
     logger.info("Best schedule makespam: " + bestSolutionQuality);
@@ -90,9 +91,44 @@ public abstract class AcoProblemSolver {
 
   }
 
-  public abstract void applyInitialConfigurationPolicies();
+  /**
+   * Applies all daemon actions of a specific type.
+   * 
+   * @param daemonActionType
+   *          Daemon action type.
+   */
+  public void applyDaemonActions(DaemonActionType daemonActionType) {
+    for (DaemonAction daemonAction : daemonActions) {
+      if (daemonActionType.equals(daemonAction.getAcoPhase())) {
+        daemonAction.applyDaemonAction(this.getConfigurationProvider());
+      }
+    }
+  }
 
-  public abstract void applyAfterSolutionConstructionPolicies();
+  public Environment getEnvironment() {
+    return environment;
+  }
+
+  public void setEnvironment(Environment environment) {
+    this.environment = environment;
+  }
+
+  public AntColony getAntColony() {
+    return antColony;
+  }
+
+  public void setAntColony(AntColony antColony) {
+    this.antColony = antColony;
+  }
+
+  public ConfigurationProvider getConfigurationProvider() {
+    return configurationProvider;
+  }
+
+  public void setConfigurationProvider(
+      ConfigurationProvider configurationProvider) {
+    this.configurationProvider = configurationProvider;
+  }
 
   public int[] getBestSolution() {
     return bestSolution;

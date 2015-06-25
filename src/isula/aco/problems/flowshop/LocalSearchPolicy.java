@@ -1,8 +1,8 @@
 package isula.aco.problems.flowshop;
 
-import isula.aco.Ant;
-import isula.aco.AntPhase;
 import isula.aco.AntPolicy;
+import isula.aco.AntPolicyType;
+import isula.aco.ConfigurationProvider;
 import isula.aco.Environment;
 
 import java.util.ArrayList;
@@ -11,16 +11,17 @@ import java.util.List;
 public class LocalSearchPolicy extends AntPolicy {
 
   public LocalSearchPolicy() {
-    super(AntPhase.SOLUTION_IMPROVEMENT);
+    super(AntPolicyType.SOLUTION_IMPROVEMENT);
   }
 
   @Override
-  public void applyPolicy(Environment environment, Ant ant) {
+  public void applyPolicy(Environment environment,
+      ConfigurationProvider configuration) {
     // TODO(cgavidia): This needs a HUGE REFACTOR!
 
-    AntForFlowShop antForFlowShop = (isula.aco.problems.flowshop.AntForFlowShop) ant;
-    double makespan = ant.getSolutionQuality(environment);
-    int[] currentSolution = ant.getSolution();
+    AntForFlowShop antForFlowShop = (isula.aco.problems.flowshop.AntForFlowShop) getAnt();
+    double makespan = getAnt().getSolutionQuality(environment);
+    int[] currentSolution = getAnt().getSolution();
     int[] localSolutionJobs = new int[currentSolution.length];
 
     List<Integer> jobsList = new ArrayList<Integer>();
@@ -74,7 +75,7 @@ public class LocalSearchPolicy extends AntPolicy {
       localSolutionJobs[index] = job;
       index++;
     }
-    ant.setSolution(localSolutionJobs);
+    getAnt().setSolution(localSolutionJobs);
   }
 
 }
