@@ -3,13 +3,15 @@ package isula.aco.problems.flowshop;
 import isula.aco.Ant;
 import isula.aco.Environment;
 
+import java.util.ArrayList;
+
 /**
  * An Ant that belongs to Colony in the context of ACO.
  * 
  * @author Carlos G. Gavidia (cgavidia@acm.org)
  * @author Adrian Pareja (adrian@pareja.com)
  */
-public class AntForFlowShop extends Ant {
+public class AntForFlowShop extends Ant<Integer> {
 
   // TODO(cgavidia): Maybe a more generic parameter would be an Environment
   // instance.
@@ -21,8 +23,8 @@ public class AntForFlowShop extends Ant {
    */
   public AntForFlowShop(int graphLenght) {
     super();
-    this.setSolution(new int[graphLenght]);
-    this.setVisited(new boolean[graphLenght]);
+    this.setSolution(new Integer[graphLenght]);
+    this.setVisited(new ArrayList<Integer>());
   }
 
   @Override
@@ -52,12 +54,12 @@ public class AntForFlowShop extends Ant {
    *          Job Info.
    * @return Makespan.
    */
-  public double getScheduleMakespan(int[] schedule, double[][] jobInfo) {
+  public double getScheduleMakespan(Integer[] schedule, double[][] jobInfo) {
     int machines = jobInfo[0].length;
     double[] machinesTime = new double[machines];
     double tiempo = 0;
 
-    for (int job : schedule) {
+    for (Integer job : schedule) {
       for (int i = 0; i < machines; i++) {
         tiempo = jobInfo[job][i];
         if (i == 0) {

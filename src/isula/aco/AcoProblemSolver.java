@@ -5,20 +5,20 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class AcoProblemSolver {
+public class AcoProblemSolver<E> {
 
   private static Logger logger = Logger.getLogger(AcoProblemSolver.class
       .getName());
 
-  public int[] bestSolution;
+  public E[] bestSolution;
   public double bestSolutionQuality = -1.0;
   public String bestSolutionAsString = "";
 
   private Environment environment;
-  private AntColony antColony;
+  private AntColony<E> antColony;
   private ConfigurationProvider configurationProvider;
 
-  private List<DaemonAction> daemonActions = new ArrayList<DaemonAction>();
+  private List<DaemonAction<E>> daemonActions = new ArrayList<DaemonAction<E>>();
 
   /**
    * Adds a Daemon Action for the current solver.
@@ -26,7 +26,7 @@ public class AcoProblemSolver {
    * @param daemonAction
    *          Daemon action.
    */
-  public void addDaemonAction(DaemonAction daemonAction) {
+  public void addDaemonAction(DaemonAction<E> daemonAction) {
 
     daemonAction.setAntColony(antColony);
     daemonAction.setEnvironment(environment);
@@ -76,7 +76,7 @@ public class AcoProblemSolver {
   private void updateBestSolution(Environment environment) {
     logger.info("GETTING BEST SOLUTION FOUND");
 
-    Ant bestAnt = antColony.getBestPerformingAnt(environment);
+    Ant<E> bestAnt = antColony.getBestPerformingAnt(environment);
 
     if (bestSolution == null
         || bestSolutionQuality > bestAnt.getSolutionQuality(environment)) {
@@ -98,7 +98,7 @@ public class AcoProblemSolver {
    *          Daemon action type.
    */
   public void applyDaemonActions(DaemonActionType daemonActionType) {
-    for (DaemonAction daemonAction : daemonActions) {
+    for (DaemonAction<E> daemonAction : daemonActions) {
       if (daemonActionType.equals(daemonAction.getAcoPhase())) {
         daemonAction.applyDaemonAction(this.getConfigurationProvider());
       }
@@ -113,11 +113,11 @@ public class AcoProblemSolver {
     this.environment = environment;
   }
 
-  public AntColony getAntColony() {
+  public AntColony<E> getAntColony() {
     return antColony;
   }
 
-  public void setAntColony(AntColony antColony) {
+  public void setAntColony(AntColony<E> antColony) {
     this.antColony = antColony;
   }
 
@@ -130,7 +130,7 @@ public class AcoProblemSolver {
     this.configurationProvider = configurationProvider;
   }
 
-  public int[] getBestSolution() {
+  public E[] getBestSolution() {
     return bestSolution;
   }
 

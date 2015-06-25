@@ -1,10 +1,10 @@
 package isula.aco;
 
-public abstract class DaemonAction {
+public abstract class DaemonAction<E> {
 
   private DaemonActionType acoPhase;
   private Environment environment;
-  private AntColony antColony;
+  private AntColony<E> antColony;
 
   public DaemonAction(DaemonActionType acoPhase) {
     super();
@@ -23,11 +23,11 @@ public abstract class DaemonAction {
     this.environment = environment;
   }
 
-  public AntColony getAntColony() {
+  public AntColony<E> getAntColony() {
     return antColony;
   }
 
-  public void setAntColony(AntColony antColony) {
+  public void setAntColony(AntColony<E> antColony) {
     this.antColony = antColony;
   }
 

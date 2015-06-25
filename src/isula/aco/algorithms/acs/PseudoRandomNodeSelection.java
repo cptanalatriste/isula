@@ -7,7 +7,8 @@ import isula.aco.Environment;
 
 import java.util.Random;
 
-public class PseudoRandomNodeSelection extends AntPolicy {
+//TODO(cgavidia): Temporarly, using Integer for this policy. However, it should su
+public class PseudoRandomNodeSelection extends AntPolicy<Integer> {
 
   public PseudoRandomNodeSelection() {
     super(AntPolicyType.NODE_SELECTION);
@@ -68,7 +69,7 @@ public class PseudoRandomNodeSelection extends AntPolicy {
    * @return Probabilities for the adjacent nodes.
    */
   private double[] getProbabilitiesVector(Environment environment) {
-    int[] solution = getAnt().getSolution();
+    Integer[] solution = getAnt().getSolution();
     double[][] pheromoneMatrix = environment.getPheromoneMatrix();
     double[] probabilities = new double[solution.length];
 

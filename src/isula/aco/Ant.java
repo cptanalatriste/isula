@@ -5,7 +5,7 @@ import isula.aco.exception.ConfigurationException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Ant {
+public abstract class Ant<E> {
 
   private static final int DONT_CHECK_NUMBERS = -1;
 
@@ -13,12 +13,12 @@ public abstract class Ant {
 
   private int currentIndex = 0;
 
-  private List<AntPolicy> policies = new ArrayList<AntPolicy>();
+  private List<AntPolicy<E>> policies = new ArrayList<AntPolicy<E>>();
 
   // TODO(cgavidia): Temporarly, we're using an array of items. It will later
   // evolve to an array of solution components, or a List.
-  private int[] solution;
-  private boolean[] visited;
+  private E[] solution;
+  private List<E> visitedComponents = new ArrayList<E>();
 
   /**
    * Mark a node as visited.
@@ -26,9 +26,9 @@ public abstract class Ant {
    * @param visitedNode
    *          Visited node.
    */
-  public void visitNode(int visitedNode) {
+  public void visitNode(E visitedNode) {
     getSolution()[currentIndex] = visitedNode;
-    getVisited()[visitedNode] = true;
+    visitedComponents.add(visitedNode);
     currentIndex++;
   }
 
@@ -36,9 +36,7 @@ public abstract class Ant {
    * Resets the visited vector.
    */
   public void clear() {
-    for (int i = 0; i < getVisited().length; i++) {
-      visited[i] = false;
-    }
+    visitedComponents.clear();
   }
 
   /**
@@ -54,16 +52,16 @@ public abstract class Ant {
     return solutionString;
   }
 
-  public void addPolicy(AntPolicy antPolicy) {
+  public void addPolicy(AntPolicy<E> antPolicy) {
     antPolicy.setAnt(this);
     this.policies.add(antPolicy);
   }
 
-  private AntPolicy getAntPolicy(AntPolicyType policyType, int expectedNumber) {
+  private AntPolicy<E> getAntPolicy(AntPolicyType policyType, int expectedNumber) {
     int numberOfPolicies = 0;
-    AntPolicy selectedPolicy = null;
+    AntPolicy<E> selectedPolicy = null;
 
-    for (AntPolicy policy : policies) {
+    for (AntPolicy<E> policy : policies) {
       if (policyType.equals(policy.getPolicyType())) {
         selectedPolicy = policy;
         numberOfPolicies += 1;
@@ -90,8 +88,8 @@ public abstract class Ant {
   public void selectNextNode(Environment environment,
       ConfigurationProvider configurationProvider) {
 
-    AntPolicy selectNodePolicity = getAntPolicy(AntPolicyType.NODE_SELECTION,
-        ONE_POLICY);
+    AntPolicy<E> selectNodePolicity = getAntPolicy(
+        AntPolicyType.NODE_SELECTION, ONE_POLICY);
     selectNodePolicity.applyPolicy(environment, configurationProvider);
   }
 
@@ -105,7 +103,7 @@ public abstract class Ant {
    */
   public void improveSolution(Environment environment,
       ConfigurationProvider configurationProvider) {
-    AntPolicy selectNodePolicity = getAntPolicy(
+    AntPolicy<E> selectNodePolicity = getAntPolicy(
         AntPolicyType.SOLUTION_IMPROVEMENT, DONT_CHECK_NUMBERS);
 
     if (selectNodePolicity != null) {
@@ -121,8 +119,15 @@ public abstract class Ant {
    * @return True if the node is already visited. False otherwise.
    */
 
-  public boolean isNodeVisited(int node) {
-    return getVisited()[node];
+  public boolean isNodeVisited(E node) {
+
+    for (E solutionComponent : visitedComponents) {
+      if (node.equals(solutionComponent)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   /**
@@ -146,20 +151,20 @@ public abstract class Ant {
 
   // TODO(cgavidia): For convenience, we're accesing this data structures
   // directly.
-  public int[] getSolution() {
+  public E[] getSolution() {
     return solution;
   }
 
-  public void setSolution(int[] solution) {
+  public void setSolution(E[] solution) {
     this.solution = solution;
   }
 
-  public boolean[] getVisited() {
-    return visited;
+  public List<E> getVisited() {
+    return visitedComponents;
   }
 
-  public void setVisited(boolean[] visited) {
-    this.visited = visited;
+  public void setVisited(List<E> visited) {
+    this.visitedComponents = visited;
   }
 
   public abstract double getSolutionQuality(Environment environment);

@@ -3,7 +3,7 @@ package isula.aco.problems.flowshop;
 import isula.aco.Ant;
 import isula.aco.AntColony;
 
-public class FlowShopAntColony extends AntColony {
+public class FlowShopAntColony extends AntColony<Integer> {
 
   private int numberOfJobs;
 
@@ -22,7 +22,7 @@ public class FlowShopAntColony extends AntColony {
   }
 
   @Override
-  protected Ant createAnt() {
+  protected Ant<Integer> createAnt() {
     AntForFlowShop ant = new AntForFlowShop(numberOfJobs);
     return ant;
   }

@@ -7,7 +7,7 @@ import isula.aco.DaemonActionType;
 import java.util.logging.Logger;
 
 //TODO(cgavidia): Maybe it is convenient to have a Max-Min Policy base class.
-public class StartPheromoneMatrixPolicy extends DaemonAction {
+public class StartPheromoneMatrixPolicy<E> extends DaemonAction<E> {
 
   private static Logger logger = Logger
       .getLogger(StartPheromoneMatrixPolicy.class.getName());

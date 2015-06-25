@@ -5,7 +5,7 @@ import isula.aco.AntColony;
 import isula.aco.ConfigurationProvider;
 import isula.aco.exception.InvalidInputException;
 
-public class FlowShopProblemSolver extends AcoProblemSolver {
+public class FlowShopProblemSolver extends AcoProblemSolver<Integer> {
 
   /**
    * Problem Solver for the Flow Shop Scheduling Problem.
@@ -23,7 +23,8 @@ public class FlowShopProblemSolver extends AcoProblemSolver {
 
     int numberOfAnts = configurationProvider.getNumberOfAnts();
     int numberOfJobs = environment.getNumberOfJobs();
-    AntColony antColony = new FlowShopAntColony(numberOfAnts, numberOfJobs);
+    AntColony<Integer> antColony = new FlowShopAntColony(numberOfAnts,
+        numberOfJobs);
 
     // TODO(cgavidia); This should be called from the base classes, not from the
     // specific ones.

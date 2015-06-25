@@ -7,8 +7,9 @@ import isula.aco.DaemonActionType;
 
 import java.util.logging.Logger;
 
-//TODO(cgavidia): Generics can be used on Configuration Provider types.
-public class UpdatePheromoneMatrixPolicy extends DaemonAction {
+//TODO(cgavidia): We're using integer for ease of implementation.
+//However, this must support any type.
+public class UpdatePheromoneMatrixPolicy extends DaemonAction<Integer> {
 
   private static Logger logger = Logger
       .getLogger(UpdatePheromoneMatrixPolicy.class.getName());
@@ -58,13 +59,14 @@ public class UpdatePheromoneMatrixPolicy extends DaemonAction {
 
     logger.info("Depositing pheromone on Best Ant trail.");
 
-    Ant bestAnt = getAntColony().getBestPerformingAnt(getEnvironment());
+    Ant<Integer> bestAnt = getAntColony()
+        .getBestPerformingAnt(getEnvironment());
     double contribution = configurationProvider.getQValue()
         / bestAnt.getSolutionQuality(getEnvironment());
 
     logger.info("Contibution for best ant: " + contribution);
 
-    int[] bestSolution = bestAnt.getSolution();
+    Integer[] bestSolution = bestAnt.getSolution();
 
     // TODO(cgavidia): From here, we can factor the policy of only best ant
     // deposits pheromone.

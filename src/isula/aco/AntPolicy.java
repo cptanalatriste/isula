@@ -1,10 +1,10 @@
 package isula.aco;
 
-public abstract class AntPolicy {
+public abstract class AntPolicy<E> {
 
   // TODO(cgavidia): This should be used to program the execution of activities.
   private AntPolicyType policyType;
-  private Ant ant;
+  private Ant<E> ant;
 
   public AntPolicy(AntPolicyType antPhase) {
     this.policyType = antPhase;
@@ -14,11 +14,11 @@ public abstract class AntPolicy {
     return policyType;
   }
 
-  public void setAnt(Ant ant) {
+  public void setAnt(Ant<E> ant) {
     this.ant = ant;
   }
 
-  public Ant getAnt() {
+  public Ant<E> getAnt() {
     return ant;
   }
 

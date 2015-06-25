@@ -1,15 +1,15 @@
 package isula.aco;
 
-import isula.aco.exception.MethodNotImplementedException;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
-public class AntColony {
+public abstract class AntColony<E> {
 
   private static Logger logger = Logger.getLogger(AntColony.class.getName());
 
   private int numberOfAnts;
-  private Ant[] hive;
+  private Object[] hive;
 
   /**
    * Creates a colony of ants
@@ -29,16 +29,14 @@ public class AntColony {
    * 
    */
   public void buildColony() {
-    this.hive = new Ant[this.numberOfAnts];
+    this.hive = new Object[this.numberOfAnts];
 
     for (int j = 0; j < hive.length; j++) {
       hive[j] = this.createAnt();
     }
   }
 
-  protected Ant createAnt() {
-    throw new MethodNotImplementedException();
-  }
+  protected abstract Ant<E> createAnt();
 
   /**
    * Returns the ant with the best performance so far.
@@ -47,10 +45,13 @@ public class AntColony {
    *          Environment where the Ants are building solutions.
    * @return Best performing Ant.
    */
-  public Ant getBestPerformingAnt(Environment environment) {
-    Ant bestAnt = hive[0];
+  @SuppressWarnings("unchecked")
+  public Ant<E> getBestPerformingAnt(Environment environment) {
+    Ant<E> bestAnt = (Ant<E>) hive[0];
 
-    for (Ant ant : hive) {
+    for (Object antAsObject : hive) {
+      Ant<E> ant = (Ant<E>) antAsObject;
+
       if (ant.getSolutionQuality(environment) < bestAnt
           .getSolutionQuality(environment)) {
         bestAnt = ant;
@@ -60,8 +61,20 @@ public class AntColony {
     return bestAnt;
   }
 
-  public Ant[] getHive() {
-    return hive;
+  /**
+   * Returns a List of all the ants in the colony.
+   * 
+   * @return List of Ants.
+   */
+  @SuppressWarnings("unchecked")
+  public List<Ant<E>> getHive() {
+    List<Ant<E>> hiveAsList = new ArrayList<Ant<E>>();
+
+    for (Object antAsObject : hive) {
+      Ant<E> ant = (Ant<E>) antAsObject;
+      hiveAsList.add(ant);
+    }
+    return hiveAsList;
   }
 
   /**
@@ -70,7 +83,10 @@ public class AntColony {
   public void clearAntSolutions() {
     logger.info("CLEARING ANT SOLUTIONS");
 
-    for (Ant ant : hive) {
+    for (Object antAsObject : hive) {
+      @SuppressWarnings("unchecked")
+      Ant<E> ant = (Ant<E>) antAsObject;
+
       ant.setCurrentIndex(0);
       ant.clear();
     }
@@ -90,7 +106,10 @@ public class AntColony {
     logger.info("BUILDING ANT SOLUTIONS");
 
     int antCounter = 0;
-    for (Ant ant : hive) {
+    for (Object antAsObject : hive) {
+      @SuppressWarnings("unchecked")
+      Ant<E> ant = (Ant<E>) antAsObject;
+
       logger.info("Current ant: " + antCounter);
 
       while (!ant.isSolutionReady(environment)) {
