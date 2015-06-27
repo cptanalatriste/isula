@@ -7,12 +7,11 @@ import isula.aco.DaemonActionType;
 
 import java.util.logging.Logger;
 
-//TODO(cgavidia): We're using integer for ease of implementation.
-//However, this must support any type.
-public class UpdatePheromoneMatrixPolicy extends DaemonAction<Integer> {
+//TODO(cgavidia): Generics can be used on Configuration Provider types.
+public class UpdatePheromoneMatrixForMaxMin extends DaemonAction<Integer> {
 
   private static Logger logger = Logger
-      .getLogger(UpdatePheromoneMatrixPolicy.class.getName());
+      .getLogger(UpdatePheromoneMatrixForMaxMin.class.getName());
 
   /**
    * Instantiates the Update Pheromone Matrix Policy.
@@ -20,7 +19,7 @@ public class UpdatePheromoneMatrixPolicy extends DaemonAction<Integer> {
    * @param configurationProvider
    *          Configuration provider.
    */
-  public UpdatePheromoneMatrixPolicy() {
+  public UpdatePheromoneMatrixForMaxMin() {
     super(DaemonActionType.AFTER_ITERATION_CONSTRUCTION);
 
   }

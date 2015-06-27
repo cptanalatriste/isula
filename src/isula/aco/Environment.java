@@ -1,7 +1,6 @@
 package isula.aco;
 
 import isula.aco.exception.InvalidInputException;
-import isula.aco.exception.MethodNotImplementedException;
 
 public abstract class Environment {
 
@@ -28,11 +27,6 @@ public abstract class Environment {
     }
   }
 
-  protected double[][] createPheromoneMatrix()
-      throws MethodNotImplementedException {
-    throw new MethodNotImplementedException();
-  }
-
   protected boolean isProblemGraphValid() {
     return true;
   }
@@ -43,6 +37,42 @@ public abstract class Environment {
 
   public double[][] getPheromoneMatrix() {
     return pheromoneMatrix;
+  }
+
+  protected abstract double[][] createPheromoneMatrix();
+
+  /**
+   * Asigns the same value to all cells on the Pheromone Matrix.
+   * 
+   * @param pheromoneValue
+   */
+  public void populatePheromoneMatrix(double pheromoneValue) {
+    int matrixRows = pheromoneMatrix.length;
+    int matrixColumns = pheromoneMatrix.length;
+
+    for (int i = 0; i < matrixRows; i++) {
+      for (int j = 0; j < matrixColumns; j++) {
+        pheromoneMatrix[i][j] = pheromoneValue;
+      }
+    }
+  }
+
+  /**
+   * Multiplies every cell in the pheromone matrix by a factor.
+   * 
+   * @param factor
+   *          Factor for multiplication.
+   */
+  public void applyFactorToPheromoneMatrix(double factor) {
+    int matrixRows = pheromoneMatrix.length;
+    int matrixColumns = pheromoneMatrix.length;
+
+    for (int i = 0; i < matrixRows; i++) {
+      for (int j = 0; j < matrixColumns; j++) {
+        double newValue = pheromoneMatrix[i][j] * factor;
+        pheromoneMatrix[i][j] = newValue;
+      }
+    }
   }
 
 }

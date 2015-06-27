@@ -8,4 +8,6 @@ public interface ConfigurationProvider {
 
   int getNumberOfIterations();
 
+  double getInitialPheromoneValue();
+
 }
