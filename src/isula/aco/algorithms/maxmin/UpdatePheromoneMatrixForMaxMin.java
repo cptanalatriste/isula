@@ -8,7 +8,7 @@ import isula.aco.DaemonActionType;
 import java.util.logging.Logger;
 
 //TODO(cgavidia): Generics can be used on Configuration Provider types.
-public class UpdatePheromoneMatrixForMaxMin extends DaemonAction<Integer> {
+public class UpdatePheromoneMatrixForMaxMin<E> extends DaemonAction<E> {
 
   private static Logger logger = Logger
       .getLogger(UpdatePheromoneMatrixForMaxMin.class.getName());
@@ -34,10 +34,6 @@ public class UpdatePheromoneMatrixForMaxMin extends DaemonAction<Integer> {
     logger.info("Evaporation ratio: "
         + configurationProvider.getEvaporationRatio());
 
-    // TODO(cgavidia): Copy pasted code from the other policy. I don't implement
-    // the data structure access code yet because dependencies on the client
-    // project
-
     double[][] pheromoneMatrix = getEnvironment().getPheromoneMatrix();
     int matrixRows = pheromoneMatrix.length;
     int matrixColumns = pheromoneMatrix.length;
@@ -58,26 +54,31 @@ public class UpdatePheromoneMatrixForMaxMin extends DaemonAction<Integer> {
 
     logger.info("Depositing pheromone on Best Ant trail.");
 
-    Ant<Integer> bestAnt = getAntColony()
-        .getBestPerformingAnt(getEnvironment());
+    Ant<E> bestAnt = getAntColony().getBestPerformingAnt(getEnvironment());
     double contribution = configurationProvider.getQValue()
         / bestAnt.getSolutionQuality(getEnvironment());
 
     logger.info("Contibution for best ant: " + contribution);
 
-    Integer[] bestSolution = bestAnt.getSolution();
+    E[] bestSolution = bestAnt.getSolution();
+    int positionInSolution = 0;
 
     // TODO(cgavidia): From here, we can factor the policy of only best ant
     // deposits pheromone.
-    for (int i = 0; i < bestSolution.length; i++) {
-      double newValue = pheromoneMatrix[bestSolution[i]][i] + contribution;
+    for (E solutionComponent : bestSolution) {
+      // TODO(cgavidia): This makes me think a solution type is necessary...
+      double newValue = bestAnt.getPheromoneTrailValue(solutionComponent,
+          positionInSolution, getEnvironment()) + contribution;
 
       if (newValue <= configurationProvider.getMaximumPheromoneValue()) {
-        pheromoneMatrix[bestSolution[i]][i] = newValue;
+        bestAnt.setPheromoneTrailValue(solutionComponent, getEnvironment(),
+            newValue);
       } else {
-        pheromoneMatrix[bestSolution[i]][i] = configurationProvider
-            .getMaximumPheromoneValue();
+        bestAnt.setPheromoneTrailValue(solutionComponent, getEnvironment(),
+            configurationProvider.getMaximumPheromoneValue());
       }
+
+      positionInSolution += 1;
     }
   }
 

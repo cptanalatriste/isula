@@ -5,10 +5,13 @@ import isula.aco.AntPolicyType;
 import isula.aco.ConfigurationProvider;
 import isula.aco.Environment;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.Random;
 
 //TODO(cgavidia): Temporarly, using Integer for this policy. However, it should su
-public class PseudoRandomNodeSelection extends AntPolicy<Integer> {
+public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
 
   public PseudoRandomNodeSelection() {
     super(AntPolicyType.NODE_SELECTION);
@@ -17,45 +20,53 @@ public class PseudoRandomNodeSelection extends AntPolicy<Integer> {
   @Override
   public void applyPolicy(Environment environment,
       ConfigurationProvider configuration) {
-    int nextNode = 0;
+    E nextNode = null;
     Random random = new Random();
     double randomValue = random.nextDouble();
 
     AcsConfigurationProvider configurationProvider = (AcsConfigurationProvider) configuration;
 
     double[][] problemGraph = environment.getProblemGraph();
-    double[][] pheromoneMatrix = environment.getPheromoneMatrix();
 
     double bestChoiceProbability = (problemGraph.length - configurationProvider
         .getBestChoiceConstant()) / problemGraph.length;
 
     if (randomValue < bestChoiceProbability) {
+      // TODO(cgavidia): This branch has testing pending.
       double currentMaximumFeromone = -1;
 
-      for (int i = 0; i < problemGraph.length; i++) {
-        double currentPheromone = pheromoneMatrix[i][getAnt().getCurrentIndex()];
-
-        if (!getAnt().isNodeVisited(i)
+      for (E possibleMove : getAnt().getNeighbourhood(environment)) {
+        double currentPheromone = getAnt().getPheromoneTrailValue(possibleMove,
+            getAnt().getCurrentIndex(), environment);
+        if (!getAnt().isNodeVisited(possibleMove)
             && currentPheromone > currentMaximumFeromone) {
-          nextNode = i;
+
+          nextNode = possibleMove;
           currentMaximumFeromone = currentPheromone;
         }
-
-        getAnt().visitNode(nextNode);
       }
+
+      getAnt().visitNode(nextNode);
     } else {
-      double[] probabilities = this.getProbabilitiesVector(environment);
+      HashMap<E, Double> componentsWithProbabilities = this
+          .getComponentsWithProbabilities(environment);
       double value = randomValue;
       double total = 0;
 
-      for (int i = 0; i < problemGraph.length; i++) {
-        total += probabilities[i];
+      Iterator<Entry<E, Double>> componentWithProbabilitiesIterator = componentsWithProbabilities
+          .entrySet().iterator();
+      while (componentWithProbabilitiesIterator.hasNext()) {
+        Entry<E, Double> componentWithProbability = componentWithProbabilitiesIterator
+            .next();
+
+        total += componentWithProbability.getValue();
 
         if (total >= value) {
-          nextNode = i;
+          nextNode = componentWithProbability.getKey();
           getAnt().visitNode(nextNode);
           return;
         }
+
       }
     }
   }
@@ -68,28 +79,32 @@ public class PseudoRandomNodeSelection extends AntPolicy<Integer> {
    *          Environment that ants are traversing.
    * @return Probabilities for the adjacent nodes.
    */
-  private double[] getProbabilitiesVector(Environment environment) {
-    Integer[] solution = getAnt().getSolution();
-    double[][] pheromoneMatrix = environment.getPheromoneMatrix();
-    double[] probabilities = new double[solution.length];
+  private HashMap<E, Double> getComponentsWithProbabilities(
+      Environment environment) {
+    HashMap<E, Double> componentsWithProbabilities = new HashMap<E, Double>();
 
     double denominator = 0.0;
-    for (int l = 0; l < pheromoneMatrix.length; l++) {
-      if (getAnt().isNodeVisited(l)) {
-        denominator += pheromoneMatrix[l][getAnt().getCurrentIndex()];
+    for (E possibleMove : getAnt().getNeighbourhood(environment)) {
+      if (!getAnt().isNodeVisited(possibleMove)) {
+        denominator += getAnt().getPheromoneTrailValue(possibleMove,
+            getAnt().getCurrentIndex(), environment);
+
+        componentsWithProbabilities.put(possibleMove, 0.0);
       }
     }
 
-    for (int j = 0; j < solution.length; j++) {
-      if (getAnt().isNodeVisited(j)) {
-        probabilities[j] = 0.0;
-      } else {
-        double numerator = pheromoneMatrix[j][getAnt().getCurrentIndex()];
-        probabilities[j] = numerator / denominator;
-      }
+    Iterator<Entry<E, Double>> componentWithProbabilitiesIterator = componentsWithProbabilities
+        .entrySet().iterator();
+    while (componentWithProbabilitiesIterator.hasNext()) {
+      Entry<E, Double> componentWithProbability = componentWithProbabilitiesIterator
+          .next();
+      E component = componentWithProbability.getKey();
+
+      Double numerator = getAnt().getPheromoneTrailValue(component,
+          getAnt().getCurrentIndex(), environment);
+      componentWithProbability.setValue(numerator / denominator);
     }
 
-    return probabilities;
+    return componentsWithProbabilities;
   }
-
 }

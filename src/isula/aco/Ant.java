@@ -8,7 +8,6 @@ import java.util.List;
 public abstract class Ant<E> {
 
   private static final int DONT_CHECK_NUMBERS = -1;
-
   private static final int ONE_POLICY = 1;
 
   private int currentIndex = 0;
@@ -166,6 +165,15 @@ public abstract class Ant<E> {
   public void setVisited(List<E> visited) {
     this.visitedComponents = visited;
   }
+
+  public abstract List<E> getNeighbourhood(Environment environment);
+
+  // TODO(cgavidia): Maybe we should move this to Environment.
+  public abstract Double getPheromoneTrailValue(E solutionComponent,
+      Integer positionInSolution, Environment environment);
+
+  public abstract void setPheromoneTrailValue(E solutionComponent,
+      Environment environment, Double value);
 
   public abstract double getSolutionQuality(Environment environment);
 

@@ -4,6 +4,7 @@ import isula.aco.Ant;
 import isula.aco.Environment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An Ant that belongs to Colony in the context of ACO.
@@ -43,6 +44,33 @@ public class AntForFlowShop extends Ant<Integer> {
   @Override
   public double getSolutionQuality(Environment environment) {
     return getScheduleMakespan(getSolution(), environment.getProblemGraph());
+  }
+
+  @Override
+  public List<Integer> getNeighbourhood(Environment environment) {
+    List<Integer> neighbours = new ArrayList<Integer>();
+    double[][] pheromoneMatrix = environment.getPheromoneMatrix();
+
+    for (int l = 0; l < pheromoneMatrix.length; l++) {
+      neighbours.add(l);
+    }
+    return neighbours;
+  }
+
+  @Override
+  public Double getPheromoneTrailValue(Integer solutionComponent,
+      Integer positionInSolution, Environment environment) {
+
+    double[][] pheromoneMatrix = environment.getPheromoneMatrix();
+    return pheromoneMatrix[solutionComponent][positionInSolution];
+  }
+
+  @Override
+  public void setPheromoneTrailValue(Integer solutionComponent,
+      Environment environment, Double value) {
+    double[][] pheromoneMatrix = environment.getPheromoneMatrix();
+
+    pheromoneMatrix[solutionComponent][solutionComponent] = value;
   }
 
   /**
