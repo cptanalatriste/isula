@@ -16,6 +16,8 @@ public class AcoProblemSolver<E> {
 
   private Environment environment;
   private AntColony<E> antColony;
+
+  // TODO(cgavidia): Maybe we should handle a list of configuration providers.
   private ConfigurationProvider configurationProvider;
 
   private List<DaemonAction<E>> daemonActions = new ArrayList<DaemonAction<E>>();

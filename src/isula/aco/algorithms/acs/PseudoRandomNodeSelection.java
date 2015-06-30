@@ -28,6 +28,7 @@ public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
 
     double[][] problemGraph = environment.getProblemGraph();
 
+    // TODO(cgavidia): This should come from configuration.
     double bestChoiceProbability = (problemGraph.length - configurationProvider
         .getBestChoiceConstant()) / problemGraph.length;
 

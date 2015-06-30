@@ -28,7 +28,7 @@ public class FlowShopProblemSolver extends AcoProblemSolver<Integer> {
 
     // TODO(cgavidia); This should be called from the base classes, not from the
     // specific ones.
-    antColony.buildColony();
+    antColony.buildColony(environment);
 
     this.setConfigurationProvider(configurationProvider);
     this.setEnvironment(environment);

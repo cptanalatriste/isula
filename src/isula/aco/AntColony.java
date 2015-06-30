@@ -9,7 +9,7 @@ public abstract class AntColony<E> {
   private static Logger logger = Logger.getLogger(AntColony.class.getName());
 
   private int numberOfAnts;
-  private Object[] hive;
+  private List<Ant<E>> hive = new ArrayList<Ant<E>>();
 
   /**
    * Creates a colony of ants
@@ -28,15 +28,13 @@ public abstract class AntColony<E> {
    * instantiation.
    * 
    */
-  public void buildColony() {
-    this.hive = new Object[this.numberOfAnts];
-
-    for (int j = 0; j < hive.length; j++) {
-      hive[j] = this.createAnt();
+  public void buildColony(Environment environment) {
+    for (int j = 0; j < numberOfAnts; j++) {
+      hive.add(this.createAnt(environment));
     }
   }
 
-  protected abstract Ant<E> createAnt();
+  protected abstract Ant<E> createAnt(Environment environment);
 
   /**
    * Returns the ant with the best performance so far.
@@ -45,12 +43,10 @@ public abstract class AntColony<E> {
    *          Environment where the Ants are building solutions.
    * @return Best performing Ant.
    */
-  @SuppressWarnings("unchecked")
   public Ant<E> getBestPerformingAnt(Environment environment) {
-    Ant<E> bestAnt = (Ant<E>) hive[0];
+    Ant<E> bestAnt = hive.get(0);
 
-    for (Object antAsObject : hive) {
-      Ant<E> ant = (Ant<E>) antAsObject;
+    for (Ant<E> ant : hive) {
 
       if (ant.getSolutionQuality(environment) < bestAnt
           .getSolutionQuality(environment)) {
@@ -66,15 +62,8 @@ public abstract class AntColony<E> {
    * 
    * @return List of Ants.
    */
-  @SuppressWarnings("unchecked")
   public List<Ant<E>> getHive() {
-    List<Ant<E>> hiveAsList = new ArrayList<Ant<E>>();
-
-    for (Object antAsObject : hive) {
-      Ant<E> ant = (Ant<E>) antAsObject;
-      hiveAsList.add(ant);
-    }
-    return hiveAsList;
+    return hive;
   }
 
   /**
@@ -83,10 +72,7 @@ public abstract class AntColony<E> {
   public void clearAntSolutions() {
     logger.info("CLEARING ANT SOLUTIONS");
 
-    for (Object antAsObject : hive) {
-      @SuppressWarnings("unchecked")
-      Ant<E> ant = (Ant<E>) antAsObject;
-
+    for (Ant<E> ant : hive) {
       ant.setCurrentIndex(0);
       ant.clear();
     }
@@ -106,28 +92,33 @@ public abstract class AntColony<E> {
     logger.info("BUILDING ANT SOLUTIONS");
 
     int antCounter = 0;
-    for (Object antAsObject : hive) {
-      @SuppressWarnings("unchecked")
-      Ant<E> ant = (Ant<E>) antAsObject;
-
+    for (Ant<E> ant : hive) {
       logger.info("Current ant: " + antCounter);
 
       while (!ant.isSolutionReady(environment)) {
         ant.selectNextNode(environment, configurationProvider);
       }
 
-      logger.info("Original Solution > Makespan: "
+      logger.info("Original Solution > Quality: "
           + ant.getSolutionQuality(environment) + ", Schedule: "
           + ant.getSolutionAsString());
 
       ant.improveSolution(environment, configurationProvider);
 
-      logger.info("After Local Search > Makespan: "
+      logger.info("After Improvement > Quality: "
           + ant.getSolutionQuality(environment) + ", Schedule: "
           + ant.getSolutionAsString());
 
       antCounter++;
     }
+  }
+
+  public int getNumberOfAnts() {
+    return numberOfAnts;
+  }
+
+  public void setNumberOfAnts(int numberOfAnts) {
+    this.numberOfAnts = numberOfAnts;
   }
 
 }
