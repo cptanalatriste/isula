@@ -103,7 +103,7 @@ public abstract class AntColony<E> {
           + ant.getSolutionQuality(environment) + ", Schedule: "
           + ant.getSolutionAsString());
 
-      ant.improveSolution(environment, configurationProvider);
+      ant.doAfterSolutionIsReady(environment, configurationProvider);
 
       logger.info("After Improvement > Quality: "
           + ant.getSolutionQuality(environment) + ", Schedule: "

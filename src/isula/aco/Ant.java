@@ -46,7 +46,7 @@ public abstract class Ant<E> {
   public String getSolutionAsString() {
     String solutionString = new String();
     for (int i = 0; i < solution.length; i++) {
-      solutionString = solutionString + " " + solution[i];
+      solutionString = solutionString + " " + solution[i].toString();
     }
     return solutionString;
   }
@@ -100,10 +100,10 @@ public abstract class Ant<E> {
    * @param configurationProvider
    *          Configuration provider.
    */
-  public void improveSolution(Environment environment,
+  public void doAfterSolutionIsReady(Environment environment,
       ConfigurationProvider configurationProvider) {
     AntPolicy<E> selectNodePolicity = getAntPolicy(
-        AntPolicyType.SOLUTION_IMPROVEMENT, DONT_CHECK_NUMBERS);
+        AntPolicyType.AFTER_SOLUTION_IS_READY, DONT_CHECK_NUMBERS);
 
     if (selectNodePolicity != null) {
       selectNodePolicity.applyPolicy(environment, configurationProvider);

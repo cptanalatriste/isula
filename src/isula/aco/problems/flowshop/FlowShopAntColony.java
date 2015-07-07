@@ -27,5 +27,4 @@ public class FlowShopAntColony extends AntColony<Integer> {
     AntForFlowShop ant = new AntForFlowShop(numberOfJobs);
     return ant;
   }
-
 }

@@ -1,5 +1,5 @@
 package isula.aco;
 
 public enum AntPolicyType {
-  NODE_SELECTION, SOLUTION_IMPROVEMENT;
+  NODE_SELECTION, AFTER_SOLUTION_IS_READY;
 }

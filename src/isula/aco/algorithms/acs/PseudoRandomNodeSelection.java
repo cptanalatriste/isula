@@ -10,7 +10,6 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Random;
 
-//TODO(cgavidia): Temporarly, using Integer for this policy. However, it should su
 public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
 
   public PseudoRandomNodeSelection() {

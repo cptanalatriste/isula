@@ -8,10 +8,10 @@ import isula.aco.Environment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocalSearchPolicy extends AntPolicy<Integer> {
+public class ApplyLocalSearch extends AntPolicy<Integer> {
 
-  public LocalSearchPolicy() {
-    super(AntPolicyType.SOLUTION_IMPROVEMENT);
+  public ApplyLocalSearch() {
+    super(AntPolicyType.AFTER_SOLUTION_IS_READY);
   }
 
   @Override
