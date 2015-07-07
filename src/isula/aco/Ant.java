@@ -172,6 +172,9 @@ public abstract class Ant<E> {
   public abstract Double getPheromoneTrailValue(E solutionComponent,
       Integer positionInSolution, Environment environment);
 
+  public abstract Double getHeuristicValue(E solutionComponent,
+      Integer positionInSolution, Environment environment);
+
   public abstract void setPheromoneTrailValue(E solutionComponent,
       Environment environment, Double value);
 

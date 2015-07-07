@@ -26,32 +26,37 @@ public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
 
     AcsConfigurationProvider configurationProvider = (AcsConfigurationProvider) configuration;
 
-    double[][] problemGraph = environment.getProblemGraph();
+    double bestChoiceProbability = configurationProvider
+        .getBestChoiceProbability();
 
-    // TODO(cgavidia): This should come from configuration.
-    double bestChoiceProbability = (problemGraph.length - configurationProvider
-        .getBestChoiceConstant()) / problemGraph.length;
+    HashMap<E, Double> componentsWithProbabilities = this
+        .getComponentsWithProbabilities(environment, configurationProvider);
 
     if (randomValue < bestChoiceProbability) {
       // TODO(cgavidia): This branch has testing pending.
-      double currentMaximumFeromone = -1;
+      double currentMaximumProbability = -1;
 
-      for (E possibleMove : getAnt().getNeighbourhood(environment)) {
-        double currentPheromone = getAnt().getPheromoneTrailValue(possibleMove,
-            getAnt().getCurrentIndex(), environment);
+      Iterator<Entry<E, Double>> componentWithProbabilitiesIterator = componentsWithProbabilities
+          .entrySet().iterator();
+      while (componentWithProbabilitiesIterator.hasNext()) {
+        Entry<E, Double> componentWithProbability = componentWithProbabilitiesIterator
+            .next();
+
+        E possibleMove = componentWithProbability.getKey();
+        double currentProbability = componentWithProbability.getValue();
+
         if (!getAnt().isNodeVisited(possibleMove)
-            && currentPheromone > currentMaximumFeromone) {
+            && currentProbability > currentMaximumProbability) {
 
           nextNode = possibleMove;
-          currentMaximumFeromone = currentPheromone;
+          currentMaximumProbability = currentProbability;
         }
       }
 
       getAnt().visitNode(nextNode);
     } else {
-      HashMap<E, Double> componentsWithProbabilities = this
-          .getComponentsWithProbabilities(environment);
-      double value = randomValue;
+
+      double value = random.nextDouble();
       double total = 0;
 
       Iterator<Entry<E, Double>> componentWithProbabilitiesIterator = componentsWithProbabilities
@@ -67,7 +72,6 @@ public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
           getAnt().visitNode(nextNode);
           return;
         }
-
       }
     }
   }
@@ -78,18 +82,22 @@ public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
    * 
    * @param environment
    *          Environment that ants are traversing.
+   * @param configurationProvider
+   *          Configuration provider.
    * @return Probabilities for the adjacent nodes.
    */
   private HashMap<E, Double> getComponentsWithProbabilities(
-      Environment environment) {
+      Environment environment, AcsConfigurationProvider configurationProvider) {
     HashMap<E, Double> componentsWithProbabilities = new HashMap<E, Double>();
 
     double denominator = 0.0;
     for (E possibleMove : getAnt().getNeighbourhood(environment)) {
       if (!getAnt().isNodeVisited(possibleMove)) {
-        denominator += getAnt().getPheromoneTrailValue(possibleMove,
-            getAnt().getCurrentIndex(), environment);
 
+        Double heuristicTimesPheromone = getHeuristicTimesPheromone(
+            environment, configurationProvider, possibleMove);
+
+        denominator += heuristicTimesPheromone;
         componentsWithProbabilities.put(possibleMove, 0.0);
       }
     }
@@ -101,11 +109,25 @@ public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
           .next();
       E component = componentWithProbability.getKey();
 
-      Double numerator = getAnt().getPheromoneTrailValue(component,
-          getAnt().getCurrentIndex(), environment);
+      Double numerator = getHeuristicTimesPheromone(environment,
+          configurationProvider, component);
       componentWithProbability.setValue(numerator / denominator);
     }
 
     return componentsWithProbabilities;
+  }
+
+  private Double getHeuristicTimesPheromone(Environment environment,
+      AcsConfigurationProvider configurationProvider, E possibleMove) {
+    Double heuristicValue = getAnt().getHeuristicValue(possibleMove,
+        getAnt().getCurrentIndex(), environment);
+    Double pheromoneTrailValue = getAnt().getPheromoneTrailValue(possibleMove,
+        getAnt().getCurrentIndex(), environment);
+
+    Double heuristicTimesPheromone = Math.pow(heuristicValue,
+        configurationProvider.getHeuristicImportance())
+        * Math.pow(pheromoneTrailValue,
+            configurationProvider.getPheromoneImportance());
+    return heuristicTimesPheromone;
   }
 }

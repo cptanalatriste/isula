@@ -2,6 +2,10 @@ package isula.aco.algorithms.acs;
 
 public interface AcsConfigurationProvider {
 
-  int getBestChoiceConstant();
+  double getBestChoiceProbability();
+
+  double getHeuristicImportance();
+
+  double getPheromoneImportance();
 
 }

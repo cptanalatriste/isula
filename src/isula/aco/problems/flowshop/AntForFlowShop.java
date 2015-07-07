@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class AntForFlowShop extends Ant<Integer> {
 
+  private static final double VALUE_NOT_USED = 1.0;
+
   // TODO(cgavidia): Maybe a more generic parameter would be an Environment
   // instance.
   /**
@@ -44,6 +46,12 @@ public class AntForFlowShop extends Ant<Integer> {
   @Override
   public double getSolutionQuality(Environment environment) {
     return getScheduleMakespan(getSolution(), environment.getProblemGraph());
+  }
+
+  @Override
+  public Double getHeuristicValue(Integer solutionComponent,
+      Integer positionInSolution, Environment environment) {
+    return VALUE_NOT_USED;
   }
 
   @Override
