@@ -7,6 +7,7 @@ import isula.aco.Environment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ApplyLocalSearch extends AntPolicy<Integer> {
@@ -21,8 +22,8 @@ public class ApplyLocalSearch extends AntPolicy<Integer> {
   @Override
   public void applyPolicy(Environment environment,
       ConfigurationProvider configuration) {
-
-    logger.info("Original Solution > Quality: "
+    
+    logger.log(Level.FINE, "Original Solution > Quality: "
         + getAnt().getSolutionQuality(environment) + ", Solution: "
         + getAnt().getSolutionAsString());
 

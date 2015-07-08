@@ -5,6 +5,7 @@ import isula.aco.ConfigurationProvider;
 import isula.aco.DaemonAction;
 import isula.aco.DaemonActionType;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 //TODO(cgavidia): Generics can be used on Configuration Provider types.
@@ -28,11 +29,11 @@ public class UpdatePheromoneMatrixForMaxMin<E> extends DaemonAction<E> {
   public void applyDaemonAction(ConfigurationProvider provider) {
 
     MaxMinConfigurationProvider configurationProvider = (MaxMinConfigurationProvider) provider;
-    logger.info("UPDATING PHEROMONE TRAILS");
+    logger.log(Level.FINE, "UPDATING PHEROMONE TRAILS");
 
-    logger.info("Performing evaporation on all edges");
-    logger.info("Evaporation ratio: "
-        + configurationProvider.getEvaporationRatio());
+    logger.log(Level.FINE, "Performing evaporation on all edges");
+    logger.log(Level.FINE,
+        "Evaporation ratio: " + configurationProvider.getEvaporationRatio());
 
     double[][] pheromoneMatrix = getEnvironment().getPheromoneMatrix();
     int matrixRows = pheromoneMatrix.length;
@@ -52,13 +53,13 @@ public class UpdatePheromoneMatrixForMaxMin<E> extends DaemonAction<E> {
       }
     }
 
-    logger.info("Depositing pheromone on Best Ant trail.");
+    logger.log(Level.FINE, "Depositing pheromone on Best Ant trail.");
 
     Ant<E> bestAnt = getAntColony().getBestPerformingAnt(getEnvironment());
     double contribution = configurationProvider.getQValue()
         / bestAnt.getSolutionQuality(getEnvironment());
 
-    logger.info("Contibution for best ant: " + contribution);
+    logger.log(Level.FINE, "Contibution for best ant: " + contribution);
 
     E[] bestSolution = bestAnt.getSolution();
     int positionInSolution = 0;

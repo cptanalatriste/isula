@@ -3,6 +3,7 @@ package isula.aco;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.naming.ConfigurationException;
@@ -87,7 +88,7 @@ public class AcoProblemSolver<E> {
   }
 
   private void updateBestSolution(Environment environment) {
-    logger.info("GETTING BEST SOLUTION FOUND");
+    logger.log(Level.FINE, "GETTING BEST SOLUTION FOUND");
 
     Ant<E> bestAnt = antColony.getBestPerformingAnt(environment);
 

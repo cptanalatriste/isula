@@ -4,6 +4,7 @@ import isula.aco.exception.ConfigurationException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public abstract class AntColony<E> {
@@ -72,7 +73,7 @@ public abstract class AntColony<E> {
    * Clears solution build for every Ant in the colony.
    */
   public void clearAntSolutions() {
-    logger.info("CLEARING ANT SOLUTIONS");
+    logger.log(Level.FINE, "CLEARING ANT SOLUTIONS");
 
     for (Ant<E> ant : hive) {
       ant.setCurrentIndex(0);
@@ -91,7 +92,7 @@ public abstract class AntColony<E> {
    */
   public void buildSolutions(Environment environment,
       ConfigurationProvider configurationProvider) {
-    logger.info("BUILDING ANT SOLUTIONS");
+    logger.log(Level.FINE, "BUILDING ANT SOLUTIONS");
 
     int antCounter = 0;
 
@@ -110,7 +111,7 @@ public abstract class AntColony<E> {
 
       ant.doAfterSolutionIsReady(environment, configurationProvider);
 
-      logger.info("Solution is ready > Quality: "
+      logger.log(Level.FINE, "Solution is ready > Quality: "
           + ant.getSolutionQuality(environment) + ", Solution: "
           + ant.getSolutionAsString());
 
