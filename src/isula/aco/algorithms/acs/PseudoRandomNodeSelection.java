@@ -4,6 +4,7 @@ import isula.aco.AntPolicy;
 import isula.aco.AntPolicyType;
 import isula.aco.ConfigurationProvider;
 import isula.aco.Environment;
+import isula.aco.exception.SolutionConstructionException;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,6 +20,7 @@ public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
   @Override
   public void applyPolicy(Environment environment,
       ConfigurationProvider configuration) {
+    boolean nodeWasSelected = false;
     E nextNode = null;
     Random random = new Random();
     double randomValue = random.nextDouble();
@@ -32,6 +34,7 @@ public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
         .getComponentsWithProbabilities(environment, configurationProvider);
 
     if (randomValue < bestChoiceProbability) {
+
       // TODO(cgavidia): This branch has testing pending.
       double currentMaximumProbability = -1;
 
@@ -52,6 +55,7 @@ public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
         }
       }
 
+      nodeWasSelected = true;
       getAnt().visitNode(nextNode);
     } else {
 
@@ -68,10 +72,17 @@ public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
 
         if (total >= value) {
           nextNode = componentWithProbability.getKey();
+          nodeWasSelected = true;
           getAnt().visitNode(nextNode);
           return;
         }
       }
+    }
+
+    if (!nodeWasSelected) {
+      throw new SolutionConstructionException(
+          "This policy couldn't select a new component for the current solution. "
+              + "Partial solution is: " + getAnt().getSolutionAsString());
     }
   }
 
@@ -91,7 +102,8 @@ public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
 
     double denominator = 0.0;
     for (E possibleMove : getAnt().getNeighbourhood(environment)) {
-      if (!getAnt().isNodeVisited(possibleMove)) {
+      if (!getAnt().isNodeVisited(possibleMove)
+          && getAnt().isNodeValid(possibleMove)) {
 
         Double heuristicTimesPheromone = getHeuristicTimesPheromone(
             environment, configurationProvider, possibleMove);
@@ -113,7 +125,18 @@ public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
       componentWithProbability.setValue(numerator / denominator);
     }
 
+    if (componentsWithProbabilities.size() < 1) {
+      return doIfNoComponentsFound(environment, configurationProvider);
+    }
+
     return componentsWithProbabilities;
+  }
+
+  protected HashMap<E, Double> doIfNoComponentsFound(Environment environment,
+      AcsConfigurationProvider configurationProvider) {
+    throw new SolutionConstructionException(
+        "We have no suitable components to add to the solution from current position. "
+            + "Partial solution is: " + getAnt().getSolutionAsString());
   }
 
   private Double getHeuristicTimesPheromone(Environment environment,

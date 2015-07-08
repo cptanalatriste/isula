@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.naming.ConfigurationException;
+
 public class AcoProblemSolver<E> {
 
   private static Logger logger = Logger.getLogger(AcoProblemSolver.class
@@ -37,20 +39,29 @@ public class AcoProblemSolver<E> {
 
   /**
    * Solves an optimization problem using a Colony of Ants.
+   * 
+   * @throws ConfigurationException
+   *           If algorithm parameters aren't properly configured.
    */
-  public void solveProblem() {
+  public void solveProblem() throws ConfigurationException {
     logger.info("Starting computation at: " + new Date());
     final long startTime = System.nanoTime();
 
     applyDaemonActions(DaemonActionType.INITIAL_CONFIGURATION);
 
+    logger.info("STARTING ITERATIONS");
+    int numberOfIterations = configurationProvider.getNumberOfIterations();
+
+    if (numberOfIterations < 1) {
+      throw new ConfigurationException(
+          "No iterations are programed for this solver. Check your Configuration Provider.");
+    }
+
+    logger.info("Number of iterations: " + numberOfIterations);
+
     int iteration = 0;
 
-    logger.info("STARTING ITERATIONS");
-    logger.info("Number of iterations: "
-        + configurationProvider.getNumberOfIterations());
-
-    while (iteration < configurationProvider.getNumberOfIterations()) {
+    while (iteration < numberOfIterations) {
       logger.info("Current iteration: " + iteration);
 
       antColony.clearAntSolutions();
@@ -70,8 +81,8 @@ public class AcoProblemSolver<E> {
     logger.info("Duration (in seconds): " + executionTime);
 
     logger.info("EXECUTION FINISHED");
-    logger.info("Best schedule makespam: " + bestSolutionQuality);
-    logger.info("Best schedule:" + bestSolutionAsString);
+    logger.info("Best solution quality: " + bestSolutionQuality);
+    logger.info("Best solution:" + bestSolutionAsString);
 
   }
 
@@ -86,8 +97,8 @@ public class AcoProblemSolver<E> {
       bestSolutionQuality = bestAnt.getSolutionQuality(environment);
       bestSolutionAsString = bestAnt.getSolutionAsString();
 
-      logger.info("Best solution so far > Makespan: " + bestSolutionQuality
-          + ", Schedule: " + bestSolutionAsString);
+      logger.info("Best solution so far > Quality: " + bestSolutionQuality
+          + ", Solution: " + bestSolutionAsString);
 
     }
 

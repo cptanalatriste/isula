@@ -46,7 +46,9 @@ public abstract class Ant<E> {
   public String getSolutionAsString() {
     String solutionString = new String();
     for (int i = 0; i < solution.length; i++) {
-      solutionString = solutionString + " " + solution[i].toString();
+      if (solution[i] != null) {
+        solutionString = solutionString + " " + solution[i].toString();
+      }
     }
     return solutionString;
   }
@@ -127,6 +129,10 @@ public abstract class Ant<E> {
     }
 
     return false;
+  }
+
+  public boolean isNodeValid(E node) {
+    return true;
   }
 
   /**

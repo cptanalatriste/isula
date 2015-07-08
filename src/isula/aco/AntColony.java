@@ -1,5 +1,7 @@
 package isula.aco;
 
+import isula.aco.exception.ConfigurationException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -92,6 +94,13 @@ public abstract class AntColony<E> {
     logger.info("BUILDING ANT SOLUTIONS");
 
     int antCounter = 0;
+
+    if (hive.size() == 0) {
+      throw new ConfigurationException(
+          "Your colony is empty: You have no ants to solve the problem. "
+              + "Have you called the buildColony() method?");
+    }
+
     for (Ant<E> ant : hive) {
       logger.info("Current ant: " + antCounter);
 
@@ -99,14 +108,10 @@ public abstract class AntColony<E> {
         ant.selectNextNode(environment, configurationProvider);
       }
 
-      logger.info("Original Solution > Quality: "
-          + ant.getSolutionQuality(environment) + ", Schedule: "
-          + ant.getSolutionAsString());
-
       ant.doAfterSolutionIsReady(environment, configurationProvider);
 
-      logger.info("After Improvement > Quality: "
-          + ant.getSolutionQuality(environment) + ", Schedule: "
+      logger.info("Solution is ready > Quality: "
+          + ant.getSolutionQuality(environment) + ", Solution: "
           + ant.getSolutionAsString());
 
       antCounter++;

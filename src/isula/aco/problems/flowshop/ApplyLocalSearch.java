@@ -7,8 +7,12 @@ import isula.aco.Environment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ApplyLocalSearch extends AntPolicy<Integer> {
+
+  private static Logger logger = Logger.getLogger(ApplyLocalSearch.class
+      .getName());
 
   public ApplyLocalSearch() {
     super(AntPolicyType.AFTER_SOLUTION_IS_READY);
@@ -17,6 +21,11 @@ public class ApplyLocalSearch extends AntPolicy<Integer> {
   @Override
   public void applyPolicy(Environment environment,
       ConfigurationProvider configuration) {
+
+    logger.info("Original Solution > Quality: "
+        + getAnt().getSolutionQuality(environment) + ", Solution: "
+        + getAnt().getSolutionAsString());
+
     // TODO(cgavidia): This needs a HUGE REFACTOR!
 
     AntForFlowShop antForFlowShop = (isula.aco.problems.flowshop.AntForFlowShop) getAnt();
