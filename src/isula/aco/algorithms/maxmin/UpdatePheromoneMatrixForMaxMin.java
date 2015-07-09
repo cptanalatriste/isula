@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 //TODO(cgavidia): Generics can be used on Configuration Provider types.
-public class UpdatePheromoneMatrixForMaxMin<E> extends DaemonAction<E> {
+public abstract class UpdatePheromoneMatrixForMaxMin<E> extends DaemonAction<E> {
 
   private static Logger logger = Logger
       .getLogger(UpdatePheromoneMatrixForMaxMin.class.getName());
@@ -37,7 +37,7 @@ public class UpdatePheromoneMatrixForMaxMin<E> extends DaemonAction<E> {
 
     double[][] pheromoneMatrix = getEnvironment().getPheromoneMatrix();
     int matrixRows = pheromoneMatrix.length;
-    int matrixColumns = pheromoneMatrix.length;
+    int matrixColumns = pheromoneMatrix[0].length;
 
     for (int i = 0; i < matrixRows; i++) {
       for (int j = 0; j < matrixColumns; j++) {
@@ -56,10 +56,6 @@ public class UpdatePheromoneMatrixForMaxMin<E> extends DaemonAction<E> {
     logger.log(Level.FINE, "Depositing pheromone on Best Ant trail.");
 
     Ant<E> bestAnt = getAntColony().getBestPerformingAnt(getEnvironment());
-    double contribution = configurationProvider.getQValue()
-        / bestAnt.getSolutionQuality(getEnvironment());
-
-    logger.log(Level.FINE, "Contibution for best ant: " + contribution);
 
     E[] bestSolution = bestAnt.getSolution();
     int positionInSolution = 0;
@@ -68,8 +64,8 @@ public class UpdatePheromoneMatrixForMaxMin<E> extends DaemonAction<E> {
     // deposits pheromone.
     for (E solutionComponent : bestSolution) {
       // TODO(cgavidia): This makes me think a solution type is necessary...
-      double newValue = bestAnt.getPheromoneTrailValue(solutionComponent,
-          positionInSolution, getEnvironment()) + contribution;
+      double newValue = getNewPheromoneValue(bestAnt, positionInSolution,
+          solutionComponent, configurationProvider);
 
       if (newValue <= configurationProvider.getMaximumPheromoneValue()) {
         bestAnt.setPheromoneTrailValue(solutionComponent, getEnvironment(),
@@ -82,5 +78,9 @@ public class UpdatePheromoneMatrixForMaxMin<E> extends DaemonAction<E> {
       positionInSolution += 1;
     }
   }
+
+  protected abstract double getNewPheromoneValue(Ant<E> bestAnt,
+      int positionInSolution, E solutionComponent,
+      MaxMinConfigurationProvider configurationProvider);
 
 }

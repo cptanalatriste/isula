@@ -35,6 +35,10 @@ public abstract class Environment {
     return problemGraph;
   }
 
+  public void setPheromoneMatrix(double[][] pheromoneMatrix) {
+    this.pheromoneMatrix = pheromoneMatrix;
+  }
+
   public double[][] getPheromoneMatrix() {
     return pheromoneMatrix;
   }
@@ -49,7 +53,7 @@ public abstract class Environment {
    */
   public void populatePheromoneMatrix(double pheromoneValue) {
     int matrixRows = pheromoneMatrix.length;
-    int matrixColumns = pheromoneMatrix.length;
+    int matrixColumns = pheromoneMatrix[0].length;
 
     for (int i = 0; i < matrixRows; i++) {
       for (int j = 0; j < matrixColumns; j++) {

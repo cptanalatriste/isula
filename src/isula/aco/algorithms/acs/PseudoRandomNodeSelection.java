@@ -80,10 +80,15 @@ public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
     }
 
     if (!nodeWasSelected) {
-      throw new SolutionConstructionException(
-          "This policy couldn't select a new component for the current solution. "
-              + "Partial solution is: " + getAnt().getSolutionAsString());
+      this.doIfNoNodeWasSelected(environment, configuration);
     }
+  }
+
+  protected void doIfNoNodeWasSelected(Environment environment,
+      ConfigurationProvider configuration) {
+    throw new SolutionConstructionException(
+        "This policy couldn't select a new component for the current solution. \n"
+            + "Partial solution is: " + getAnt().getSolutionAsString());
   }
 
   /**

@@ -35,6 +35,11 @@ public abstract class Ant<E> {
    * Resets the visited vector.
    */
   public void clear() {
+
+    for (int i = 0; i < getSolution().length; i++) {
+      getSolution()[i] = null;
+    }
+
     visitedComponents.clear();
   }
 
