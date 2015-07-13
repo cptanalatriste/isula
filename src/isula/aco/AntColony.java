@@ -111,11 +111,27 @@ public abstract class AntColony<E> {
 
       ant.doAfterSolutionIsReady(environment, configurationProvider);
 
-      logger.log(Level.FINE, "Solution is ready > Quality: "
-          + ant.getSolutionQuality(environment) + ", Solution: "
-          + ant.getSolutionAsString());
+      logger.log(Level.FINE,
+          "Solution is ready > Quality: " + ant.getSolutionQuality(environment)
+              + ", Solution: " + ant.getSolutionAsString());
 
       antCounter++;
+    }
+  }
+
+  /**
+   * Adds a list of policies to every Ant in the Colony.
+   * 
+   * @param antPolicies
+   *          List of policies.
+   */
+  @SafeVarargs
+  public void addAntPolicies(AntPolicy<E>... antPolicies) {
+    List<Ant<E>> hive = getHive();
+    for (Ant<E> ant : hive) {
+      for (AntPolicy<E> antPolicy : antPolicies) {
+        ant.addPolicy(antPolicy);
+      }
     }
   }
 

@@ -26,12 +26,25 @@ public class AcoProblemSolver<E> {
   private List<DaemonAction<E>> daemonActions = new ArrayList<DaemonAction<E>>();
 
   /**
+   * Adds a list of Daemon Actions for the current solver.
+   * 
+   * @param daemonActions
+   *          Daemon actions.
+   */
+  @SafeVarargs
+  public void addDaemonActions(DaemonAction<E>... daemonActions) {
+    for (DaemonAction<E> daemonAction : daemonActions) {
+      this.addDaemonAction(daemonAction);
+    }
+  }
+
+  /**
    * Adds a Daemon Action for the current solver.
    * 
    * @param daemonAction
    *          Daemon action.
    */
-  public void addDaemonAction(DaemonAction<E> daemonAction) {
+  private void addDaemonAction(DaemonAction<E> daemonAction) {
 
     daemonAction.setAntColony(antColony);
     daemonAction.setEnvironment(environment);
@@ -87,7 +100,14 @@ public class AcoProblemSolver<E> {
 
   }
 
-  private void updateBestSolution(Environment environment) {
+  /**
+   * Updates the information of the best solution produced with the solutions
+   * produced by the Colony.
+   * 
+   * @param environment
+   *          Environment where the solutions where produced.
+   */
+  public void updateBestSolution(Environment environment) {
     logger.log(Level.FINE, "GETTING BEST SOLUTION FOUND");
 
     Ant<E> bestAnt = antColony.getBestPerformingAnt(environment);
@@ -154,6 +174,10 @@ public class AcoProblemSolver<E> {
 
   public String getBestSolutionAsString() {
     return bestSolutionAsString;
+  }
+
+  public void setBestSolutionQuality(double bestSolutionQuality) {
+    this.bestSolutionQuality = bestSolutionQuality;
   }
 
 }

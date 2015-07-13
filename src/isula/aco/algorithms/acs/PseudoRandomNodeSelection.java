@@ -36,27 +36,13 @@ public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
     if (randomValue < bestChoiceProbability) {
 
       // TODO(cgavidia): This branch has testing pending.
-      double currentMaximumProbability = -1;
+      nextNode = getMostConvenient(componentsWithProbabilities);
 
-      Iterator<Entry<E, Double>> componentWithProbabilitiesIterator = componentsWithProbabilities
-          .entrySet().iterator();
-      while (componentWithProbabilitiesIterator.hasNext()) {
-        Entry<E, Double> componentWithProbability = componentWithProbabilitiesIterator
-            .next();
-
-        E possibleMove = componentWithProbability.getKey();
-        double currentProbability = componentWithProbability.getValue();
-
-        if (!getAnt().isNodeVisited(possibleMove)
-            && currentProbability > currentMaximumProbability) {
-
-          nextNode = possibleMove;
-          currentMaximumProbability = currentProbability;
-        }
+      if (nextNode != null) {
+        nodeWasSelected = true;
+        getAnt().visitNode(nextNode);
       }
 
-      nodeWasSelected = true;
-      getAnt().visitNode(nextNode);
     } else {
 
       double value = random.nextDouble();
@@ -84,6 +70,37 @@ public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
     }
   }
 
+  /**
+   * Returns the most convenient component based on heuristic and pheromone
+   * information.
+   * 
+   * @param componentsWithProbabilities
+   *          Possible components.
+   * @return Most convenient component.
+   */
+  public E getMostConvenient(HashMap<E, Double> componentsWithProbabilities) {
+    E nextNode = null;
+    double currentMaximumProbability = -1;
+
+    Iterator<Entry<E, Double>> componentWithProbabilitiesIterator = componentsWithProbabilities
+        .entrySet().iterator();
+    while (componentWithProbabilitiesIterator.hasNext()) {
+      Entry<E, Double> componentWithProbability = componentWithProbabilitiesIterator
+          .next();
+
+      E possibleMove = componentWithProbability.getKey();
+      double currentProbability = componentWithProbability.getValue();
+
+      if (!getAnt().isNodeVisited(possibleMove)
+          && currentProbability > currentMaximumProbability) {
+
+        nextNode = possibleMove;
+        currentMaximumProbability = currentProbability;
+      }
+    }
+    return nextNode;
+  }
+
   protected void doIfNoNodeWasSelected(Environment environment,
       ConfigurationProvider configuration) {
     throw new SolutionConstructionException(
@@ -101,7 +118,7 @@ public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
    *          Configuration provider.
    * @return Probabilities for the adjacent nodes.
    */
-  private HashMap<E, Double> getComponentsWithProbabilities(
+  public HashMap<E, Double> getComponentsWithProbabilities(
       Environment environment, AcsConfigurationProvider configurationProvider) {
     HashMap<E, Double> componentsWithProbabilities = new HashMap<E, Double>();
 

@@ -1,6 +1,7 @@
 package isula.aco;
 
 import isula.aco.exception.ConfigurationException;
+import isula.aco.exception.SolutionConstructionException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +27,18 @@ public abstract class Ant<E> {
    *          Visited node.
    */
   public void visitNode(E visitedNode) {
-    getSolution()[currentIndex] = visitedNode;
-    visitedComponents.add(visitedNode);
-    currentIndex++;
+    if (currentIndex < getSolution().length) {
+
+      getSolution()[currentIndex] = visitedNode;
+      visitedComponents.add(visitedNode);
+      currentIndex++;
+    } else {
+      throw new SolutionConstructionException("Couldn't add component "
+          + visitedNode.toString() + " at index " + currentIndex
+          + ": Solution length is: " + getSolution().length
+          + ". \nPartial solution is " + this.getSolutionAsString());
+    }
+
   }
 
   /**
@@ -59,7 +69,6 @@ public abstract class Ant<E> {
   }
 
   public void addPolicy(AntPolicy<E> antPolicy) {
-    antPolicy.setAnt(this);
     this.policies.add(antPolicy);
   }
 
@@ -96,6 +105,10 @@ public abstract class Ant<E> {
 
     AntPolicy<E> selectNodePolicity = getAntPolicy(
         AntPolicyType.NODE_SELECTION, ONE_POLICY);
+
+    // TODO(cgavidia): With this approach, the policy is a shared resource
+    // between ants
+    selectNodePolicity.setAnt(this);
     selectNodePolicity.applyPolicy(environment, configurationProvider);
   }
 
@@ -113,6 +126,7 @@ public abstract class Ant<E> {
         AntPolicyType.AFTER_SOLUTION_IS_READY, DONT_CHECK_NUMBERS);
 
     if (selectNodePolicity != null) {
+      selectNodePolicity.setAnt(this);
       selectNodePolicity.applyPolicy(environment, configurationProvider);
     }
   }
