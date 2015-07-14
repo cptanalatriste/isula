@@ -6,6 +6,34 @@ import isula.aco.exception.SolutionConstructionException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The little workers that build solutions: They belong to a colony. This is an
+ * Abstract Type so you must extend it in order to fill the characteristics of
+ * your optimization problem.
+ * 
+ * <p>
+ * Some convenient methods to define are:
+ * <ul>
+ * <li>isSolutionReady(), to define when the Ant must stop adding components to
+ * its solution.
+ * <li>getSolutionQuality(), to define the quality of the current solution. It
+ * will help to decide the best solution built so far.
+ * <li>getHeuristicValue(), to explote problem domain information while
+ * constructing solutions.
+ * <li>getNeighbourhood(), this returns a list of possible components to add to
+ * the solution.
+ * <li>getPheromoneTrailValue(), returns the pheromone trail value associated to
+ * a Solution Component.
+ * <li>setPheromoneTrailValue(), to assign a pheromone value to a Solution
+ * Component.
+ * </ul>
+ * 
+ * 
+ * @author Carlos G. Gavidia
+ * 
+ * @param <E>
+ *          Class for components of a solution.
+ */
 public abstract class Ant<E> {
 
   private static final int DONT_CHECK_NUMBERS = -1;

@@ -8,6 +8,20 @@ import java.util.logging.Logger;
 
 import javax.naming.ConfigurationException;
 
+/**
+ * The main component of the framework: Is the one in charge of making a colony
+ * an ants to traverse an environment in order to generate solutions.
+ * 
+ * <p>
+ * The solveProblem() method is the one that starts the optimzation process.
+ * Previously, you have to properly configure your solver by assigning it a
+ * Colony, an Environment and Daemon Actions (if required).
+ * 
+ * @author Carlos G. Gavidia
+ * 
+ * @param <E>
+ *          Class for components of a solution.
+ */
 public class AcoProblemSolver<E> {
 
   private static Logger logger = Logger.getLogger(AcoProblemSolver.class

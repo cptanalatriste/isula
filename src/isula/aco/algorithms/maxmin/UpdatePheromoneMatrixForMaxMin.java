@@ -8,8 +8,20 @@ import isula.aco.DaemonActionType;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-//TODO(cgavidia): Generics can be used on Configuration Provider types.
+/**
+ * The procedure for pheromone update for MMAS. It keeps the pheromone values in
+ * the matrix between a maximum and a minimum, and only allows pheromone deposit
+ * to the best performing ant.
+ * 
+ * <p>It is not executed online, but at the end of the iteration.
+ * 
+ * @author Carlos G. Gavidia
+ * 
+ * @param <E>
+ *          Class for components of a solution.
+ */
 public abstract class UpdatePheromoneMatrixForMaxMin<E> extends DaemonAction<E> {
+  // TODO(cgavidia): Generics can be used on Configuration Provider types.
 
   private static Logger logger = Logger
       .getLogger(UpdatePheromoneMatrixForMaxMin.class.getName());

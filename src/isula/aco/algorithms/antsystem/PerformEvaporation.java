@@ -6,6 +6,15 @@ import isula.aco.DaemonActionType;
 
 import java.util.logging.Logger;
 
+/**
+ * A simple evaporation policy taken from Ant System. It simply applies the
+ * evaporation ratio to all elements on the Pheromone Matrix.
+ * 
+ * @author Carlos G. Gavidia
+ * 
+ * @param <E>
+ *          Class for components of a solution.
+ */
 public class PerformEvaporation<E> extends DaemonAction<E> {
 
   private static Logger logger = Logger.getLogger(PerformEvaporation.class

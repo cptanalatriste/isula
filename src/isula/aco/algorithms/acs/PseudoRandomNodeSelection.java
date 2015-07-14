@@ -11,6 +11,25 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Random;
 
+/**
+ * The selection policy for Ant Colony System algorithms. It defines to
+ * selection rules.
+ * 
+ * <ul>
+ * <li>The first is the best selection rule. It picks the component with the
+ * better heuristic and pheromone information.
+ * <li>The other one is the usual ACO policy, selecting based on the
+ * probabilities of each possible component.
+ * <li>
+ * </ul>
+ * 
+ * <p>Using one or another is determined by a "best-choice" probability.
+ * 
+ * @author Carlos G. Gavidia
+ * 
+ * @param <E>
+ *          Class for components of a solution.
+ */
 public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
 
   public PseudoRandomNodeSelection() {

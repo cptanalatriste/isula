@@ -7,6 +7,15 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * A group of ants. As an abstract type, you need to define how to build
+ * individual ants through the createAnt() method.
+ * 
+ * @author Carlos G. Gavidia
+ * 
+ * @param <E>
+ *          Class for components of a solution.
+ */
 public abstract class AntColony<E> {
 
   private static Logger logger = Logger.getLogger(AntColony.class.getName());

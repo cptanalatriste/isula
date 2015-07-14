@@ -5,6 +5,15 @@ import isula.aco.AntPolicyType;
 import isula.aco.ConfigurationProvider;
 import isula.aco.Environment;
 
+/**
+ * The pheromone update policy of Ant System. After an Ant has built a solution,
+ * pheromone is deposited in each of the solution components.
+ * 
+ * @author Carlos G. Gavidia
+ * 
+ * @param <E>
+ *          Class for components of a solution.
+ */
 public abstract class OnlinePheromoneUpdate<E> extends AntPolicy<E> {
 
   public OnlinePheromoneUpdate() {

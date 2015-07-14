@@ -7,6 +7,15 @@ import isula.aco.algorithms.maxmin.StartPheromoneMatrixForMaxMin;
 
 import java.util.logging.Logger;
 
+/**
+ * A simple initialization procedure for a Pheromone Matrix. It just assigns all
+ * cells the value provided by Configuration.
+ * 
+ * @author Carlos G. Gavidia
+ * 
+ * @param <E>
+ *          Class for components of a solution.
+ */
 public class StartPheromoneMatrix<E> extends DaemonAction<E> {
 
   private static Logger logger = Logger
