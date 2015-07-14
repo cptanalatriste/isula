@@ -34,3 +34,11 @@ To solve a problem with an Ant-Colony Optimization algorithm, you need a Colony 
 
     problemSolver.solveProblem();
 ```
+That's a snippet from the Image Thresholdin problem solution. Some things to notice there:
+* Problem and algorithm configuration is provided by ConfigurationProvider instances. Make your own with the values you need.
+* The class orchestrating everyyhing is the AcoProblemSolver. In this case, we're using the same one provided by the framework but you can extend it to suite your needs.
+* The Problem Solver needs an environment, that manages the problem graph and the pheromone matrix. You need to extend the Environment class provided with the framework to adjust it to support your problem.
+* And we need an Ant Colony, of course. The Ant Colony main responsability is to create Ants, and make them built solutions in iterations. the robust base Antcolony class makes implementing this very easy.
+* The hearth of the algorithm is the Ant class. You will need to define an Ant that suites your needs.
+* Isula supports daemon actions -global beahviours- and ant-level policies, such as the ones present in multiple ACO Algorithms. You can add them easily to your current solver.
+* Finaly, you call the solveProblem() method and wait for the best solution to be shown
