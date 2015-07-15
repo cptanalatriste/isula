@@ -4,10 +4,10 @@ Isula allows an easy implementation of Ant-Colony Optimization algorithms using 
 
 Isula in Action
 ---------------
-To get into speed, here are some samples of optimization problems solved with Isula algorithms:
-* The Flow-Shop Scheduling  problem, using Max-Min Ant System: https://github.com/cptanalatriste/ACOImageSegmentationWithIsula
-* Binary Image Segmentation using Ant System: https://github.com/cptanalatriste/ACOImageThresholdingWithIsula
-* Image Clustering using Max-Min Ant System: https://github.com/cptanalatriste/ACOImageSegmentationWithIsula
+To get into speed, here are some samples of optimization problems solved with Isula-based algorithms:
+* The Flow-Shop Scheduling  problem, using Max-Min Ant System: https://github.com/cptanalatriste/aco-flowshop
+* Binary Image Segmentation using Ant System: https://github.com/cptanalatriste/aco-image-thresholding
+* Image Clustering using Max-Min Ant System: https://github.com/cptanalatriste/aco-image-segmentation
 
 An Isula Primer
 ---------------
@@ -36,9 +36,14 @@ To solve a problem with an Ant-Colony Optimization algorithm, you need a Colony 
 ```
 That's a snippet from the Image Thresholding  problem solution. Some things to notice there:
 * Problem and algorithm configuration is provided by ConfigurationProvider instances. Make your own with the values you need.
-* The class everything is the AcoProblemSolver. In this case, we're using the same one provided by the framework but you can extend it to suite your needs.
-* The Problem Solver needs an Environment, that manages the problem graph and the pheromone matrix. You need to extend the Environment class provided with the framework to adjust it to support your problem.
+* The class everything is the AcoProblemSolver. In this case, we're using the same one provided by the framework but you can extend it to suit your needs.
+* The Problem Solver needs an Environment that manages the problem graph and the pheromone matrix. You need to extend the Environment class provided with the framework to adjust it to support your problem.
 * And we need an Ant Colony, of course. The Ant Colony main responsibility is to create Ants, and make them built solutions in iterations. The robust base AntColony class makes implementing this very easy.
-* The hearth of the algorithm is the Ant class. You will need to define an Ant that suites your needs.
+* The hearth of the algorithm is the Ant class. You will need to define an Ant that suits your needs.
 * Isula supports daemon actions -global behaviors- and ant-level policies, such as the ones present in multiple ACO Algorithms. You can add them easily to your current solver.
 * Finaly, you call the solveProblem() method and wait for the best solution to be shown.
+
+Isula in detail
+---------------
+The Javadoc of every class on the framework is available here: http://cptanalatriste.github.io/isula/doc/
+
