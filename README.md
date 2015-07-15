@@ -45,5 +45,5 @@ That's a snippet from the Image Thresholding  problem solution. Some things to n
 
 Isula in detail
 ---------------
-The Javadoc of every class on the framework are available here: http://cptanalatriste.github.io/isula/doc/
+The Javadoc of every class on the framework is available here: http://cptanalatriste.github.io/isula/doc/
 
