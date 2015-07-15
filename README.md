@@ -42,3 +42,8 @@ That's a snippet from the Image Thresholding  problem solution. Some things to n
 * The hearth of the algorithm is the Ant class. You will need to define an Ant that suites your needs.
 * Isula supports daemon actions -global behaviors- and ant-level policies, such as the ones present in multiple ACO Algorithms. You can add them easily to your current solver.
 * Finaly, you call the solveProblem() method and wait for the best solution to be shown.
+
+Isula in detail
+---------------
+The Javadoc of every class on the framework are available here: http://cptanalatriste.github.io/isula/doc/
+
