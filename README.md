@@ -5,7 +5,7 @@ Isula allows an easy implementation of Ant-Colony Optimization algorithms using 
 Isula in Action
 ---------------
 To get into speed, here are some samples of optimization problems solved with Isula-based algorithms:
-* The Flow-Shop Scheduling  problem, using Max-Min Ant System: https://github.com/cptanalatriste/ACOImageSegmentationWithIsula
+* The Flow-Shop Scheduling  problem, using Max-Min Ant System: https://github.com/cptanalatriste/aco-flowshop
 * Binary Image Segmentation using Ant System: https://github.com/cptanalatriste/ACOImageThresholdingWithIsula
 * Image Clustering using Max-Min Ant System: https://github.com/cptanalatriste/ACOImageSegmentationWithIsula
 
