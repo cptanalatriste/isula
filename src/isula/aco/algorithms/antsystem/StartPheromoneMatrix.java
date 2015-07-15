@@ -3,6 +3,7 @@ package isula.aco.algorithms.antsystem;
 import isula.aco.ConfigurationProvider;
 import isula.aco.DaemonAction;
 import isula.aco.DaemonActionType;
+import isula.aco.Environment;
 import isula.aco.algorithms.maxmin.StartPheromoneMatrixForMaxMin;
 
 import java.util.logging.Logger;
@@ -13,10 +14,11 @@ import java.util.logging.Logger;
  * 
  * @author Carlos G. Gavidia
  * 
- * @param <E>
+ * @param <C>
  *          Class for components of a solution.
  */
-public class StartPheromoneMatrix<E> extends DaemonAction<E> {
+public class StartPheromoneMatrix<C, E extends Environment> extends
+    DaemonAction<C, E> {
 
   private static Logger logger = Logger
       .getLogger(StartPheromoneMatrixForMaxMin.class.getName());

@@ -23,24 +23,25 @@ import java.util.Random;
  * <li>
  * </ul>
  * 
- * <p>Using one or another is determined by a "best-choice" probability.
+ * <p>
+ * Using one or another is determined by a "best-choice" probability.
  * 
  * @author Carlos G. Gavidia
  * 
- * @param <E>
+ * @param <C>
  *          Class for components of a solution.
  */
-public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
+public class PseudoRandomNodeSelection<C, E extends Environment> extends
+    AntPolicy<C, E> {
 
   public PseudoRandomNodeSelection() {
     super(AntPolicyType.NODE_SELECTION);
   }
 
   @Override
-  public void applyPolicy(Environment environment,
-      ConfigurationProvider configuration) {
+  public void applyPolicy(E environment, ConfigurationProvider configuration) {
     boolean nodeWasSelected = false;
-    E nextNode = null;
+    C nextNode = null;
     Random random = new Random();
     double randomValue = random.nextDouble();
 
@@ -49,7 +50,7 @@ public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
     double bestChoiceProbability = configurationProvider
         .getBestChoiceProbability();
 
-    HashMap<E, Double> componentsWithProbabilities = this
+    HashMap<C, Double> componentsWithProbabilities = this
         .getComponentsWithProbabilities(environment, configurationProvider);
 
     if (randomValue < bestChoiceProbability) {
@@ -67,10 +68,10 @@ public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
       double value = random.nextDouble();
       double total = 0;
 
-      Iterator<Entry<E, Double>> componentWithProbabilitiesIterator = componentsWithProbabilities
+      Iterator<Entry<C, Double>> componentWithProbabilitiesIterator = componentsWithProbabilities
           .entrySet().iterator();
       while (componentWithProbabilitiesIterator.hasNext()) {
-        Entry<E, Double> componentWithProbability = componentWithProbabilitiesIterator
+        Entry<C, Double> componentWithProbability = componentWithProbabilitiesIterator
             .next();
 
         total += componentWithProbability.getValue();
@@ -97,17 +98,17 @@ public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
    *          Possible components.
    * @return Most convenient component.
    */
-  public E getMostConvenient(HashMap<E, Double> componentsWithProbabilities) {
-    E nextNode = null;
+  public C getMostConvenient(HashMap<C, Double> componentsWithProbabilities) {
+    C nextNode = null;
     double currentMaximumProbability = -1;
 
-    Iterator<Entry<E, Double>> componentWithProbabilitiesIterator = componentsWithProbabilities
+    Iterator<Entry<C, Double>> componentWithProbabilitiesIterator = componentsWithProbabilities
         .entrySet().iterator();
     while (componentWithProbabilitiesIterator.hasNext()) {
-      Entry<E, Double> componentWithProbability = componentWithProbabilitiesIterator
+      Entry<C, Double> componentWithProbability = componentWithProbabilitiesIterator
           .next();
 
-      E possibleMove = componentWithProbability.getKey();
+      C possibleMove = componentWithProbability.getKey();
       double currentProbability = componentWithProbability.getValue();
 
       if (!getAnt().isNodeVisited(possibleMove)
@@ -120,7 +121,7 @@ public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
     return nextNode;
   }
 
-  protected void doIfNoNodeWasSelected(Environment environment,
+  protected void doIfNoNodeWasSelected(E environment,
       ConfigurationProvider configuration) {
     throw new SolutionConstructionException(
         "This policy couldn't select a new component for the current solution. \n"
@@ -137,12 +138,12 @@ public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
    *          Configuration provider.
    * @return Probabilities for the adjacent nodes.
    */
-  public HashMap<E, Double> getComponentsWithProbabilities(
-      Environment environment, AcsConfigurationProvider configurationProvider) {
-    HashMap<E, Double> componentsWithProbabilities = new HashMap<E, Double>();
+  public HashMap<C, Double> getComponentsWithProbabilities(E environment,
+      AcsConfigurationProvider configurationProvider) {
+    HashMap<C, Double> componentsWithProbabilities = new HashMap<C, Double>();
 
     double denominator = 0.0;
-    for (E possibleMove : getAnt().getNeighbourhood(environment)) {
+    for (C possibleMove : getAnt().getNeighbourhood(environment)) {
       if (!getAnt().isNodeVisited(possibleMove)
           && getAnt().isNodeValid(possibleMove)) {
 
@@ -154,12 +155,12 @@ public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
       }
     }
 
-    Iterator<Entry<E, Double>> componentWithProbabilitiesIterator = componentsWithProbabilities
+    Iterator<Entry<C, Double>> componentWithProbabilitiesIterator = componentsWithProbabilities
         .entrySet().iterator();
     while (componentWithProbabilitiesIterator.hasNext()) {
-      Entry<E, Double> componentWithProbability = componentWithProbabilitiesIterator
+      Entry<C, Double> componentWithProbability = componentWithProbabilitiesIterator
           .next();
-      E component = componentWithProbability.getKey();
+      C component = componentWithProbability.getKey();
 
       Double numerator = getHeuristicTimesPheromone(environment,
           configurationProvider, component);
@@ -173,15 +174,15 @@ public class PseudoRandomNodeSelection<E> extends AntPolicy<E> {
     return componentsWithProbabilities;
   }
 
-  protected HashMap<E, Double> doIfNoComponentsFound(Environment environment,
+  protected HashMap<C, Double> doIfNoComponentsFound(E environment,
       AcsConfigurationProvider configurationProvider) {
     throw new SolutionConstructionException(
         "We have no suitable components to add to the solution from current position. "
             + "Partial solution is: " + getAnt().getSolutionAsString());
   }
 
-  private Double getHeuristicTimesPheromone(Environment environment,
-      AcsConfigurationProvider configurationProvider, E possibleMove) {
+  private Double getHeuristicTimesPheromone(E environment,
+      AcsConfigurationProvider configurationProvider, C possibleMove) {
     Double heuristicValue = getAnt().getHeuristicValue(possibleMove,
         getAnt().getCurrentIndex(), environment);
     Double pheromoneTrailValue = getAnt().getPheromoneTrailValue(possibleMove,

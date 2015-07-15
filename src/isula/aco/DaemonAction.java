@@ -11,14 +11,14 @@ package isula.aco;
  * 
  * @author Carlos G. Gavidia
  * 
- * @param <E>
+ * @param <C>
  *          Class for components of a solution.
  */
-public abstract class DaemonAction<E> {
+public abstract class DaemonAction<C, E extends Environment> {
 
   private DaemonActionType acoPhase;
-  private Environment environment;
-  private AntColony<E> antColony;
+  private E environment;
+  private AntColony<C, E> antColony;
 
   public DaemonAction(DaemonActionType acoPhase) {
     super();
@@ -29,19 +29,19 @@ public abstract class DaemonAction<E> {
     return acoPhase;
   }
 
-  public Environment getEnvironment() {
+  public E getEnvironment() {
     return environment;
   }
 
-  public void setEnvironment(Environment environment) {
+  public void setEnvironment(E environment) {
     this.environment = environment;
   }
 
-  public AntColony<E> getAntColony() {
+  public AntColony<C, E> getAntColony() {
     return antColony;
   }
 
-  public void setAntColony(AntColony<E> antColony) {
+  public void setAntColony(AntColony<C, E> antColony) {
     this.antColony = antColony;
   }
 

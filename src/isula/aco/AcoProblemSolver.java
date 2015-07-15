@@ -19,25 +19,25 @@ import javax.naming.ConfigurationException;
  * 
  * @author Carlos G. Gavidia
  * 
- * @param <E>
+ * @param <C>
  *          Class for components of a solution.
  */
-public class AcoProblemSolver<E> {
+public class AcoProblemSolver<C, E extends Environment> {
 
   private static Logger logger = Logger.getLogger(AcoProblemSolver.class
       .getName());
 
-  public E[] bestSolution;
+  public C[] bestSolution;
   public double bestSolutionQuality = -1.0;
   public String bestSolutionAsString = "";
 
-  private Environment environment;
-  private AntColony<E> antColony;
+  private E environment;
+  private AntColony<C, E> antColony;
 
   // TODO(cgavidia): Maybe we should handle a list of configuration providers.
   private ConfigurationProvider configurationProvider;
 
-  private List<DaemonAction<E>> daemonActions = new ArrayList<DaemonAction<E>>();
+  private List<DaemonAction<C, E>> daemonActions = new ArrayList<DaemonAction<C, E>>();
 
   /**
    * Adds a list of Daemon Actions for the current solver.
@@ -46,8 +46,8 @@ public class AcoProblemSolver<E> {
    *          Daemon actions.
    */
   @SafeVarargs
-  public void addDaemonActions(DaemonAction<E>... daemonActions) {
-    for (DaemonAction<E> daemonAction : daemonActions) {
+  public void addDaemonActions(DaemonAction<C, E>... daemonActions) {
+    for (DaemonAction<C, E> daemonAction : daemonActions) {
       this.addDaemonAction(daemonAction);
     }
   }
@@ -58,7 +58,7 @@ public class AcoProblemSolver<E> {
    * @param daemonAction
    *          Daemon action.
    */
-  private void addDaemonAction(DaemonAction<E> daemonAction) {
+  private void addDaemonAction(DaemonAction<C, E> daemonAction) {
 
     daemonAction.setAntColony(antColony);
     daemonAction.setEnvironment(environment);
@@ -121,10 +121,10 @@ public class AcoProblemSolver<E> {
    * @param environment
    *          Environment where the solutions where produced.
    */
-  public void updateBestSolution(Environment environment) {
+  public void updateBestSolution(E environment) {
     logger.log(Level.FINE, "GETTING BEST SOLUTION FOUND");
 
-    Ant<E> bestAnt = antColony.getBestPerformingAnt(environment);
+    Ant<C, E> bestAnt = antColony.getBestPerformingAnt(environment);
 
     if (bestSolution == null
         || bestSolutionQuality > bestAnt.getSolutionQuality(environment)) {
@@ -146,26 +146,26 @@ public class AcoProblemSolver<E> {
    *          Daemon action type.
    */
   public void applyDaemonActions(DaemonActionType daemonActionType) {
-    for (DaemonAction<E> daemonAction : daemonActions) {
+    for (DaemonAction<C, E> daemonAction : daemonActions) {
       if (daemonActionType.equals(daemonAction.getAcoPhase())) {
         daemonAction.applyDaemonAction(this.getConfigurationProvider());
       }
     }
   }
 
-  public Environment getEnvironment() {
+  public E getEnvironment() {
     return environment;
   }
 
-  public void setEnvironment(Environment environment) {
+  public void setEnvironment(E environment) {
     this.environment = environment;
   }
 
-  public AntColony<E> getAntColony() {
+  public AntColony<C, E> getAntColony() {
     return antColony;
   }
 
-  public void setAntColony(AntColony<E> antColony) {
+  public void setAntColony(AntColony<C, E> antColony) {
     this.antColony = antColony;
   }
 
@@ -178,7 +178,7 @@ public class AcoProblemSolver<E> {
     this.configurationProvider = configurationProvider;
   }
 
-  public E[] getBestSolution() {
+  public C[] getBestSolution() {
     return bestSolution;
   }
 

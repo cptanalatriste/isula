@@ -1,6 +1,7 @@
 package isula.aco.algorithms.maxmin;
 
 import isula.aco.ConfigurationProvider;
+import isula.aco.Environment;
 import isula.aco.algorithms.antsystem.StartPheromoneMatrix;
 
 /**
@@ -9,10 +10,11 @@ import isula.aco.algorithms.antsystem.StartPheromoneMatrix;
  * 
  * @author Carlos G. Gavidia
  * 
- * @param <E>
+ * @param <C>
  *          Class for components of a solution.
  */
-public class StartPheromoneMatrixForMaxMin<E> extends StartPheromoneMatrix<E> {
+public class StartPheromoneMatrixForMaxMin<C, E extends Environment> extends
+    StartPheromoneMatrix<C, E> {
   // TODO(cgavidia): Maybe it is convenient to have a Max-Min Policy base class.
 
   @Override

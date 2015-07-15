@@ -11,21 +11,22 @@ import isula.aco.Environment;
  * 
  * @author Carlos G. Gavidia
  * 
- * @param <E>
+ * @param <C>
  *          Class for components of a solution.
  */
-public abstract class OnlinePheromoneUpdate<E> extends AntPolicy<E> {
+public abstract class OnlinePheromoneUpdate<C, E extends Environment> extends
+    AntPolicy<C, E> {
 
   public OnlinePheromoneUpdate() {
     super(AntPolicyType.AFTER_SOLUTION_IS_READY);
   }
 
   @Override
-  public void applyPolicy(Environment environment,
+  public void applyPolicy(E environment,
       ConfigurationProvider configurationProvider) {
 
     for (int i = 0; i < getAnt().getSolution().length; i++) {
-      E solutionComponent = getAnt().getSolution()[i];
+      C solutionComponent = getAnt().getSolution()[i];
       double newPheromoneValue = this.getNewPheromoneValue(solutionComponent,
           environment, configurationProvider);
       getAnt().setPheromoneTrailValue(solutionComponent, environment,
@@ -33,7 +34,7 @@ public abstract class OnlinePheromoneUpdate<E> extends AntPolicy<E> {
     }
   }
 
-  protected abstract double getNewPheromoneValue(E solutionComponent,
-      Environment environment, ConfigurationProvider configurationProvider);
+  protected abstract double getNewPheromoneValue(C solutionComponent,
+      E environment, ConfigurationProvider configurationProvider);
 
 }

@@ -10,14 +10,14 @@ package isula.aco;
  * 
  * @author Carlos G. Gavidia
  * 
- * @param <E>
+ * @param <C>
  *          Class for components of a solution.
  */
-public abstract class AntPolicy<E> {
+public abstract class AntPolicy<C, E extends Environment> {
 
   // TODO(cgavidia): This should be used to program the execution of activities.
   private AntPolicyType policyType;
-  private Ant<E> ant;
+  private Ant<C, E> ant;
 
   public AntPolicy(AntPolicyType antPhase) {
     this.policyType = antPhase;
@@ -27,14 +27,14 @@ public abstract class AntPolicy<E> {
     return policyType;
   }
 
-  public void setAnt(Ant<E> ant) {
+  public void setAnt(Ant<C, E> ant) {
     this.ant = ant;
   }
 
-  public Ant<E> getAnt() {
+  public Ant<C, E> getAnt() {
     return ant;
   }
 
-  public abstract void applyPolicy(Environment environment,
+  public abstract void applyPolicy(E environment,
       ConfigurationProvider configurationProvider);
 }

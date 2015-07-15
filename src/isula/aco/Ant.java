@@ -31,22 +31,22 @@ import java.util.List;
  * 
  * @author Carlos G. Gavidia
  * 
- * @param <E>
+ * @param <C>
  *          Class for components of a solution.
  */
-public abstract class Ant<E> {
+public abstract class Ant<C, E extends Environment> {
 
   private static final int DONT_CHECK_NUMBERS = -1;
   private static final int ONE_POLICY = 1;
 
   private int currentIndex = 0;
 
-  private List<AntPolicy<E>> policies = new ArrayList<AntPolicy<E>>();
+  private List<AntPolicy<C, E>> policies = new ArrayList<AntPolicy<C, E>>();
 
   // TODO(cgavidia): Temporarly, we're using an array of items. It will later
   // evolve to an array of solution components, or a List.
-  private E[] solution;
-  private List<E> visitedComponents = new ArrayList<E>();
+  private C[] solution;
+  private List<C> visitedComponents = new ArrayList<C>();
 
   /**
    * Mark a node as visited.
@@ -54,7 +54,7 @@ public abstract class Ant<E> {
    * @param visitedNode
    *          Visited node.
    */
-  public void visitNode(E visitedNode) {
+  public void visitNode(C visitedNode) {
     if (currentIndex < getSolution().length) {
 
       getSolution()[currentIndex] = visitedNode;
@@ -96,15 +96,16 @@ public abstract class Ant<E> {
     return solutionString;
   }
 
-  public void addPolicy(AntPolicy<E> antPolicy) {
+  public void addPolicy(AntPolicy<C, E> antPolicy) {
     this.policies.add(antPolicy);
   }
 
-  private AntPolicy<E> getAntPolicy(AntPolicyType policyType, int expectedNumber) {
+  private AntPolicy<C, E> getAntPolicy(AntPolicyType policyType,
+      int expectedNumber) {
     int numberOfPolicies = 0;
-    AntPolicy<E> selectedPolicy = null;
+    AntPolicy<C, E> selectedPolicy = null;
 
-    for (AntPolicy<E> policy : policies) {
+    for (AntPolicy<C, E> policy : policies) {
       if (policyType.equals(policy.getPolicyType())) {
         selectedPolicy = policy;
         numberOfPolicies += 1;
@@ -128,10 +129,10 @@ public abstract class Ant<E> {
    * @param configurationProvider
    *          Configuration provider.
    */
-  public void selectNextNode(Environment environment,
+  public void selectNextNode(E environment,
       ConfigurationProvider configurationProvider) {
 
-    AntPolicy<E> selectNodePolicity = getAntPolicy(
+    AntPolicy<C, E> selectNodePolicity = getAntPolicy(
         AntPolicyType.NODE_SELECTION, ONE_POLICY);
 
     // TODO(cgavidia): With this approach, the policy is a shared resource
@@ -148,9 +149,9 @@ public abstract class Ant<E> {
    * @param configurationProvider
    *          Configuration provider.
    */
-  public void doAfterSolutionIsReady(Environment environment,
+  public void doAfterSolutionIsReady(E environment,
       ConfigurationProvider configurationProvider) {
-    AntPolicy<E> selectNodePolicity = getAntPolicy(
+    AntPolicy<C, E> selectNodePolicity = getAntPolicy(
         AntPolicyType.AFTER_SOLUTION_IS_READY, DONT_CHECK_NUMBERS);
 
     if (selectNodePolicity != null) {
@@ -167,9 +168,9 @@ public abstract class Ant<E> {
    * @return True if the node is already visited. False otherwise.
    */
 
-  public boolean isNodeVisited(E node) {
+  public boolean isNodeVisited(C node) {
 
-    for (E solutionComponent : visitedComponents) {
+    for (C solutionComponent : visitedComponents) {
       if (node.equals(solutionComponent)) {
         return true;
       }
@@ -178,7 +179,7 @@ public abstract class Ant<E> {
     return false;
   }
 
-  public boolean isNodeValid(E node) {
+  public boolean isNodeValid(C node) {
     return true;
   }
 
@@ -203,36 +204,36 @@ public abstract class Ant<E> {
 
   // TODO(cgavidia): For convenience, we're accesing this data structures
   // directly.
-  public E[] getSolution() {
+  public C[] getSolution() {
     return solution;
   }
 
-  public void setSolution(E[] solution) {
+  public void setSolution(C[] solution) {
     this.solution = solution;
   }
 
-  public List<E> getVisited() {
+  public List<C> getVisited() {
     return visitedComponents;
   }
 
-  public void setVisited(List<E> visited) {
+  public void setVisited(List<C> visited) {
     this.visitedComponents = visited;
   }
 
-  public abstract List<E> getNeighbourhood(Environment environment);
+  public abstract List<C> getNeighbourhood(E environment);
 
   // TODO(cgavidia): Maybe we should move this to Environment.
-  public abstract Double getPheromoneTrailValue(E solutionComponent,
-      Integer positionInSolution, Environment environment);
+  public abstract Double getPheromoneTrailValue(C solutionComponent,
+      Integer positionInSolution, E environment);
 
-  public abstract Double getHeuristicValue(E solutionComponent,
-      Integer positionInSolution, Environment environment);
+  public abstract Double getHeuristicValue(C solutionComponent,
+      Integer positionInSolution, E environment);
 
-  public abstract void setPheromoneTrailValue(E solutionComponent,
-      Environment environment, Double value);
+  public abstract void setPheromoneTrailValue(C solutionComponent,
+      E environment, Double value);
 
-  public abstract double getSolutionQuality(Environment environment);
+  public abstract double getSolutionQuality(E environment);
 
-  public abstract boolean isSolutionReady(Environment environment);
+  public abstract boolean isSolutionReady(E environment);
 
 }

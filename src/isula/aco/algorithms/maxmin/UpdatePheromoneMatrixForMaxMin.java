@@ -4,6 +4,7 @@ import isula.aco.Ant;
 import isula.aco.ConfigurationProvider;
 import isula.aco.DaemonAction;
 import isula.aco.DaemonActionType;
+import isula.aco.Environment;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,14 +14,16 @@ import java.util.logging.Logger;
  * the matrix between a maximum and a minimum, and only allows pheromone deposit
  * to the best performing ant.
  * 
- * <p>It is not executed online, but at the end of the iteration.
+ * <p>
+ * It is not executed online, but at the end of the iteration.
  * 
  * @author Carlos G. Gavidia
  * 
- * @param <E>
+ * @param <C>
  *          Class for components of a solution.
  */
-public abstract class UpdatePheromoneMatrixForMaxMin<E> extends DaemonAction<E> {
+public abstract class UpdatePheromoneMatrixForMaxMin<C, E extends Environment>
+    extends DaemonAction<C, E> {
   // TODO(cgavidia): Generics can be used on Configuration Provider types.
 
   private static Logger logger = Logger
@@ -67,14 +70,14 @@ public abstract class UpdatePheromoneMatrixForMaxMin<E> extends DaemonAction<E> 
 
     logger.log(Level.FINE, "Depositing pheromone on Best Ant trail.");
 
-    Ant<E> bestAnt = getAntColony().getBestPerformingAnt(getEnvironment());
+    Ant<C, E> bestAnt = getAntColony().getBestPerformingAnt(getEnvironment());
 
-    E[] bestSolution = bestAnt.getSolution();
+    C[] bestSolution = bestAnt.getSolution();
     int positionInSolution = 0;
 
     // TODO(cgavidia): From here, we can factor the policy of only best ant
     // deposits pheromone.
-    for (E solutionComponent : bestSolution) {
+    for (C solutionComponent : bestSolution) {
       // TODO(cgavidia): This makes me think a solution type is necessary...
       double newValue = getNewPheromoneValue(bestAnt, positionInSolution,
           solutionComponent, configurationProvider);
@@ -91,8 +94,8 @@ public abstract class UpdatePheromoneMatrixForMaxMin<E> extends DaemonAction<E> 
     }
   }
 
-  protected abstract double getNewPheromoneValue(Ant<E> bestAnt,
-      int positionInSolution, E solutionComponent,
+  protected abstract double getNewPheromoneValue(Ant<C, E> bestAnt,
+      int positionInSolution, C solutionComponent,
       MaxMinConfigurationProvider configurationProvider);
 
 }

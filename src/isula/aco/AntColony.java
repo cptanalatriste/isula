@@ -13,15 +13,15 @@ import java.util.logging.Logger;
  * 
  * @author Carlos G. Gavidia
  * 
- * @param <E>
+ * @param <C>
  *          Class for components of a solution.
  */
-public abstract class AntColony<E> {
+public abstract class AntColony<C, E extends Environment> {
 
   private static Logger logger = Logger.getLogger(AntColony.class.getName());
 
   private int numberOfAnts;
-  private List<Ant<E>> hive = new ArrayList<Ant<E>>();
+  private List<Ant<C, E>> hive = new ArrayList<Ant<C, E>>();
 
   /**
    * Creates a colony of ants
@@ -40,13 +40,13 @@ public abstract class AntColony<E> {
    * instantiation.
    * 
    */
-  public void buildColony(Environment environment) {
+  public void buildColony(E environment) {
     for (int j = 0; j < numberOfAnts; j++) {
       hive.add(this.createAnt(environment));
     }
   }
 
-  protected abstract Ant<E> createAnt(Environment environment);
+  protected abstract Ant<C, E> createAnt(E environment);
 
   /**
    * Returns the ant with the best performance so far.
@@ -55,10 +55,10 @@ public abstract class AntColony<E> {
    *          Environment where the Ants are building solutions.
    * @return Best performing Ant.
    */
-  public Ant<E> getBestPerformingAnt(Environment environment) {
-    Ant<E> bestAnt = hive.get(0);
+  public Ant<C, E> getBestPerformingAnt(E environment) {
+    Ant<C, E> bestAnt = hive.get(0);
 
-    for (Ant<E> ant : hive) {
+    for (Ant<C, E> ant : hive) {
 
       if (ant.getSolutionQuality(environment) < bestAnt
           .getSolutionQuality(environment)) {
@@ -74,7 +74,7 @@ public abstract class AntColony<E> {
    * 
    * @return List of Ants.
    */
-  public List<Ant<E>> getHive() {
+  public List<Ant<C, E>> getHive() {
     return hive;
   }
 
@@ -84,7 +84,7 @@ public abstract class AntColony<E> {
   public void clearAntSolutions() {
     logger.log(Level.FINE, "CLEARING ANT SOLUTIONS");
 
-    for (Ant<E> ant : hive) {
+    for (Ant<C, E> ant : hive) {
       ant.setCurrentIndex(0);
       ant.clear();
     }
@@ -99,7 +99,7 @@ public abstract class AntColony<E> {
    * @param configurationProvider
    *          Configuration provider.
    */
-  public void buildSolutions(Environment environment,
+  public void buildSolutions(E environment,
       ConfigurationProvider configurationProvider) {
     logger.log(Level.FINE, "BUILDING ANT SOLUTIONS");
 
@@ -111,7 +111,7 @@ public abstract class AntColony<E> {
               + "Have you called the buildColony() method?");
     }
 
-    for (Ant<E> ant : hive) {
+    for (Ant<C, E> ant : hive) {
       logger.info("Current ant: " + antCounter);
 
       while (!ant.isSolutionReady(environment)) {
@@ -135,10 +135,10 @@ public abstract class AntColony<E> {
    *          List of policies.
    */
   @SafeVarargs
-  public void addAntPolicies(AntPolicy<E>... antPolicies) {
-    List<Ant<E>> hive = getHive();
-    for (Ant<E> ant : hive) {
-      for (AntPolicy<E> antPolicy : antPolicies) {
+  public void addAntPolicies(AntPolicy<C, E>... antPolicies) {
+    List<Ant<C, E>> hive = getHive();
+    for (Ant<C, E> ant : hive) {
+      for (AntPolicy<C, E> antPolicy : antPolicies) {
         ant.addPolicy(antPolicy);
       }
     }
