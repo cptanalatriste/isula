@@ -5,13 +5,14 @@ import isula.aco.exception.InvalidInputException;
 /**
  * The place that our ants traverse, where they gather the information to build
  * solutions.
- * 
- * <p>This class manages the access to the problem graph -represented as an array
+ *
+ * <p>
+ * This class manages the access to the problem graph -represented as an array
  * of doubles- and to the phermone matrix. Each concrete class needs to define a
  * way to build a pheromone matrix to the problem to be solved.
  * 
  * @author Carlos G. Gavidia
- * 
+ *
  */
 public abstract class Environment {
 

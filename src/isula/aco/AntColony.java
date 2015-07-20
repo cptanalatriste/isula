@@ -12,9 +12,11 @@ import java.util.logging.Logger;
  * individual ants through the createAnt() method.
  * 
  * @author Carlos G. Gavidia
- * 
+ *
  * @param <C>
  *          Class for components of a solution.
+ * @param <E>
+ *          Class representing the Environment.
  */
 public abstract class AntColony<C, E extends Environment> {
 

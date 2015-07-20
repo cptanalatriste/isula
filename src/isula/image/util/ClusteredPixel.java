@@ -1,8 +1,10 @@
 package isula.image.util;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class ClusteredPixel {
 
@@ -113,13 +115,18 @@ public class ClusteredPixel {
 
     ClusteredPixel visitedPixel = (ClusteredPixel) obj;
 
-    if (visitedPixel.getxCoordinate() == this.getxCoordinate()
-        && visitedPixel.getyCoordinate() == this.getyCoordinate()
-        && visitedPixel.getGreyScaleValue() == this.getGreyScaleValue()) {
-      return true;
-    }
+    return new EqualsBuilder()
+        .append(this.getxCoordinate(), visitedPixel.getyCoordinate())
+        .append(this.getyCoordinate(), visitedPixel.getyCoordinate())
+        .append(this.getGreyScaleValue(), visitedPixel.getGreyScaleValue())
+        .append(this.getCluster(), visitedPixel.getCluster()).isEquals();
+  }
 
-    return false;
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder().append(this.getxCoordinate())
+        .append(this.getyCoordinate()).append(this.getGreyScaleValue())
+        .append(this.getCluster()).toHashCode();
   }
 
 }

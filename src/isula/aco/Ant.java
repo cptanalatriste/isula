@@ -10,7 +10,7 @@ import java.util.List;
  * The little workers that build solutions: They belong to a colony. This is an
  * Abstract Type so you must extend it in order to fill the characteristics of
  * your optimization problem.
- * 
+ *
  * <p>
  * Some convenient methods to define are:
  * <ul>
@@ -30,9 +30,11 @@ import java.util.List;
  * 
  * 
  * @author Carlos G. Gavidia
- * 
+ *
  * @param <C>
  *          Class for components of a solution.
+ * @param <E>
+ *          Class representing the Environment.
  */
 public abstract class Ant<C, E extends Environment> {
 
@@ -46,6 +48,9 @@ public abstract class Ant<C, E extends Environment> {
   // TODO(cgavidia): Temporarly, we're using an array of items. It will later
   // evolve to an array of solution components, or a List.
   private C[] solution;
+
+  // TODO(cgavidia): This is redundant. Or it should be implemented as another
+  // data structure.
   private List<C> visitedComponents = new ArrayList<C>();
 
   /**

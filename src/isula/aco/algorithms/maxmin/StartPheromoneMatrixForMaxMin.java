@@ -9,9 +9,11 @@ import isula.aco.algorithms.antsystem.StartPheromoneMatrix;
  * assigns the maximum allowed value to all cells.
  * 
  * @author Carlos G. Gavidia
- * 
+ *
  * @param <C>
  *          Class for components of a solution.
+ * @param <E>
+ *          Class representing the Environment.
  */
 public class StartPheromoneMatrixForMaxMin<C, E extends Environment> extends
     StartPheromoneMatrix<C, E> {

@@ -12,9 +12,11 @@ import java.util.logging.Logger;
  * evaporation ratio to all elements on the Pheromone Matrix.
  * 
  * @author Carlos G. Gavidia
- * 
+ *
  * @param <C>
  *          Class for components of a solution.
+ * @param <E>
+ *          Class representing the Environment.
  */
 public class PerformEvaporation<C, E extends Environment> extends
     DaemonAction<C, E> {

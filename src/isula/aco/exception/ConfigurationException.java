@@ -5,7 +5,7 @@ package isula.aco.exception;
  * properly.
  * 
  * @author Carlos G. Gavidia
- * 
+ *
  */
 public class ConfigurationException extends RuntimeException {
 

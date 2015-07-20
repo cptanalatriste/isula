@@ -6,7 +6,7 @@ package isula.aco;
  * algorithms.
  * 
  * @author Carlos G. Gavidia
- * 
+ *
  */
 public interface ConfigurationProvider {
 

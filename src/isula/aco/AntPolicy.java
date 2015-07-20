@@ -3,15 +3,17 @@ package isula.aco;
 /**
  * A behavior to be performed by an Ant. This class is used to implement
  * specific behaviours required by a particular ACO algorithm.
- * 
+ *
  * <p>
  * Each ant policy class has a policyType, which will define in which stage of
  * the construction process is executed.
  * 
  * @author Carlos G. Gavidia
- * 
+ *
  * @param <C>
  *          Class for components of a solution.
+ * @param <E>
+ *          Class representing the Environment.
  */
 public abstract class AntPolicy<C, E extends Environment> {
 

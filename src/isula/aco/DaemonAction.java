@@ -4,15 +4,17 @@ package isula.aco;
  * Global actions that have impact in all the colony and its environment. As
  * such, instances have access to the Ant Colony instance and also at the
  * Environment.
- * 
+ *
  * <p>
  * The moment in the process where this actions take place is defined by the
  * Daemon Action type.
  * 
  * @author Carlos G. Gavidia
- * 
+ *
  * @param <C>
  *          Class for components of a solution.
+ * @param <E>
+ *          Class representing the Environment.
  */
 public abstract class DaemonAction<C, E extends Environment> {
 

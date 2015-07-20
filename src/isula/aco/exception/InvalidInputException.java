@@ -4,7 +4,7 @@ package isula.aco.exception;
  * Produced when the information provided for an instance is inconsistent.
  * 
  * @author Carlos G. Gavidia
- * 
+ *
  */
 public class InvalidInputException extends Exception {
 

@@ -11,16 +11,17 @@ import javax.naming.ConfigurationException;
 /**
  * The main component of the framework: Is the one in charge of making a colony
  * an ants to traverse an environment in order to generate solutions.
- * 
- * <p>
- * The solveProblem() method is the one that starts the optimzation process.
+ *
+ * <p>The solveProblem() method is the one that starts the optimization process.
  * Previously, you have to properly configure your solver by assigning it a
  * Colony, an Environment and Daemon Actions (if required).
  * 
  * @author Carlos G. Gavidia
- * 
+ *
  * @param <C>
  *          Class for components of a solution.
+ * @param <E>
+ *          Class representing the Environment.
  */
 public class AcoProblemSolver<C, E extends Environment> {
 

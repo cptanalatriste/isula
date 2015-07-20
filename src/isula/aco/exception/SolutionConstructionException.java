@@ -4,7 +4,7 @@ package isula.aco.exception;
  * Produced when errors appear while ants are constructing a solution.
  * 
  * @author Carlos G. Gavidia
- * 
+ *
  */
 public class SolutionConstructionException extends RuntimeException {
 

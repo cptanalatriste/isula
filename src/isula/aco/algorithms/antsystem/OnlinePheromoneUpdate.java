@@ -10,9 +10,11 @@ import isula.aco.Environment;
  * pheromone is deposited in each of the solution components.
  * 
  * @author Carlos G. Gavidia
- * 
+ *
  * @param <C>
  *          Class for components of a solution.
+ * @param <E>
+ *          Class representing the Environment.
  */
 public abstract class OnlinePheromoneUpdate<C, E extends Environment> extends
     AntPolicy<C, E> {

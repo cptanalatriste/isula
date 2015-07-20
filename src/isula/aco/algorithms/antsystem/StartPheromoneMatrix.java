@@ -13,9 +13,11 @@ import java.util.logging.Logger;
  * cells the value provided by Configuration.
  * 
  * @author Carlos G. Gavidia
- * 
+ *
  * @param <C>
  *          Class for components of a solution.
+ * @param <E>
+ *          Class representing the Environment.
  */
 public class StartPheromoneMatrix<C, E extends Environment> extends
     DaemonAction<C, E> {

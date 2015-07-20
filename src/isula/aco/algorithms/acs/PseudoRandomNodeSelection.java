@@ -22,14 +22,16 @@ import java.util.Random;
  * probabilities of each possible component.
  * <li>
  * </ul>
- * 
+ *
  * <p>
  * Using one or another is determined by a "best-choice" probability.
  * 
  * @author Carlos G. Gavidia
- * 
+ *
  * @param <C>
  *          Class for components of a solution.
+ * @param <E>
+ *          Class representing the Environment.
  */
 public class PseudoRandomNodeSelection<C, E extends Environment> extends
     AntPolicy<C, E> {

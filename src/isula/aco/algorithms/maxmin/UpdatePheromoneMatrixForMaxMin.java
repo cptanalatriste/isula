@@ -13,14 +13,16 @@ import java.util.logging.Logger;
  * The procedure for pheromone update for MMAS. It keeps the pheromone values in
  * the matrix between a maximum and a minimum, and only allows pheromone deposit
  * to the best performing ant.
- * 
+ *
  * <p>
  * It is not executed online, but at the end of the iteration.
  * 
  * @author Carlos G. Gavidia
- * 
+ *
  * @param <C>
  *          Class for components of a solution.
+ * @param <E>
+ *          Class representing the Environment.
  */
 public abstract class UpdatePheromoneMatrixForMaxMin<C, E extends Environment>
     extends DaemonAction<C, E> {

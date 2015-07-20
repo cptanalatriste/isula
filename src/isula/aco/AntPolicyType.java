@@ -11,7 +11,7 @@ package isula.aco;
  * </ul>
  * 
  * @author Carlos G. Gavidia
- * 
+ *
  */
 public enum AntPolicyType {
   NODE_SELECTION, AFTER_SOLUTION_IS_READY;
