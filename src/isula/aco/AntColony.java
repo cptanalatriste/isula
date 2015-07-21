@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 /**
  * A group of ants. As an abstract type, you need to define how to build
  * individual ants through the createAnt() method.
- * 
+ *
  * @author Carlos G. Gavidia
  *
  * @param <C>
@@ -41,6 +41,8 @@ public abstract class AntColony<C, E extends Environment> {
    * Initialization code for the colony. The main responsibility is Ant
    * instantiation.
    * 
+   * @param environment
+   *          Environment where the Ants are building solutions.
    */
   public void buildColony(E environment) {
     for (int j = 0; j < numberOfAnts; j++) {

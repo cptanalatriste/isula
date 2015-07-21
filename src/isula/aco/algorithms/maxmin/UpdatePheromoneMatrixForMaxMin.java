@@ -34,8 +34,6 @@ public abstract class UpdatePheromoneMatrixForMaxMin<C, E extends Environment>
   /**
    * Instantiates the Update Pheromone Matrix Policy.
    * 
-   * @param configurationProvider
-   *          Configuration provider.
    */
   public UpdatePheromoneMatrixForMaxMin() {
     super(DaemonActionType.AFTER_ITERATION_CONSTRUCTION);

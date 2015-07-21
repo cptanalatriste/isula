@@ -5,7 +5,7 @@ package isula.aco;
  * 
  * <ul>
  * <li>Before starting constructing solutions.
- * <li>After the end of a construction iteration. </lu>
+ * <li>After the end of a construction iteration. </ul>
  * 
  * @author Carlos G. Gavidia
  *
