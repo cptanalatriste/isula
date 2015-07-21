@@ -146,6 +146,7 @@ public class PseudoRandomNodeSelection<C, E extends Environment> extends
 
     double denominator = 0.0;
     for (C possibleMove : getAnt().getNeighbourhood(environment)) {
+
       if (!getAnt().isNodeVisited(possibleMove)
           && getAnt().isNodeValid(possibleMove)) {
 
@@ -179,8 +180,12 @@ public class PseudoRandomNodeSelection<C, E extends Environment> extends
   protected HashMap<C, Double> doIfNoComponentsFound(E environment,
       AcsConfigurationProvider configurationProvider) {
     throw new SolutionConstructionException(
-        "We have no suitable components to add to the solution from current position. "
-            + "Partial solution is: " + getAnt().getSolutionAsString());
+        "We have no suitable components to add to the solution from current position."
+            + "\n Previous Component: "
+            + getAnt().getSolution()[getAnt().getCurrentIndex() - 1]
+            + " at position " + (getAnt().getCurrentIndex() - 1)
+            + "\n Environment: " + environment.toString()
+            + "\nPartial solution : " + getAnt().getSolutionAsString());
   }
 
   private Double getHeuristicTimesPheromone(E environment,

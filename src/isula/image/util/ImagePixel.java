@@ -113,7 +113,8 @@ public class ImagePixel {
 
   @Override
   public String toString() {
-    return "(" + this.getxCoordinate() + ", " + this.getyCoordinate() + ")  ";
+    return "(" + this.getxCoordinate() + ", " + this.getyCoordinate() + ") -> "
+        + this.getGreyScaleValue();
   }
 
   @Override
@@ -128,7 +129,7 @@ public class ImagePixel {
     ImagePixel visitedPixel = (ImagePixel) obj;
 
     return new EqualsBuilder()
-        .append(this.getxCoordinate(), visitedPixel.getyCoordinate())
+        .append(this.getxCoordinate(), visitedPixel.getxCoordinate())
         .append(this.getyCoordinate(), visitedPixel.getyCoordinate())
         .append(this.getGreyScaleValue(), visitedPixel.getGreyScaleValue())
         .isEquals();

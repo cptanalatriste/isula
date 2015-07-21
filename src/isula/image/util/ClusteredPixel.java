@@ -116,7 +116,7 @@ public class ClusteredPixel {
     ClusteredPixel visitedPixel = (ClusteredPixel) obj;
 
     return new EqualsBuilder()
-        .append(this.getxCoordinate(), visitedPixel.getyCoordinate())
+        .append(this.getxCoordinate(), visitedPixel.getxCoordinate())
         .append(this.getyCoordinate(), visitedPixel.getyCoordinate())
         .append(this.getGreyScaleValue(), visitedPixel.getGreyScaleValue())
         .append(this.getCluster(), visitedPixel.getCluster()).isEquals();
