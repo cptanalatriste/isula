@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>isula by cptanalatriste</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">isula</h1>
+      <h2 class="project-tagline">A Java Framework for Ant Colony Optimization algorithms</h2>
+      <a href="https://github.com/cptanalatriste/isula" class="btn">View on GitHub</a>
+      <a href="https://github.com/cptanalatriste/isula/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/cptanalatriste/isula/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="isula-a-framework-for-ant-colony-algorithms" class="anchor" href="#isula-a-framework-for-ant-colony-algorithms" aria-hidden="true"><span class="octicon octicon-link"></span></a>Isula: A Framework for Ant Colony Algorithms</h1>
+
+<p>Isula allows an easy implementation of Ant-Colony Optimization algorithms using the Java Programming Language. It contains the common elements present in the meta-heuristic to allow algorithm designers the reutilization of common behaviors. With Isula, solving optimization problems with Ant Colony can be done in few lines of code.</p>
+
+<h2>
+<a id="isula-in-action" class="anchor" href="#isula-in-action" aria-hidden="true"><span class="octicon octicon-link"></span></a>Isula in Action</h2>
+
+<p>To get into speed, here are some samples of optimization problems solved with Isula-based algorithms:</p>
+
+<ul>
+<li>The Flow-Shop Scheduling  problem, using Max-Min Ant System: <a href="https://github.com/cptanalatriste/aco-flowshop">https://github.com/cptanalatriste/aco-flowshop</a>
+</li>
+<li>Binary Image Segmentation using Ant System: <a href="https://github.com/cptanalatriste/aco-image-thresholding">https://github.com/cptanalatriste/aco-image-thresholding</a>
+</li>
+<li>Image Clustering using Max-Min Ant System: <a href="https://github.com/cptanalatriste/aco-image-segmentation">https://github.com/cptanalatriste/aco-image-segmentation</a>
+</li>
+</ul>
+
+<h2>
+<a id="an-isula-primer" class="anchor" href="#an-isula-primer" aria-hidden="true"><span class="octicon octicon-link"></span></a>An Isula Primer</h2>
+
+<p>To solve a problem with an Ant-Colony Optimization algorithm, you need a Colony of Agents (a.k.a Ants), a graph representing the problem, and a pheromone data-structure to allow communication between this agents. Isula tries to emulate that pattern:</p>
+
+<div class="highlight highlight-java"><pre>    <span class="pl-smi">ConfigurationProvider</span> configurationProvider <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">ProblemConfiguration</span>();
+    <span class="pl-k">AcoProblemSolver&lt;<span class="pl-smi">ImagePixel</span>&gt;</span> problemSolver <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-k">AcoProblemSolver&lt;<span class="pl-smi">ImagePixel</span>&gt;</span>();
+
+    <span class="pl-smi">EnvironmentForImageThresholding</span> environment <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">EnvironmentForImageThresholding</span>(
+        imageGraph, <span class="pl-smi">ProblemConfiguration</span><span class="pl-c1"><span class="pl-k">.</span>NUMBER_OF_STEPS</span>);
+
+    <span class="pl-smi">ImageThresholdingAntColony</span> antColony <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">ImageThresholdingAntColony</span>();
+    antColony<span class="pl-k">.</span>buildColony(environment);
+
+    problemSolver<span class="pl-k">.</span>setConfigurationProvider(configurationProvider);
+    problemSolver<span class="pl-k">.</span>setEnvironment(environment);
+    problemSolver<span class="pl-k">.</span>setAntColony(antColony);
+
+    problemSolver<span class="pl-k">.</span>addDaemonActions(<span class="pl-k">new</span> <span class="pl-k">StartPheromoneMatrix&lt;<span class="pl-smi">ImagePixel</span>&gt;</span>(),
+        <span class="pl-k">new</span> <span class="pl-smi">RandomizeHive</span>(), <span class="pl-k">new</span> <span class="pl-k">PerformEvaporation&lt;<span class="pl-smi">ImagePixel</span>&gt;</span>());
+    antColony<span class="pl-k">.</span>addAntPolicies(<span class="pl-k">new</span> <span class="pl-smi">NodeSelectionForImageThresholding</span>(),
+        <span class="pl-k">new</span> <span class="pl-smi">OnlinePheromoneUpdateForThresholding</span>());
+
+    problemSolver<span class="pl-k">.</span>solveProblem();</pre></div>
+
+<p>That's a snippet from the Image Thresholding  problem solution. Some things to notice there:</p>
+
+<ul>
+<li>Problem and algorithm configuration is provided by ConfigurationProvider instances. Make your own with the values you need.</li>
+<li>The class everything is the AcoProblemSolver. In this case, we're using the same one provided by the framework but you can extend it to suit your needs.</li>
+<li>The Problem Solver needs an Environment that manages the problem graph and the pheromone matrix. You need to extend the Environment class provided with the framework to adjust it to support your problem.</li>
+<li>And we need an Ant Colony, of course. The Ant Colony main responsibility is to create Ants, and make them built solutions in iterations. The robust base AntColony class makes implementing this very easy.</li>
+<li>The hearth of the algorithm is the Ant class. You will need to define an Ant that suits your needs.</li>
+<li>Isula supports daemon actions -global behaviors- and ant-level policies, such as the ones present in multiple ACO Algorithms. You can add them easily to your current solver.</li>
+<li>Finaly, you call the solveProblem() method and wait for the best solution to be shown.</li>
+</ul>
+
+<h2>
+<a id="isula-in-detail" class="anchor" href="#isula-in-detail" aria-hidden="true"><span class="octicon octicon-link"></span></a>Isula in detail</h2>
+
+<p>The Javadoc of every class on the framework is available here: <a href="http://cptanalatriste.github.io/isula/doc/">http://cptanalatriste.github.io/isula/doc/</a></p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/cptanalatriste/isula">isula</a> is maintained by <a href="https://github.com/cptanalatriste">cptanalatriste</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
+
