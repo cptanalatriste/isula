@@ -4,13 +4,15 @@ import isula.aco.exception.ConfigurationException;
 import isula.aco.exception.SolutionConstructionException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The little workers that build solutions: They belong to a colony. This is an
  * Abstract Type so you must extend it in order to fill the characteristics of
  * your optimization problem.
- *
+ * 
  * <p>
  * Some convenient methods to define are:
  * <ul>
@@ -30,7 +32,7 @@ import java.util.List;
  * 
  * 
  * @author Carlos G. Gavidia
- *
+ * 
  * @param <C>
  *          Class for components of a solution.
  * @param <E>
@@ -51,7 +53,7 @@ public abstract class Ant<C, E extends Environment> {
 
   // TODO(cgavidia): This is redundant. Or it should be implemented as another
   // data structure.
-  private List<C> visitedComponents = new ArrayList<C>();
+  private Map<C, Boolean> visitedComponents = new HashMap<C, Boolean>();
 
   /**
    * Mark a node as visited.
@@ -63,7 +65,7 @@ public abstract class Ant<C, E extends Environment> {
     if (currentIndex < getSolution().length) {
 
       getSolution()[currentIndex] = visitedNode;
-      visitedComponents.add(visitedNode);
+      visitedComponents.put(visitedNode, true);
       currentIndex++;
     } else {
       throw new SolutionConstructionException("Couldn't add component "
@@ -75,9 +77,12 @@ public abstract class Ant<C, E extends Environment> {
   }
 
   /**
-   * Resets the visited vector.
+   * Resets the visited vector, clears current solution components and sets the
+   * index to 0.
    */
   public void clear() {
+
+    this.setCurrentIndex(0);
 
     for (int i = 0; i < getSolution().length; i++) {
       getSolution()[i] = null;
@@ -92,7 +97,7 @@ public abstract class Ant<C, E extends Environment> {
    * @return Solution as a String.
    */
   public String getSolutionAsString() {
-    String solutionString = new String();
+    String solutionString = "";
     for (int i = 0; i < solution.length; i++) {
       if (solution[i] != null) {
         solutionString = solutionString + " " + solution[i].toString();
@@ -105,8 +110,7 @@ public abstract class Ant<C, E extends Environment> {
     this.policies.add(antPolicy);
   }
 
-  private AntPolicy<C, E> getAntPolicy(AntPolicyType policyType,
-      int expectedNumber) {
+  AntPolicy<C, E> getAntPolicy(AntPolicyType policyType, int expectedNumber) {
     int numberOfPolicies = 0;
     AntPolicy<C, E> selectedPolicy = null;
 
@@ -141,7 +145,7 @@ public abstract class Ant<C, E extends Environment> {
         AntPolicyType.NODE_SELECTION, ONE_POLICY);
 
     // TODO(cgavidia): With this approach, the policy is a shared resource
-    // between ants
+    // between ants. This doesn't allow parallelism.
     selectNodePolicity.setAnt(this);
     selectNodePolicity.applyPolicy(environment, configurationProvider);
   }
@@ -160,6 +164,8 @@ public abstract class Ant<C, E extends Environment> {
         AntPolicyType.AFTER_SOLUTION_IS_READY, DONT_CHECK_NUMBERS);
 
     if (selectNodePolicity != null) {
+      // TODO(cgavidia): With this approach, the policy is a shared resource
+      // between ants. This doesn't allow parallelism.
       selectNodePolicity.setAnt(this);
       selectNodePolicity.applyPolicy(environment, configurationProvider);
     }
@@ -174,14 +180,15 @@ public abstract class Ant<C, E extends Environment> {
    */
 
   public boolean isNodeVisited(C node) {
+    boolean visited = false;
 
-    for (C solutionComponent : visitedComponents) {
-      if (node.equals(solutionComponent)) {
-        return true;
-      }
+    Boolean inVisitedMap = visitedComponents.get(node);
+
+    if (inVisitedMap != null && inVisitedMap) {
+      visited = inVisitedMap;
     }
 
-    return false;
+    return visited;
   }
 
   public boolean isNodeValid(C node) {
@@ -217,11 +224,11 @@ public abstract class Ant<C, E extends Environment> {
     this.solution = solution;
   }
 
-  public List<C> getVisited() {
+  public Map<C, Boolean> getVisited() {
     return visitedComponents;
   }
 
-  public void setVisited(List<C> visited) {
+  public void setVisited(Map<C, Boolean> visited) {
     this.visitedComponents = visited;
   }
 

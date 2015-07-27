@@ -1,8 +1,8 @@
 package isula.aco;
 
-import static org.junit.Assert.*;
-
-import isula.aco.adapter.EnvironmentAdapter;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,12 +13,26 @@ public class EnvironmentTest {
   private static final int MATRIX_COLUMNS = 4;
   private static final int MATRIX_ROWS = 3;
   private static final double SAMPLE_PHEROMONE = 0.5;
-  private EnvironmentAdapter dummyEnvironment;
+  private Environment dummyEnvironment;
 
+  /**
+   * We're creating a dummy Environment class, with a pheromone matrix with the
+   * dimensions specified in the constants.
+   * 
+   * @throws Exception
+   */
   @Before
   public void setUp() throws Exception {
     double[][] problemGraph = new double[MATRIX_ROWS][MATRIX_COLUMNS];
-    this.dummyEnvironment = new EnvironmentAdapter(problemGraph);
+
+    this.dummyEnvironment = new Environment(problemGraph) {
+
+      @Override
+      protected double[][] createPheromoneMatrix() {
+        return new double[MATRIX_ROWS][MATRIX_COLUMNS];
+      }
+
+    };
   }
 
   @Test

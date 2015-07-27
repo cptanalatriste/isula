@@ -89,7 +89,6 @@ public abstract class AntColony<C, E extends Environment> {
     logger.log(Level.FINE, "CLEARING ANT SOLUTIONS");
 
     for (Ant<C, E> ant : hive) {
-      ant.setCurrentIndex(0);
       ant.clear();
     }
 
