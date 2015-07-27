@@ -12,7 +12,7 @@ import java.util.Map;
  * The little workers that build solutions: They belong to a colony. This is an
  * Abstract Type so you must extend it in order to fill the characteristics of
  * your optimization problem.
- * 
+ *
  * <p>
  * Some convenient methods to define are:
  * <ul>
@@ -32,7 +32,7 @@ import java.util.Map;
  * 
  * 
  * @author Carlos G. Gavidia
- * 
+ *
  * @param <C>
  *          Class for components of a solution.
  * @param <E>
