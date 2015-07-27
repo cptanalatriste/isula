@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import isula.aco.algorithms.antsystem.OnlinePheromoneUpdate;
 import isula.aco.exception.InvalidInputException;
+import isula.aco.test.DummyFactory;
 
 import org.junit.Before;
 import org.junit.Test;
