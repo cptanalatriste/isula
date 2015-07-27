@@ -10,7 +10,7 @@ import isula.aco.exception.InvalidInputException;
  * This class manages the access to the problem graph -represented as an array
  * of doubles- and to the phermone matrix. Each concrete class needs to define a
  * way to build a pheromone matrix to the problem to be solved.
- *
+ * 
  * @author Carlos G. Gavidia
  *
  */
@@ -39,6 +39,12 @@ public abstract class Environment {
     }
   }
 
+  /**
+   * Verifies if the problem graph matrix provided is valid. By default this
+   * method returns true: override if necessary.
+   * 
+   * @return True if valid, false otherwise.
+   */
   protected boolean isProblemGraphValid() {
     return true;
   }
@@ -58,7 +64,7 @@ public abstract class Environment {
   protected abstract double[][] createPheromoneMatrix();
 
   /**
-   * Asigns the same value to all cells on the Pheromone Matrix.
+   * Assigns the same value to all cells on the Pheromone Matrix.
    * 
    * @param pheromoneValue
    *          Value to assign.
@@ -89,7 +95,7 @@ public abstract class Environment {
    */
   public void applyFactorToPheromoneMatrix(double factor) {
     int matrixRows = pheromoneMatrix.length;
-    int matrixColumns = pheromoneMatrix.length;
+    int matrixColumns = pheromoneMatrix[0].length;
 
     for (int i = 0; i < matrixRows; i++) {
       for (int j = 0; j < matrixColumns; j++) {
