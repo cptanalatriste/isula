@@ -18,7 +18,7 @@ import java.util.Map;
  * <ul>
  * <li>isSolutionReady(), to define when the Ant must stop adding components to
  * its solution.
- * <li>getSolutionQuality(), to define the quality of the current solution. It
+ * <li>getSolutionCost(), to define the cost of the current solution. It
  * will help to decide the best solution built so far.
  * <li>getHeuristicValue(), to explote problem domain information while
  * constructing solutions.
@@ -244,7 +244,7 @@ public abstract class Ant<C, E extends Environment> {
   public abstract void setPheromoneTrailValue(C solutionComponent,
       E environment, Double value);
 
-  public abstract double getSolutionQuality(E environment);
+  public abstract double getSolutionCost(E environment);
 
   public abstract boolean isSolutionReady(E environment);
 

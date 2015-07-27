@@ -25,14 +25,8 @@ public class EnvironmentTest {
   public void setUp() throws Exception {
     double[][] problemGraph = new double[MATRIX_ROWS][MATRIX_COLUMNS];
 
-    this.dummyEnvironment = new Environment(problemGraph) {
-
-      @Override
-      protected double[][] createPheromoneMatrix() {
-        return new double[MATRIX_ROWS][MATRIX_COLUMNS];
-      }
-
-    };
+    this.dummyEnvironment = DummyFactory.createDummyEnvironment(problemGraph,
+        MATRIX_ROWS, MATRIX_COLUMNS);
   }
 
   @Test

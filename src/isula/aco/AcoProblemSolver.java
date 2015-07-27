@@ -29,7 +29,7 @@ public class AcoProblemSolver<C, E extends Environment> {
       .getName());
 
   public C[] bestSolution;
-  public double bestSolutionQuality = -1.0;
+  public double bestSolutionCost = 0.0;
   public String bestSolutionAsString = "";
 
   private E environment;
@@ -110,7 +110,7 @@ public class AcoProblemSolver<C, E extends Environment> {
     logger.info("Duration (in seconds): " + executionTime);
 
     logger.info("EXECUTION FINISHED");
-    logger.info("Best solution quality: " + bestSolutionQuality);
+    logger.info("Best solution cost: " + bestSolutionCost);
     logger.info("Best solution:" + bestSolutionAsString);
 
   }
@@ -128,12 +128,12 @@ public class AcoProblemSolver<C, E extends Environment> {
     Ant<C, E> bestAnt = antColony.getBestPerformingAnt(environment);
 
     if (bestSolution == null
-        || bestSolutionQuality > bestAnt.getSolutionQuality(environment)) {
+        || bestSolutionCost > bestAnt.getSolutionCost(environment)) {
       bestSolution = bestAnt.getSolution().clone();
-      bestSolutionQuality = bestAnt.getSolutionQuality(environment);
+      bestSolutionCost = bestAnt.getSolutionCost(environment);
       bestSolutionAsString = bestAnt.getSolutionAsString();
 
-      logger.info("Best solution so far > Quality: " + bestSolutionQuality
+      logger.info("Best solution so far > Cost: " + bestSolutionCost
           + ", Solution: " + bestSolutionAsString);
 
     }
@@ -183,16 +183,16 @@ public class AcoProblemSolver<C, E extends Environment> {
     return bestSolution;
   }
 
-  public double getBestSolutionQuality() {
-    return bestSolutionQuality;
+  public double getBestSolutionCost() {
+    return bestSolutionCost;
   }
 
   public String getBestSolutionAsString() {
     return bestSolutionAsString;
   }
 
-  public void setBestSolutionQuality(double bestSolutionQuality) {
-    this.bestSolutionQuality = bestSolutionQuality;
+  public void setBestSolutionCost(double bestSolutionCost) {
+    this.bestSolutionCost = bestSolutionCost;
   }
 
 }

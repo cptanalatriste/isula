@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 /**
  * A group of ants. As an abstract type, you need to define how to build
  * individual ants through the createAnt() method.
- *
+ * 
  * @author Carlos G. Gavidia
  *
  * @param <C>
@@ -53,7 +53,7 @@ public abstract class AntColony<C, E extends Environment> {
   protected abstract Ant<C, E> createAnt(E environment);
 
   /**
-   * Returns the ant with the best performance so far.
+   * Returns the ant with the best performance so far, that is the one with the lowest cost.
    * 
    * @param environment
    *          Environment where the Ants are building solutions.
@@ -64,8 +64,8 @@ public abstract class AntColony<C, E extends Environment> {
 
     for (Ant<C, E> ant : hive) {
 
-      if (ant.getSolutionQuality(environment) < bestAnt
-          .getSolutionQuality(environment)) {
+      if (ant.getSolutionCost(environment) < bestAnt
+          .getSolutionCost(environment)) {
         bestAnt = ant;
       }
     }
@@ -124,7 +124,7 @@ public abstract class AntColony<C, E extends Environment> {
       ant.doAfterSolutionIsReady(environment, configurationProvider);
 
       logger.log(Level.FINE,
-          "Solution is ready > Quality: " + ant.getSolutionQuality(environment)
+          "Solution is ready > Cost: " + ant.getSolutionCost(environment)
               + ", Solution: " + ant.getSolutionAsString());
 
       antCounter++;

@@ -11,9 +11,6 @@ import isula.aco.exception.InvalidInputException;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
-
-
 public class AntTest {
 
   private static final int SOLUTION_SIZE = 3;
@@ -36,41 +33,7 @@ public class AntTest {
    */
   @Before
   public void setUp() throws Exception {
-    this.dummyAnt = new Ant<Integer, Environment>() {
-
-      @Override
-      public List<Integer> getNeighbourhood(Environment environment) {
-        return null;
-      }
-
-      @Override
-      public Double getPheromoneTrailValue(Integer solutionComponent,
-          Integer positionInSolution, Environment environment) {
-        return null;
-      }
-
-      @Override
-      public Double getHeuristicValue(Integer solutionComponent,
-          Integer positionInSolution, Environment environment) {
-        return null;
-      }
-
-      @Override
-      public void setPheromoneTrailValue(Integer solutionComponent,
-          Environment environment, Double value) {
-      }
-
-      @Override
-      public double getSolutionQuality(Environment environment) {
-        return 0;
-      }
-
-      @Override
-      public boolean isSolutionReady(Environment environment) {
-        return false;
-      }
-
-    };
+    this.dummyAnt = DummyFactory.createDummyAnt(0, 1);
 
     this.dummyAnt.setSolution(new Integer[SOLUTION_SIZE]);
 
@@ -122,32 +85,12 @@ public class AntTest {
 
   @Test
   public void testDoAfterSolutionIsReady() throws InvalidInputException {
-    Environment dummyEnvironment = new Environment(SAMPLE_PROBLEM_GRAPH) {
 
-      @Override
-      protected double[][] createPheromoneMatrix() {
-        return new double[3][3];
-      }
+    Environment dummyEnvironment = DummyFactory.createDummyEnvironment(
+        SAMPLE_PROBLEM_GRAPH, 3, 3);
 
-    };
-    ConfigurationProvider configurationProvider = new ConfigurationProvider() {
-
-      public int getNumberOfIterations() {
-        return 0;
-      }
-
-      public int getNumberOfAnts() {
-        return 0;
-      }
-
-      public double getInitialPheromoneValue() {
-        return 0;
-      }
-
-      public double getEvaporationRatio() {
-        return 0;
-      }
-    };
+    ConfigurationProvider configurationProvider = DummyFactory
+        .createDummyConfigurationProvider();
 
     this.dummyAnt.addPolicy(antPolicy);
     this.dummyAnt.doAfterSolutionIsReady(dummyEnvironment,
