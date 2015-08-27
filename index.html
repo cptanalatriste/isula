@@ -66,13 +66,13 @@
 <p>That's a snippet from the Image Thresholding  problem solution. Some things to notice there:</p>
 
 <ul>
-<li>Problem and algorithm configuration is provided by ConfigurationProvider instances. Make your own with the values you need.</li>
-<li>The class everything is the AcoProblemSolver. In this case, we're using the same one provided by the framework but you can extend it to suit your needs.</li>
-<li>The Problem Solver needs an Environment that manages the problem graph and the pheromone matrix. You need to extend the Environment class provided with the framework to adjust it to support your problem.</li>
-<li>And we need an Ant Colony, of course. The Ant Colony main responsibility is to create Ants, and make them built solutions in iterations. The robust base AntColony class makes implementing this very easy.</li>
-<li>The hearth of the algorithm is the Ant class. You will need to define an Ant that suits your needs.</li>
+<li>Problem and algorithm configuration is provided by <code>ConfigurationProvider</code> instances. Make your own with the values you need.</li>
+<li>The class that does everything is <code>AcoProblemSolver</code>. In this case, we're using the same one provided by the framework but you can extend it to suit your needs.</li>
+<li>The Problem Solver needs an Environment that manages the problem graph and the pheromone matrix. You need to extend the <code>Environment</code> class provided with the framework to adjust it to support your problem.</li>
+<li>And we need an Ant Colony, of course. The Ant Colony main responsibility is to create Ants, and make them built solutions in iterations. The robust base <code>AntColony</code> class makes implementing this very easy.</li>
+<li>The hearth of the algorithm is the <code>Ant</code> class. You will need to define an Ant that suits your needs.</li>
 <li>Isula supports daemon actions -global behaviors- and ant-level policies, such as the ones present in multiple ACO Algorithms. You can add them easily to your current solver.</li>
-<li>Finaly, you call the solveProblem() method and wait for the best solution to be shown.</li>
+<li>Finaly, you call the <code>solveProblem()</code> method and wait for the best solution to be shown.</li>
 </ul>
 
 <h2>
