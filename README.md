@@ -47,3 +47,10 @@ Isula in detail
 ---------------
 The Javadoc of every class on the framework is available here: http://cptanalatriste.github.io/isula/doc/
 
+Also, in this article Ant Colony Optimization algorithms are discussed and Isula is used to implement them in the Java Programming Language: http://www.codeproject.com/Articles/1011148/A-Java-Primer-of-Ant-Colony-Algorithms
+
+How to use this code
+--------------------
+The code uploaded to this GitHub Repository corresponds to a Java Project developed on the Eclipse IDE. You should be able to import it as an existing project to your current workspace.
+
+Once the Isula Project is imported to your Eclipse Workspace, you can use it as a dependency on your personal Ant Colony Optimization project. Or if you prefer, you can generate a JAR file of the framework if it is more convenient for you.
