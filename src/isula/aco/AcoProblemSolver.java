@@ -47,7 +47,7 @@ public class AcoProblemSolver<C, E extends Environment> {
    *          Daemon actions.
    */
   @SafeVarargs
-  public void addDaemonActions(DaemonAction<C, E>... daemonActions) {
+  public final void addDaemonActions(DaemonAction<C, E>... daemonActions) {
     for (DaemonAction<C, E> daemonAction : daemonActions) {
       this.addDaemonAction(daemonAction);
     }

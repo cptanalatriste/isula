@@ -138,7 +138,7 @@ public abstract class AntColony<C, E extends Environment> {
    *          List of policies.
    */
   @SafeVarargs
-  public void addAntPolicies(AntPolicy<C, E>... antPolicies) {
+  public final void addAntPolicies(AntPolicy<C, E>... antPolicies) {
     List<Ant<C, E>> hive = getHive();
     for (Ant<C, E> ant : hive) {
       for (AntPolicy<C, E> antPolicy : antPolicies) {
