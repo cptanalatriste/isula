@@ -1,7 +1,5 @@
 package isula.aco.algorithms.acs;
 
-import isula.aco.AntPolicy;
-import isula.aco.AntPolicyType;
 import isula.aco.ConfigurationProvider;
 import isula.aco.Environment;
 import isula.aco.algorithms.antsystem.RandomNodeSelection;
@@ -38,7 +36,7 @@ public class PseudoRandomNodeSelection<C, E extends Environment> extends
     @Override
     public boolean applyPolicy(E environment, ConfigurationProvider configuration) {
         boolean nodeWasSelected = false;
-        C nextNode = null;
+        C nextNode;
         Random random = new Random();
         double randomValue = random.nextDouble();
 

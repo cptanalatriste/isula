@@ -4,7 +4,6 @@ import isula.aco.AntPolicy;
 import isula.aco.AntPolicyType;
 import isula.aco.ConfigurationProvider;
 import isula.aco.Environment;
-import isula.aco.algorithms.acs.AcsConfigurationProvider;
 import isula.aco.exception.ConfigurationException;
 import isula.aco.exception.SolutionConstructionException;
 
@@ -134,10 +133,9 @@ public class RandomNodeSelection<C, E extends Environment> extends
         Double pheromoneTrailValue = getAnt().getPheromoneTrailValue(possibleMove,
                 getAnt().getCurrentIndex(), environment);
 
-        Double heuristicTimesPheromone = Math.pow(heuristicValue,
+        return Math.pow(heuristicValue,
                 configurationProvider.getHeuristicImportance())
                 * Math.pow(pheromoneTrailValue,
                 configurationProvider.getPheromoneImportance());
-        return heuristicTimesPheromone;
     }
 }

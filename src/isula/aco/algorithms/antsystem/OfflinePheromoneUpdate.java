@@ -1,7 +1,6 @@
 package isula.aco.algorithms.antsystem;
 
 import isula.aco.*;
-import isula.aco.algorithms.maxmin.MaxMinConfigurationProvider;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
