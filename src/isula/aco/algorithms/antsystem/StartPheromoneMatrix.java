@@ -11,36 +11,37 @@ import java.util.logging.Logger;
 /**
  * A simple initialization procedure for a Pheromone Matrix. It just assigns all
  * cells the value provided by Configuration.
- * 
- * @author Carlos G. Gavidia
  *
- * @param <C>
- *          Class for components of a solution.
- * @param <E>
- *          Class representing the Environment.
+ * @param <C> Class for components of a solution.
+ * @param <E> Class representing the Environment.
+ * @author Carlos G. Gavidia
  */
 public class StartPheromoneMatrix<C, E extends Environment> extends
-    DaemonAction<C, E> {
+        DaemonAction<C, E> {
 
-  private static Logger logger = Logger
-      .getLogger(StartPheromoneMatrixForMaxMin.class.getName());
+    private static Logger logger = Logger
+            .getLogger(StartPheromoneMatrixForMaxMin.class.getName());
 
-  public StartPheromoneMatrix() {
-    super(DaemonActionType.INITIAL_CONFIGURATION);
-  }
+    public StartPheromoneMatrix() {
+        super(DaemonActionType.INITIAL_CONFIGURATION);
+    }
 
-  @Override
-  public void applyDaemonAction(ConfigurationProvider configurationProvider) {
-    logger.info("INITIALIZING PHEROMONE MATRIX");
+    @Override
+    public void applyDaemonAction(ConfigurationProvider configurationProvider) {
+        logger.info("INITIALIZING PHEROMONE MATRIX");
 
-    double initialPheromoneValue = getInitialPheromoneValue(configurationProvider);
-    logger.info("Initial pheromone value: " + initialPheromoneValue);
+        double initialPheromoneValue = getInitialPheromoneValue(configurationProvider);
+        if (initialPheromoneValue == 0.0) {
+            logger.warning("An initial pheromone value of zero can affect the node selection process.");
+        }
 
-    getEnvironment().populatePheromoneMatrix(initialPheromoneValue);
-  }
+        logger.info("Initial pheromone value: " + initialPheromoneValue);
 
-  protected double getInitialPheromoneValue(
-      ConfigurationProvider configurationProvider) {
-    return configurationProvider.getInitialPheromoneValue();
-  }
+        getEnvironment().populatePheromoneMatrix(initialPheromoneValue);
+    }
+
+    protected double getInitialPheromoneValue(
+            ConfigurationProvider configurationProvider) {
+        return configurationProvider.getInitialPheromoneValue();
+    }
 }

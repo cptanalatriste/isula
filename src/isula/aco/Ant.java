@@ -140,7 +140,11 @@ public abstract class Ant<C, E extends Environment> {
         // TODO(cgavidia): With this approach, the policy is a shared resource
         // between ants. This doesn't allow parallelism.
         selectNodePolicity.setAnt(this);
-        selectNodePolicity.applyPolicy(environment, configurationProvider);
+        boolean policyResult = selectNodePolicity.applyPolicy(environment, configurationProvider);
+        if (!policyResult) {
+            throw new ConfigurationException("The node selection policy " + selectNodePolicity.getClass().getName() +
+                    " wasn't able to select a node.");
+        }
     }
 
     /**
