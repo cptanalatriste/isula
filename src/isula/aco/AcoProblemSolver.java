@@ -100,7 +100,6 @@ public class AcoProblemSolver<C, E extends Environment> {
         int iteration = 0;
 
         while (iteration < numberOfIterations) {
-            logger.info("Current iteration: " + iteration);
 
             antColony.clearAntSolutions();
             antColony.buildSolutions(environment, configurationProvider);
@@ -110,6 +109,8 @@ public class AcoProblemSolver<C, E extends Environment> {
             applyDaemonActions(DaemonActionType.AFTER_ITERATION_CONSTRUCTION);
 
             updateBestSolution(environment);
+            logger.info("Current iteration: " + iteration + " Best solution cost: " + bestSolutionCost);
+
             iteration++;
         }
 
@@ -141,7 +142,7 @@ public class AcoProblemSolver<C, E extends Environment> {
             bestSolutionCost = bestAnt.getSolutionCost(environment);
             bestSolutionAsString = bestAnt.getSolutionAsString();
 
-            logger.info("Best solution so far > Cost: " + bestSolutionCost
+            logger.fine("Best solution so far > Cost: " + bestSolutionCost
                     + ", Solution: " + bestSolutionAsString);
 
         }

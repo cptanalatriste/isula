@@ -6,6 +6,7 @@ import isula.aco.DaemonActionType;
 import isula.aco.Environment;
 import isula.aco.algorithms.maxmin.StartPheromoneMatrixForMaxMin;
 
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 /**
@@ -28,16 +29,17 @@ public class StartPheromoneMatrix<C, E extends Environment> extends
 
     @Override
     public void applyDaemonAction(ConfigurationProvider configurationProvider) {
-        logger.info("INITIALIZING PHEROMONE MATRIX");
+        logger.fine("INITIALIZING PHEROMONE MATRIX");
 
         double initialPheromoneValue = getInitialPheromoneValue(configurationProvider);
         if (initialPheromoneValue == 0.0) {
             logger.warning("An initial pheromone value of zero can affect the node selection process.");
         }
 
-        logger.info("Initial pheromone value: " + initialPheromoneValue);
+        logger.fine("Initial pheromone value: " + initialPheromoneValue);
 
         getEnvironment().populatePheromoneMatrix(initialPheromoneValue);
+        logger.fine("Pheromone matrix after initilizatation :" + Arrays.deepToString(getEnvironment().getPheromoneMatrix()));
     }
 
     protected double getInitialPheromoneValue(

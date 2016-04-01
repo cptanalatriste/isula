@@ -2,6 +2,7 @@ package isula.aco.algorithms.antsystem;
 
 import isula.aco.*;
 
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,7 +25,7 @@ public abstract class OfflinePheromoneUpdate<C, E extends Environment> extends D
     @Override
     public void applyDaemonAction(ConfigurationProvider configurationProvider) {
 
-        logger.log(Level.INFO, "Performing offline pheromone update");
+        logger.log(Level.FINE, "Performing offline pheromone update");
 
         E environment = getEnvironment();
 
@@ -37,6 +38,8 @@ public abstract class OfflinePheromoneUpdate<C, E extends Environment> extends D
                         newPheromoneValue);
             }
         }
+
+        logger.fine("Pheromone matrix after update :" + Arrays.deepToString(environment.getPheromoneMatrix()));
     }
 
     /**

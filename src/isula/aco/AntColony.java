@@ -113,7 +113,7 @@ public abstract class AntColony<C, E extends Environment> {
         }
 
         for (Ant<C, E> ant : hive) {
-            logger.info("Current ant: " + antCounter);
+            logger.fine("Current ant: " + antCounter);
 
             while (!ant.isSolutionReady(environment)) {
                 ant.selectNextNode(environment, configurationProvider);
