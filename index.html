@@ -20,17 +20,24 @@
 
     <section class="main-content">
       <h1>
-<a id="isula-a-framework-for-ant-colony-algorithms" class="anchor" href="#isula-a-framework-for-ant-colony-algorithms" aria-hidden="true"><span class="octicon octicon-link"></span></a>Isula: A Framework for Ant Colony Algorithms</h1>
+<a id="isula-a-framework-for-ant-colony-algorithms" class="anchor" href="#isula-a-framework-for-ant-colony-algorithms" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Isula: A Framework for Ant Colony Algorithms</h1>
 
 <p>Isula allows an easy implementation of Ant-Colony Optimization algorithms using the Java Programming Language. It contains the common elements present in the meta-heuristic to allow algorithm designers the reutilization of common behaviors. With Isula, solving optimization problems with Ant Colony can be done in few lines of code.</p>
 
 <h2>
-<a id="isula-in-action" class="anchor" href="#isula-in-action" aria-hidden="true"><span class="octicon octicon-link"></span></a>Isula in Action</h2>
+<a id="isula-in-action" class="anchor" href="#isula-in-action" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Isula in Action</h2>
 
-<p>To get into speed, here are some samples of optimization problems solved with Isula-based algorithms:</p>
+<p>If you are not familiar with the framework, a good place to start is the classic Travelling Salesman Problem:</p>
 
 <ul>
-<li>The Flow-Shop Scheduling  problem, using Max-Min Ant System: <a href="https://github.com/cptanalatriste/aco-flowshop">https://github.com/cptanalatriste/aco-flowshop</a>
+<li>The Travelling Salesman Problem, using Ant System: <a href="https://github.com/cptanalatriste/aco-tsp">https://github.com/cptanalatriste/aco-tsp</a>
+</li>
+</ul>
+
+<p>Here are some advanced examples of optimization problems solved with Isula-based algorithms:</p>
+
+<ul>
+<li>The Flow-Shop Scheduling  Problem, using Max-Min Ant System: <a href="https://github.com/cptanalatriste/aco-flowshop">https://github.com/cptanalatriste/aco-flowshop</a>
 </li>
 <li>Binary Image Segmentation using Ant System: <a href="https://github.com/cptanalatriste/aco-image-thresholding">https://github.com/cptanalatriste/aco-image-thresholding</a>
 </li>
@@ -39,11 +46,11 @@
 </ul>
 
 <h2>
-<a id="an-isula-primer" class="anchor" href="#an-isula-primer" aria-hidden="true"><span class="octicon octicon-link"></span></a>An Isula Primer</h2>
+<a id="an-isula-primer" class="anchor" href="#an-isula-primer" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>An Isula Primer</h2>
 
 <p>To solve a problem with an Ant-Colony Optimization algorithm, you need a Colony of Agents (a.k.a Ants), a graph representing the problem, and a pheromone data-structure to allow communication between this agents. Isula tries to emulate that pattern:</p>
 
-<div class="highlight highlight-java"><pre>    <span class="pl-smi">ConfigurationProvider</span> configurationProvider <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">ProblemConfiguration</span>();
+<div class="highlight highlight-source-java"><pre>    <span class="pl-smi">ConfigurationProvider</span> configurationProvider <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">ProblemConfiguration</span>();
     <span class="pl-k">AcoProblemSolver&lt;<span class="pl-smi">ImagePixel</span>&gt;</span> problemSolver <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-k">AcoProblemSolver&lt;<span class="pl-smi">ImagePixel</span>&gt;</span>();
 
     <span class="pl-smi">EnvironmentForImageThresholding</span> environment <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">EnvironmentForImageThresholding</span>(
@@ -76,21 +83,21 @@
 </ul>
 
 <h2>
-<a id="isula-in-detail" class="anchor" href="#isula-in-detail" aria-hidden="true"><span class="octicon octicon-link"></span></a>Isula in detail</h2>
+<a id="isula-in-detail" class="anchor" href="#isula-in-detail" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Isula in detail</h2>
 
 <p>The Javadoc of every class on the framework is available here: <a href="http://cptanalatriste.github.io/isula/doc/">http://cptanalatriste.github.io/isula/doc/</a></p>
 
 <p>Also, in this article Ant Colony Optimization algorithms are discussed and Isula is used to implement them in the Java Programming Language: <a href="http://www.codeproject.com/Articles/1011148/A-Java-Primer-of-Ant-Colony-Algorithms">http://www.codeproject.com/Articles/1011148/A-Java-Primer-of-Ant-Colony-Algorithms</a></p>
 
 <h2>
-<a id="how-to-use-this-code" class="anchor" href="#how-to-use-this-code" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to use this code</h2>
+<a id="how-to-use-this-code" class="anchor" href="#how-to-use-this-code" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to use this code</h2>
 
 <p>The code uploaded to this GitHub Repository corresponds to a Java Project developed on the Eclipse IDE. You should be able to import it as an existing project to your current workspace.</p>
 
 <p>Once the Isula Project is imported to your Eclipse Workspace, you can use it as a dependency on your personal Ant Colony Optimization project. Or if you prefer, you can generate a JAR file of the framework if it is more convenient for you.</p>
 
 <h2>
-<a id="questions-issues-or-support" class="anchor" href="#questions-issues-or-support" aria-hidden="true"><span class="octicon octicon-link"></span></a>Questions, issues or support?</h2>
+<a id="questions-issues-or-support" class="anchor" href="#questions-issues-or-support" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Questions, issues or support?</h2>
 
 <p>Feel free to contact me at <a href="mailto:carlos.gavidia@pucp.edu.pe">carlos.gavidia@pucp.edu.pe</a>.</p>
 
