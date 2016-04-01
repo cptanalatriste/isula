@@ -3,4 +3,5 @@ isula.aco.algorithms.acs
 isula.aco.algorithms.antsystem
 isula.aco.algorithms.maxmin
 isula.aco.exception
+isula.aco.test
 isula.image.util
