@@ -130,7 +130,7 @@ public class AcoProblemSolver<C, E extends Environment> {
      *
      * @param environment Environment where the solutions where produced.
      */
-    private void updateBestSolution(E environment) {
+    public void updateBestSolution(E environment) {
         logger.log(Level.FINE, "GETTING BEST SOLUTION FOUND");
 
         Ant<C, E> bestAnt = antColony.getBestPerformingAnt(environment);
@@ -165,7 +165,7 @@ public class AcoProblemSolver<C, E extends Environment> {
         return environment;
     }
 
-    protected void setEnvironment(E environment) {
+    public void setEnvironment(E environment) {
         this.environment = environment;
     }
 
@@ -173,7 +173,7 @@ public class AcoProblemSolver<C, E extends Environment> {
         return antColony;
     }
 
-    protected void setAntColony(AntColony<C, E> antColony) {
+    public void setAntColony(AntColony<C, E> antColony) {
         this.antColony = antColony;
     }
 
@@ -186,7 +186,7 @@ public class AcoProblemSolver<C, E extends Environment> {
         return configurationProvider;
     }
 
-    protected void setConfigurationProvider(
+    public void setConfigurationProvider(
             ConfigurationProvider configurationProvider) {
         this.configurationProvider = configurationProvider;
     }
