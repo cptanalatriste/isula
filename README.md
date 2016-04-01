@@ -56,9 +56,9 @@ Also, in this article Ant Colony Optimization algorithms are discussed and Isula
 
 How to use this code
 --------------------
-The code uploaded to this GitHub Repository corresponds to a Java Project developed on the Eclipse IDE. You should be able to import it as an existing project to your current workspace.
+The code uploaded to this GitHub Repository corresponds to a Maven Java Project. You should be able to import it as an existing project to your current IDE.
 
-Once the Isula Project is imported to your Eclipse Workspace, you can use it as a dependency on your personal Ant Colony Optimization project. Or if you prefer, you can generate a JAR file of the framework if it is more convenient for you.
+Once the Isula Project is imported to your workspace, you can use it as a dependency on your personal Ant Colony Optimization project. Or if you prefer, you can generate a JAR file of the framework if it is more convenient for you.
 
 Questions, issues or support?
 ----------------------------
