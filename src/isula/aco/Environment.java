@@ -42,6 +42,14 @@ public abstract class Environment {
     }
 
     /**
+     * Creates a pheromone matrix depending of the nature of the problem to solve.
+     *
+     * @return Pheromone matrix instance.
+     */
+    protected abstract double[][] createPheromoneMatrix();
+
+
+    /**
      * Verifies if the problem graph matrix provided is valid. By default this
      * method returns true: override if necessary.
      *
@@ -63,7 +71,6 @@ public abstract class Environment {
         return pheromoneMatrix;
     }
 
-    protected abstract double[][] createPheromoneMatrix();
 
     /**
      * Assigns the same value to all cells on the Pheromone Matrix.

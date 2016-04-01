@@ -38,7 +38,22 @@ public class AcoProblemSolver<C, E extends Environment> {
     private List<DaemonAction<C, E>> daemonActions = new ArrayList<DaemonAction<C, E>>();
 
     /**
-     * Adds a list of Daemon Actions for the current solver.
+     * Prepares the solver for problem resolution.
+     *
+     * @param environment Environment instance, with problem-related information.
+     * @param colony      The Ant Colony with specialized ants.
+     * @param config      Algorithm configuration.
+     */
+    public void initialize(E environment, AntColony<C, E> colony, ConfigurationProvider config) {
+        colony.buildColony(environment);
+        this.setConfigurationProvider(config);
+        this.setEnvironment(environment);
+        this.setAntColony(colony);
+    }
+
+    /**
+     * Adds a list of Daemon Actions for the current solver. A daemon action is a global procedure applied
+     * while algorithm execution.
      *
      * @param daemonActions Daemon actions.
      */
@@ -163,6 +178,11 @@ public class AcoProblemSolver<C, E extends Environment> {
     }
 
     public ConfigurationProvider getConfigurationProvider() {
+        if (this.configurationProvider == null) {
+            throw new isula.aco.exception.ConfigurationException(
+                    "No Configuration Provider was associated with this solver");
+        }
+
         return configurationProvider;
     }
 

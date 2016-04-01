@@ -45,6 +45,12 @@ public abstract class AntColony<C, E extends Environment> {
         }
     }
 
+    /**
+     * Produces a new Ant to integrate the colony.
+     *
+     * @param environment Environment with problem specific information.
+     * @return An Ant instance.
+     */
     protected abstract Ant<C, E> createAnt(E environment);
 
     /**
@@ -123,7 +129,8 @@ public abstract class AntColony<C, E extends Environment> {
     }
 
     /**
-     * Adds a list of policies to every Ant in the Colony.
+     * Adds a list of policies to every Ant in the Colony. This are ant-specific behaviours, like component selection
+     * while building solutions.
      *
      * @param antPolicies List of policies.
      */

@@ -51,6 +51,7 @@ public abstract class Ant<C, E extends Environment> {
     // data structure.
     private Map<C, Boolean> visitedComponents = new HashMap<C, Boolean>();
 
+
     /**
      * Mark a node as visited.
      *
@@ -167,16 +168,16 @@ public abstract class Ant<C, E extends Environment> {
     }
 
     /**
-     * Verifies if a node is visited.
+     * Verifies if a component. is already included in the solution.
      *
-     * @param node Node to verify.
+     * @param component Component to verify.
      * @return True if the node is already visited. False otherwise.
      */
 
-    public boolean isNodeVisited(C node) {
+    public boolean isNodeVisited(C component) {
         boolean visited = false;
 
-        Boolean inVisitedMap = visitedComponents.get(node);
+        Boolean inVisitedMap = visitedComponents.get(component);
 
         if (inVisitedMap != null && inVisitedMap) {
             visited = inVisitedMap;
@@ -199,13 +200,74 @@ public abstract class Ant<C, E extends Environment> {
     }
 
     /**
-     * Gets the current index for the Ant.
+     * Gets the current index for the Ant while constructing a solution.
      *
      * @return Current index.
      */
     public int getCurrentIndex() {
         return currentIndex;
     }
+
+    /**
+     * Returns true when the solution build by the current Ant is finished.
+     *
+     * @param environment Environment instance with problem information.
+     * @return True if the solution is finished, false otherwise.
+     */
+    public abstract boolean isSolutionReady(E environment);
+
+    /**
+     * Calculates the cost associated to the solution build, which is needed to determine the performance of the Ant.
+     *
+     * @param environment Environment instance with problem information.
+     * @return The cost of the solution built.
+     */
+    public abstract double getSolutionCost(E environment);
+
+    /**
+     * Calculates the heuristic contribution for the cost of the solution by adding a component at an specific position.
+     *
+     * @param solutionComponent  Solution component.
+     * @param positionInSolution Position of this component in the solution.
+     * @param environment        Environment instance with problem information.
+     * @return Heurisitic contribution.
+     */
+    public abstract Double getHeuristicValue(C solutionComponent,
+                                             Integer positionInSolution, E environment);
+
+    /**
+     * The components that are available for selection while an Ant is constructing its solution.
+     *
+     * @param environment Environment instance with problem information.
+     * @return List of available components.
+     */
+    public abstract List<C> getNeighbourhood(E environment);
+
+
+    // TODO(cgavidia): Maybe we should move this to Environment.
+
+    /**
+     * Returns the pheromone value associated to a solution component at an specific position
+     *
+     * @param solutionComponent  Solution component.
+     * @param positionInSolution Position of this component in the solution.
+     * @param environment        Environment instance with problem information.
+     * @return Pheromone value.
+     */
+    public abstract Double getPheromoneTrailValue(C solutionComponent,
+                                                  Integer positionInSolution, E environment);
+
+    /**
+     * Updates the value of a cell on the pheromone matrix.
+     *
+     * @param solutionComponent  Solution component.
+     * @param positionInSolution Position of this component in the solution.
+     * @param environment        Environment instance with problem information.
+     * @param value              New pheromone value.
+     */
+    public abstract void setPheromoneTrailValue(C solutionComponent,
+                                                Integer positionInSolution, E environment, Double value);
+
 
     // TODO(cgavidia): For convenience, we're accesing this data structures
     // directly.
@@ -225,20 +287,5 @@ public abstract class Ant<C, E extends Environment> {
         this.visitedComponents = visited;
     }
 
-    public abstract List<C> getNeighbourhood(E environment);
-
-    // TODO(cgavidia): Maybe we should move this to Environment.
-    public abstract Double getPheromoneTrailValue(C solutionComponent,
-                                                  Integer positionInSolution, E environment);
-
-    public abstract Double getHeuristicValue(C solutionComponent,
-                                             Integer positionInSolution, E environment);
-
-    public abstract void setPheromoneTrailValue(C solutionComponent,
-                                                Integer positionInSolution, E environment, Double value);
-
-    public abstract double getSolutionCost(E environment);
-
-    public abstract boolean isSolutionReady(E environment);
 
 }

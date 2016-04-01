@@ -39,6 +39,16 @@ public abstract class OfflinePheromoneUpdate<C, E extends Environment> extends D
         }
     }
 
+    /**
+     * Calculates the pheromone value to be used in the pheromone matrix update.
+     *
+     * @param ant                   Ant instance doing the update.
+     * @param positionInSolution    Position of the component in the solution.
+     * @param solutionComponent     Solution component.
+     * @param environment           Environment with problem specific information.
+     * @param configurationProvider Algorithm configuration.
+     * @return New pheromone value.
+     */
     protected abstract double getNewPheromoneValue(Ant<C, E> ant,
                                                    Integer positionInSolution, C solutionComponent,
                                                    E environment, ConfigurationProvider configurationProvider);

@@ -20,7 +20,7 @@ public class StartPheromoneMatrix<C, E extends Environment> extends
         DaemonAction<C, E> {
 
     private static Logger logger = Logger
-            .getLogger(StartPheromoneMatrixForMaxMin.class.getName());
+            .getLogger(StartPheromoneMatrix.class.getName());
 
     public StartPheromoneMatrix() {
         super(DaemonActionType.INITIAL_CONFIGURATION);
