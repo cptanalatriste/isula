@@ -26,7 +26,7 @@ public abstract class OnlinePheromoneUpdate<C, E extends Environment> extends
 
         for (int i = 0; i < getAnt().getSolution().length; i++) {
             C solutionComponent = getAnt().getSolution()[i];
-            double newPheromoneValue = this.getNewPheromoneValue(solutionComponent,
+            double newPheromoneValue = this.getNewPheromoneValue(solutionComponent, i,
                     environment, configurationProvider);
             getAnt().setPheromoneTrailValue(solutionComponent, i, environment,
                     newPheromoneValue);
@@ -35,7 +35,17 @@ public abstract class OnlinePheromoneUpdate<C, E extends Environment> extends
         return true;
     }
 
+    /**
+     * Calculates the pheromone value to be used in the pheromone matrix update.
+     *
+     * @param positionInSolution    Position of the component in the solution.
+     * @param solutionComponent     Solution component.
+     * @param environment           Environment with problem specific information.
+     * @param configurationProvider Algorithm configuration.
+     * @return New pheromone value.
+     */
     protected abstract double getNewPheromoneValue(C solutionComponent,
+                                                   Integer positionInSolution,
                                                    E environment, ConfigurationProvider configurationProvider);
 
 }

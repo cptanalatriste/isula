@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.logging.Logger;
 
 /**
  * The selection policy for Ant Colony System algorithms. It defines to
@@ -32,6 +33,8 @@ import java.util.Random;
 public class PseudoRandomNodeSelection<C, E extends Environment> extends
         RandomNodeSelection<C, E> {
 
+    private static Logger logger = Logger.getLogger(PseudoRandomNodeSelection.class.getName());
+
 
     @Override
     public boolean applyPolicy(E environment, ConfigurationProvider configuration) {
@@ -49,6 +52,7 @@ public class PseudoRandomNodeSelection<C, E extends Environment> extends
                 .getComponentsWithProbabilities(environment, configurationProvider);
 
         if (randomValue < bestChoiceProbability) {
+            logger.fine("Selecting the greedy choice");
 
             // TODO(cgavidia): This branch has testing pending.
             nextNode = getMostConvenient(componentsWithProbabilities);
@@ -59,6 +63,8 @@ public class PseudoRandomNodeSelection<C, E extends Environment> extends
             }
 
         } else {
+            logger.fine("Selecting the probabilistic choice");
+
             nodeWasSelected = super.applyPolicy(environment, configuration);
         }
 

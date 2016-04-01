@@ -109,7 +109,7 @@ public class AcoProblemSolver<C, E extends Environment> {
             applyDaemonActions(DaemonActionType.AFTER_ITERATION_CONSTRUCTION);
 
             updateBestSolution(environment);
-            logger.info("Current iteration: " + iteration + " Best solution cost: " + bestSolutionCost);
+            logger.fine("Current iteration: " + iteration + " Best solution cost: " + bestSolutionCost);
 
             iteration++;
         }
@@ -135,11 +135,13 @@ public class AcoProblemSolver<C, E extends Environment> {
         logger.log(Level.FINE, "GETTING BEST SOLUTION FOUND");
 
         Ant<C, E> bestAnt = antColony.getBestPerformingAnt(environment);
+        Double bestIterationCost = bestAnt.getSolutionCost(environment);
+        logger.info("Iteration best cost: " + bestIterationCost);
 
         if (bestSolution == null
-                || bestSolutionCost > bestAnt.getSolutionCost(environment)) {
+                || bestSolutionCost > bestIterationCost) {
             bestSolution = bestAnt.getSolution().clone();
-            bestSolutionCost = bestAnt.getSolutionCost(environment);
+            bestSolutionCost = bestIterationCost;
             bestSolutionAsString = bestAnt.getSolutionAsString();
 
             logger.fine("Best solution so far > Cost: " + bestSolutionCost
