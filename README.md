@@ -6,6 +6,8 @@ Isula in Action
 ---------------
 If you are not familiar with the framework, a good place to start is the classic Travelling Salesman Problem:
 * The Travelling Salesman Problem, using Ant System: https://github.com/cptanalatriste/aco-tsp
+* The Travelling Salesman Problem, using Ant Colony System: https://github.com/cptanalatriste/aco-acs-tsp
+
 
 Here are some advanced examples of optimization problems solved with Isula-based algorithms:
 * The Flow-Shop Scheduling  Problem, using Max-Min Ant System: https://github.com/cptanalatriste/aco-flowshop
