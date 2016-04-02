@@ -36,10 +36,10 @@ public class StartPheromoneMatrix<C, E extends Environment> extends
             logger.warning("An initial pheromone value of zero can affect the node selection process.");
         }
 
-        logger.fine("Initial pheromone value: " + initialPheromoneValue);
+        logger.info("Initial pheromone value: " + initialPheromoneValue);
 
         getEnvironment().populatePheromoneMatrix(initialPheromoneValue);
-        logger.fine("Pheromone matrix after initilizatation :" + Arrays.deepToString(getEnvironment().getPheromoneMatrix()));
+        logger.info("Pheromone matrix after initilizatation :" + Arrays.deepToString(getEnvironment().getPheromoneMatrix()));
     }
 
     protected double getInitialPheromoneValue(

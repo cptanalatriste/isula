@@ -5,7 +5,9 @@ import isula.aco.ConfigurationProvider;
 import isula.aco.DaemonAction;
 import isula.aco.DaemonActionType;
 import isula.aco.Environment;
+import isula.aco.exception.ConfigurationException;
 
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,7 +43,6 @@ public abstract class UpdatePheromoneMatrixForMaxMin<C, E extends Environment>
 
         MaxMinConfigurationProvider configurationProvider = (MaxMinConfigurationProvider) provider;
         logger.log(Level.FINE, "UPDATING PHEROMONE TRAILS");
-
         logger.log(Level.FINE, "Performing evaporation on all edges");
         logger.log(Level.FINE,
                 "Evaporation ratio: " + configurationProvider.getEvaporationRatio());
@@ -55,12 +56,13 @@ public abstract class UpdatePheromoneMatrixForMaxMin<C, E extends Environment>
                 double newValue = pheromoneMatrix[i][j]
                         * configurationProvider.getEvaporationRatio();
 
-                if (newValue >= configurationProvider.getMinimumPheromoneValue()) {
+                if (newValue >= getMinimumPheromoneValue(configurationProvider)) {
                     pheromoneMatrix[i][j] = newValue;
                 } else {
-                    pheromoneMatrix[i][j] = configurationProvider
-                            .getMinimumPheromoneValue();
+                    pheromoneMatrix[i][j] = getMinimumPheromoneValue(configurationProvider);
                 }
+
+                validatePheromoneValue(pheromoneMatrix[i][j]);
             }
         }
 
@@ -79,17 +81,58 @@ public abstract class UpdatePheromoneMatrixForMaxMin<C, E extends Environment>
             double newValue = getNewPheromoneValue(bestAnt, componentIndex,
                     solutionComponent, configurationProvider);
 
-            if (newValue <= configurationProvider.getMaximumPheromoneValue()) {
+            if (newValue <= getMaximumPheromoneValue(configurationProvider)) {
                 bestAnt.setPheromoneTrailValue(solutionComponent, componentIndex, getEnvironment(),
                         newValue);
             } else {
                 bestAnt.setPheromoneTrailValue(solutionComponent, componentIndex, getEnvironment(),
-                        configurationProvider.getMaximumPheromoneValue());
+                        getMaximumPheromoneValue(configurationProvider));
             }
+
+            validatePheromoneValue(bestAnt.getPheromoneTrailValue(solutionComponent, componentIndex, getEnvironment()));
+        }
+
+        logger.log(Level.FINE, "After pheromone update: " + Arrays.deepToString(getEnvironment().getPheromoneMatrix()));
+
+    }
+
+    private void validatePheromoneValue(double v) {
+        if (Double.isInfinite(v) || Double.isNaN(v)) {
+            throw new ConfigurationException("The pheromone value calculated is not a valid number: " +
+                    v);
         }
     }
 
-    protected abstract double getNewPheromoneValue(Ant<C, E> bestAnt,
+    /**
+     * The maximum value permitted for a pheromone matrix cell.
+     *
+     * @param configurationProvider Algorithm configuration.
+     * @return Pheromone threshold.
+     */
+    protected double getMaximumPheromoneValue(MaxMinConfigurationProvider configurationProvider) {
+        return configurationProvider.getMaximumPheromoneValue();
+    }
+
+    /**
+     * The minimum value permitted for a pheromone matrix cell.
+     *
+     * @param configurationProvider Algorithm configuration.
+     * @return Pheromone threshold.
+     */
+    protected double getMinimumPheromoneValue(MaxMinConfigurationProvider configurationProvider) {
+        return configurationProvider.getMinimumPheromoneValue();
+    }
+
+    /**
+     * The new value to be included in the pheromone matrix, depending on a component and its position on the solution.
+     *
+     * @param ant                   Ant performing the deposit.
+     * @param positionInSolution    Component in the solution.
+     * @param solutionComponent     Position of the component in the solution.
+     * @param configurationProvider Algorithm configuration.
+     * @return New pheromone value.
+     */
+    protected abstract double getNewPheromoneValue(Ant<C, E> ant,
                                                    int positionInSolution, C solutionComponent,
                                                    MaxMinConfigurationProvider configurationProvider);
 
