@@ -56,7 +56,7 @@ Here is a sequence diagram of the `solveProblem()` method, for you to get an ide
 
 Isula will provide you the basic execution flow for an algorithm in the ACO metaheuristic. On a common use case, you can rely on the implementations already available for `AcoProblemSolver` and `AntColony` but you are free to override and extend in case you need it. Take in mind that usually you will need to create your own `Ant` instance according to your project needs, however the base implementation already contains a lot of functionality available. If you need some reference, please take a look to the projects on the "Isula in action" section.
 
-Every ACO algorithm has a set of customized behaviours that are executed during the solution processes: this behaviours can have global impact (`DaemonAction` instances, like pheromone update rules) or only affect an ant and its solution (like component selection rules, they are subclasses of `AntPolicy`). Isula already provides this behaviours for some representative algorithms -- take a look at the `isula.aco.algorithms` package-- but you might be in the need of defining your own policies or extending the ones already available.
+Every ACO algorithm has a set of customized behaviours that are executed during the solution processes: this behaviours can have global impact (`DaemonAction` instances, like pheromone update rules) or only affect an ant and its solution (like component selection rules: they are subclasses of `AntPolicy`). Isula already provides this behaviours for some representative algorithms -- take a look at the `isula.aco.algorithms` package-- but you might be in the need of defining your own policies or extending the ones already available.
 
 Read abour Isula
 ---------------
