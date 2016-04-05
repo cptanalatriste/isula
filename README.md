@@ -52,11 +52,8 @@ Isula internals
 ------------------
 Here is a sequence diagram of the `solveProblem()` method, for you to get an idea on how isula works:
 
-![alt tag](http://postimg.org/image/j627o5wct/)
+![Alt text](http://postimg.org/image/j627o5wct/ "isula internals")
 
-
-
-asdasd
 
 Isula in detail
 ---------------
