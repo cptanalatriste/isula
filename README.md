@@ -52,7 +52,7 @@ Isula internals
 ------------------
 Here is a sequence diagram of the `solveProblem()` method, for you to get an idea on how isula works:
 
-![Alt text](resources/ACO_metaheuristic.png?raw=true "Title")
+![Alt text](https://github.com/cptanalatriste/isula/blob/master/resources/ACO_metaheuristic.png?raw=true "Title")
 
 Isula will provide you the basic execution flow for an algorithm in the ACO metaheuristic. On a common use case, you can rely on the implementations already available for `AcoProblemSolver` and `AntColony` but you are free to override and extend in case you need it. Take in mind that usually you will need to create your own `Ant` instance according to your project needs, however the base implementation already contains a lot of functionality available. If you need some reference, please take a look to the projects on the "Isula in action" section.
 
