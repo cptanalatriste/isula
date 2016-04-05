@@ -52,7 +52,7 @@ Isula internals
 ------------------
 Here is a sequence diagram of the `solveProblem()` method, for you to get an idea on how isula works:
 
-![Alt text](isula/resources/ACO_metaheuristic.png?raw=true "Title")
+![Alt text](resources/ACO_metaheuristic.png?raw=true "Title")
 
 
 Isula in detail
