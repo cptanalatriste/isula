@@ -48,6 +48,16 @@ That's a snippet from the Image Thresholding  problem solution. Some things to n
 * Isula supports daemon actions -global behaviors- and ant-level policies, such as the ones present in multiple ACO Algorithms. You can add them easily to your current solver.
 * Finaly, you call the `solveProblem()` method and wait for the best solution to be shown.
 
+Isula internals
+------------------
+Here is a sequence diagram of the `solveProblem()` method, for you to get an idea on how isula works:
+
+![alt tag](http://postimg.org/image/j627o5wct/)
+
+
+
+asdasd
+
 Isula in detail
 ---------------
 The Javadoc of every class on the framework is available here: http://cptanalatriste.github.io/isula/doc/
