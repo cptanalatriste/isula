@@ -85,7 +85,18 @@
 </ul>
 
 <h2>
-<a id="isula-in-detail" class="anchor" href="#isula-in-detail" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Isula in detail</h2>
+<a id="isula-internals" class="anchor" href="#isula-internals" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Isula internals</h2>
+
+<p>Here is a sequence diagram of the <code>solveProblem()</code> method, for you to get an idea on how isula works:</p>
+
+<p><img src="resources/ACO_metaheuristic.png?raw=true" alt="Alt text" title="Title"></p>
+
+<p>Isula will provide you the basic execution flow for an algorithm in the ACO metaheuristic. On a common use case, you can rely on the implementations already available for <code>AcoProblemSolver</code> and <code>AntColony</code> but you are free to override and extend in case you need it. Take in mind that usually you will need to create your own <code>Ant</code> instance according to your project needs, however the base implementation already contains a lot of functionality available. If you need some reference, please take a look to the projects on the "Isula in action" section.</p>
+
+<p>Every ACO algorithm has a set of customized behaviours that are executed during the solution processes: this behaviours can have global impact (<code>DaemonAction</code> instances, like pheromone update rules) or only affect an ant and its solution (like component selection rules: they are subclasses of <code>AntPolicy</code>). Isula already provides this behaviours for some representative algorithms -take a look at the <code>isula.aco.algorithms</code> package- but you might be in the need of defining your own policies or extending the ones already available.</p>
+
+<h2>
+<a id="read-abour-isula" class="anchor" href="#read-abour-isula" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Read abour Isula</h2>
 
 <p>The Javadoc of every class on the framework is available here: <a href="http://cptanalatriste.github.io/isula/doc/">http://cptanalatriste.github.io/isula/doc/</a></p>
 
