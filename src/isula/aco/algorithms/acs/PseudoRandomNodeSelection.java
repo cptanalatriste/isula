@@ -40,21 +40,14 @@ public class PseudoRandomNodeSelection<C, E extends Environment> extends
     public boolean applyPolicy(E environment, ConfigurationProvider configuration) {
         boolean nodeWasSelected = false;
         C nextNode;
-        Random random = new Random();
-        double randomValue = random.nextDouble();
-
         AcsConfigurationProvider configurationProvider = (AcsConfigurationProvider) configuration;
-
-        double bestChoiceProbability = configurationProvider
-                .getBestChoiceProbability();
 
         HashMap<C, Double> componentsWithProbabilities = this
                 .getComponentsWithProbabilities(environment, configurationProvider);
 
-        if (randomValue < bestChoiceProbability) {
+        if (selectMostConvenient(configurationProvider)) {
             logger.fine("Selecting the greedy choice");
 
-            // TODO(cgavidia): This branch has testing pending.
             nextNode = getMostConvenient(componentsWithProbabilities);
 
             if (nextNode != null) {
@@ -73,6 +66,20 @@ public class PseudoRandomNodeSelection<C, E extends Environment> extends
         }
 
         return nodeWasSelected;
+    }
+
+    /**
+     * In a pseudo-random selection rule, determines if we greedily select the most convenient component.
+     *
+     * @param configurationProvider Algorithm configuration.
+     * @return True if the greedy approach is followed, false otherwise.
+     */
+    protected boolean selectMostConvenient(AcsConfigurationProvider configurationProvider) {
+        double bestChoiceProbability = configurationProvider
+                .getBestChoiceProbability();
+        Random random = new Random();
+        double randomValue = random.nextDouble();
+        return randomValue < bestChoiceProbability;
     }
 
     /**

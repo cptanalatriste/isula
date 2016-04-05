@@ -39,7 +39,7 @@ public class StartPheromoneMatrix<C, E extends Environment> extends
         logger.info("Initial pheromone value: " + initialPheromoneValue);
 
         getEnvironment().populatePheromoneMatrix(initialPheromoneValue);
-        logger.info("Pheromone matrix after initilizatation :" + Arrays.deepToString(getEnvironment().getPheromoneMatrix()));
+        logger.fine("Pheromone matrix after initilizatation :" + Arrays.deepToString(getEnvironment().getPheromoneMatrix()));
     }
 
     protected double getInitialPheromoneValue(
