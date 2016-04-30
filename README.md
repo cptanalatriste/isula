@@ -39,7 +39,7 @@ That's a snippet from the Travelling Salesman Problem solution. Some things to n
 * The Problem Solver needs an Environment that manages the problem graph and the pheromone matrix. You need to extend the `Environment` class provided with the framework to adjust it to support your problem.
 * And we need an Ant Colony, of course. The Ant Colony main responsibility is to create Ants, and make them built solutions in iterations. The robust base `AntColony` class makes implementing this very easy.
 * The hearth of the algorithm is the `Ant` class. You will need to define an Ant that suits your needs.
-* Isula supports daemon actions -global behaviors- and ant-level policies, such as the ones present in multiple ACO Algorithms. You can add them easily to your current solver via the `addDaemonActions` method.
+* Isula supports daemon actions -global behaviors- and ant-level policies, such as the ones present in multiple ACO Algorithms. You can add daemon actions to a solver via the `addDaemonActions` method and ant policies to a colony via the `addAntPolicies` method.
 * Finaly, you call the `solveProblem()` method and wait for the best solution to be shown.
 
 Isula internals
