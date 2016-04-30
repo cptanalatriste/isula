@@ -19,33 +19,27 @@ An Isula Primer
 To solve a problem with an Ant-Colony Optimization algorithm, you need a Colony of Agents (a.k.a Ants), a graph representing the problem, and a pheromone data-structure to allow communication between this agents. Isula tries to emulate that pattern:
 
 ```java
-    ConfigurationProvider configurationProvider = new ProblemConfiguration();
-    AcoProblemSolver<ImagePixel> problemSolver = new AcoProblemSolver<ImagePixel>();
+    TspProblemConfiguration configurationProvider = new TspProblemConfiguration(problemRepresentation);
+    AntColony<Integer, TspEnvironment> colony = getAntColony(configurationProvider);
+    TspEnvironment environment = new TspEnvironment(problemRepresentation);
 
-    EnvironmentForImageThresholding environment = new EnvironmentForImageThresholding(
-        imageGraph, ProblemConfiguration.NUMBER_OF_STEPS);
+    AcoProblemSolver<Integer, TspEnvironment> solver = new AcoProblemSolver<>();
+    solver.initialize(environment, colony, configurationProvider);
+    solver.addDaemonActions(new StartPheromoneMatrix<Integer, TspEnvironment>(),
+            new PerformEvaporation<Integer, TspEnvironment>());
 
-    ImageThresholdingAntColony antColony = new ImageThresholdingAntColony();
-    antColony.buildColony(environment);
+    solver.addDaemonActions(getPheromoneUpdatePolicy());
 
-    problemSolver.setConfigurationProvider(configurationProvider);
-    problemSolver.setEnvironment(environment);
-    problemSolver.setAntColony(antColony);
-
-    problemSolver.addDaemonActions(new StartPheromoneMatrix<ImagePixel>(),
-        new RandomizeHive(), new PerformEvaporation<ImagePixel>());
-    antColony.addAntPolicies(new NodeSelectionForImageThresholding(),
-        new OnlinePheromoneUpdateForThresholding());
-
-    problemSolver.solveProblem();
+    solver.getAntColony().addAntPolicies(new RandomNodeSelection<Integer, TspEnvironment>());
+    solver.solveProblem();
 ```
-That's a snippet from the Image Thresholding  problem solution. Some things to notice there:
+That's a snippet from the Travelling Salesman Problem solution. Some things to notice there:
 * Problem and algorithm configuration is provided by `ConfigurationProvider` instances. Make your own with the values you need.
 * The class that does everything is `AcoProblemSolver`. In this case, we're using the same one provided by the framework but you can extend it to suit your needs.
 * The Problem Solver needs an Environment that manages the problem graph and the pheromone matrix. You need to extend the `Environment` class provided with the framework to adjust it to support your problem.
 * And we need an Ant Colony, of course. The Ant Colony main responsibility is to create Ants, and make them built solutions in iterations. The robust base `AntColony` class makes implementing this very easy.
 * The hearth of the algorithm is the `Ant` class. You will need to define an Ant that suits your needs.
-* Isula supports daemon actions -global behaviors- and ant-level policies, such as the ones present in multiple ACO Algorithms. You can add them easily to your current solver.
+* Isula supports daemon actions -global behaviors- and ant-level policies, such as the ones present in multiple ACO Algorithms. You can add them easily to your current solver via the `addDaemonActions` method.
 * Finaly, you call the `solveProblem()` method and wait for the best solution to be shown.
 
 Isula internals
