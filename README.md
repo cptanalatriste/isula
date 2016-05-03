@@ -71,6 +71,7 @@ After downloading - or cloning – the Isula code, just execute `mvn install` at
             <artifactId>isula</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+    </dependencies>
 ```
 To your project `pom.xml` file. Or if you prefer, you can generate a JAR file of the framework if it is more convenient for you and use your IDE support for external libraries.
 
