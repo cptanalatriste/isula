@@ -52,7 +52,7 @@ Isula will provide you the basic execution flow for an algorithm in the ACO meta
 
 Every ACO algorithm has a set of customized behaviours that are executed during the solution processes: this behaviours can have global impact (`DaemonAction` instances, like pheromone update rules) or only affect an ant and its solution (like component selection rules: they are subclasses of `AntPolicy`). Isula already provides this behaviours for some representative algorithms -take a look at the `isula.aco.algorithms` package- but you might be in the need of defining your own policies or extending the ones already available.
 
-Read abour Isula
+Read about Isula
 ---------------
 The Javadoc of every class on the framework is available here: http://cptanalatriste.github.io/isula/doc/
 
