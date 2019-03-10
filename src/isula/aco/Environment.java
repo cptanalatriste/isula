@@ -10,8 +10,8 @@ import java.util.logging.Logger;
  * solutions.
  * <p>
  * <p>
- * This class manages the access to the problem graph -represented as an array
- * of doubles- and to the phermone matrix. Each concrete class needs to define a
+ * This class manages the access to the problem representation - as an array
+ * of doubles- and to the pheromone matrix. Each concrete class needs to define a
  * way to build a pheromone matrix to the problem to be solved.
  *
  * @author Carlos G. Gavidia
@@ -20,7 +20,7 @@ public abstract class Environment {
 
     private static Logger logger = Logger.getLogger(Environment.class.getName());
 
-    private double[][] problemGraph;
+    private double[][] problemRepresentation;
 
     // TODO(cgavidia): We're supporting pheromone deposition on vertex. On other
     // problems, the pheromone is deposited on edges.
@@ -29,14 +29,14 @@ public abstract class Environment {
     /**
      * Creates an Environment for the Ants to traverse.
      *
-     * @param problemGraph Graph representation of the problem to be solved.
+     * @param problemRepresentation Graph representation of the problem to be solved.
      * @throws InvalidInputException When the problem graph is incorrectly formed.
      */
-    public Environment(double[][] problemGraph) throws InvalidInputException {
-        this.problemGraph = problemGraph;
+    public Environment(double[][] problemRepresentation) throws InvalidInputException {
+        this.problemRepresentation = problemRepresentation;
         this.pheromoneMatrix = createPheromoneMatrix();
 
-        if (!this.isProblemGraphValid()) {
+        if (!this.isProblemRepresentationValid()) {
             throw new InvalidInputException();
         }
     }
@@ -55,12 +55,12 @@ public abstract class Environment {
      *
      * @return True if valid, false otherwise.
      */
-    protected boolean isProblemGraphValid() {
+    protected boolean isProblemRepresentationValid() {
         return true;
     }
 
-    public double[][] getProblemGraph() {
-        return problemGraph;
+    public double[][] getProblemRepresentation() {
+        return problemRepresentation;
     }
 
     public void setPheromoneMatrix(double[][] pheromoneMatrix) {
@@ -95,8 +95,8 @@ public abstract class Environment {
 
     @Override
     public String toString() {
-        return "Problem Graph: Rows " + problemGraph.length + " Columns "
-                + problemGraph[0].length + "\n" + "Pheromone Matrix: Rows "
+        return "Problem Representation: Rows " + problemRepresentation.length + " Columns "
+                + problemRepresentation[0].length + "\n" + "Pheromone Matrix: Rows "
                 + pheromoneMatrix.length + " Columns " + pheromoneMatrix[0].length;
     }
 

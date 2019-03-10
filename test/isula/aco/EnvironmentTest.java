@@ -25,27 +25,27 @@ public class EnvironmentTest {
    */
   @Before
   public void setUp() throws Exception {
-    double[][] problemGraph = new double[MATRIX_ROWS][MATRIX_COLUMNS];
+    double[][] problemRepresentation = new double[MATRIX_ROWS][MATRIX_COLUMNS];
 
-    this.dummyEnvironment = DummyFactory.createDummyEnvironment(problemGraph,
+    this.dummyEnvironment = DummyFactory.createDummyEnvironment(problemRepresentation,
         MATRIX_ROWS, MATRIX_COLUMNS);
   }
 
   @Test
   public void testEnvironment() {
     assertNotNull(this.dummyEnvironment);
-    assertNotNull(this.dummyEnvironment.getProblemGraph());
+    assertNotNull(this.dummyEnvironment.getProblemRepresentation());
     assertNotNull(this.dummyEnvironment.getPheromoneMatrix());
   }
 
   @Test
   public void testIsProblemGraphValid() {
-    assertTrue(this.dummyEnvironment.isProblemGraphValid());
+    assertTrue(this.dummyEnvironment.isProblemRepresentationValid());
   }
 
   @Test
   public void testGetProblemGraph() {
-    double[][] problemGraph = this.dummyEnvironment.getProblemGraph();
+    double[][] problemGraph = this.dummyEnvironment.getProblemRepresentation();
     assertEquals(MATRIX_ROWS, problemGraph.length);
     assertEquals(MATRIX_COLUMNS, problemGraph[0].length);
   }
@@ -78,7 +78,7 @@ public class EnvironmentTest {
   @Test
   public void testToString() {
     String environmentAsString = this.dummyEnvironment.toString();
-    String expectedEnvironment = "Problem Graph: Rows " + MATRIX_ROWS
+    String expectedEnvironment = "Problem Representation: Rows " + MATRIX_ROWS
         + " Columns " + MATRIX_COLUMNS + "\n" + "Pheromone Matrix: Rows "
         + MATRIX_ROWS + " Columns " + MATRIX_COLUMNS;
 
