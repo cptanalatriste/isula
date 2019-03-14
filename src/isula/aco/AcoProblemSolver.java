@@ -44,11 +44,16 @@ public class AcoProblemSolver<C, E extends Environment> {
      * @param colony      The Ant Colony with specialized ants.
      * @param config      Algorithm configuration.
      */
-    public void initialize(E environment, AntColony<C, E> colony, ConfigurationProvider config) {
+    public void initialize(E environment, AntColony<C, E> colony, ConfigurationProvider config) throws ConfigurationException {
+
+        if (colony == null) {
+            throw new ConfigurationException("The problem solver needs an instance of AntColony to be initialized");
+        }
         colony.buildColony(environment);
+        this.setAntColony(colony);
+
         this.setConfigurationProvider(config);
         this.setEnvironment(environment);
-        this.setAntColony(colony);
     }
 
     /**

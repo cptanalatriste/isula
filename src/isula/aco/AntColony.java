@@ -109,7 +109,8 @@ public abstract class AntColony<C, E extends Environment> {
         if (hive.size() == 0) {
             throw new ConfigurationException(
                     "Your colony is empty: You have no ants to solve the problem. "
-                            + "Have you called the buildColony() method?");
+                            + "Have you called the buildColony() method?. Number of ants from configuration provider: " +
+                            configurationProvider.getNumberOfAnts());
         }
 
         for (Ant<C, E> ant : hive) {

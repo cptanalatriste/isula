@@ -80,6 +80,11 @@ public abstract class Ant<C, E extends Environment> {
 
         this.setCurrentIndex(0);
 
+        if (getSolution() == null) {
+            throw new SolutionConstructionException("Couldn't clear solution since current solution is null. Verify" +
+                    " each ant instance have the solution array properly initialized.");
+        }
+
         for (int i = 0; i < getSolution().length; i++) {
             getSolution()[i] = null;
         }
