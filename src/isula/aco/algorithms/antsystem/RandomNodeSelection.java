@@ -132,10 +132,18 @@ public class RandomNodeSelection<C, E extends Environment> extends
 
     private Double getHeuristicTimesPheromone(E environment,
                                               ConfigurationProvider configurationProvider, C possibleMove) {
+
+
         Double heuristicValue = getAnt().getHeuristicValue(possibleMove,
                 getAnt().getCurrentIndex(), environment);
         Double pheromoneTrailValue = getAnt().getPheromoneTrailValue(possibleMove,
                 getAnt().getCurrentIndex(), environment);
+
+        if (heuristicValue == null || pheromoneTrailValue == null) {
+            throw new SolutionConstructionException("The current ant is not producing valid pheromone/heuristic values" +
+                    " for the solution component: " + possibleMove + " .Heuristic value " + heuristicValue +
+                    " Pheromone value: " + pheromoneTrailValue);
+        }
 
         return Math.pow(heuristicValue,
                 configurationProvider.getHeuristicImportance())
