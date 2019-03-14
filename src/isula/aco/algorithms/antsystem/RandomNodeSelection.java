@@ -7,10 +7,7 @@ import isula.aco.Environment;
 import isula.aco.exception.ConfigurationException;
 import isula.aco.exception.SolutionConstructionException;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * This is the node selection policy used in Ant System algorithms, also known as Random Proportional Rule.
@@ -73,6 +70,13 @@ public class RandomNodeSelection<C, E extends Environment> extends
         HashMap<C, Double> componentsWithProbabilities = new HashMap<C, Double>();
 
         double denominator = Double.MIN_VALUE;
+
+        List<C> neighbouhood = getAnt().getNeighbourhood(environment);
+        if (neighbouhood == null) {
+            throw new SolutionConstructionException("The ant's neighbourhood is null. There are no candidate " +
+                    "components to add.");
+        }
+
         for (C possibleMove : getAnt().getNeighbourhood(environment)) {
 
             if (!getAnt().isNodeVisited(possibleMove)
