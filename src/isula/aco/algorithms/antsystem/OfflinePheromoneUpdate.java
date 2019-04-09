@@ -30,12 +30,14 @@ public abstract class OfflinePheromoneUpdate<C, E extends Environment> extends D
         E environment = getEnvironment();
 
         for (Ant<C, E> ant : getAntColony().getHive()) {
-            for (int i = 0; i < ant.getSolution().length; i++) {
-                C solutionComponent = ant.getSolution()[i];
-                double newPheromoneValue = this.getNewPheromoneValue(ant, i, solutionComponent,
+            for (int positionInSolution = 0; positionInSolution < ant.getSolution().length; positionInSolution++) {
+                C solutionComponent = ant.getSolution()[positionInSolution];
+                double pheromoneDeposit = this.getPheromoneDeposit(ant, positionInSolution, solutionComponent,
                         environment, configurationProvider);
-                ant.setPheromoneTrailValue(solutionComponent, i, environment,
-                        newPheromoneValue);
+                double originalPheromoneValue = ant.getPheromoneTrailValue(solutionComponent, positionInSolution, environment);
+
+                ant.setPheromoneTrailValue(solutionComponent, positionInSolution, environment,
+                        originalPheromoneValue + pheromoneDeposit);
             }
         }
 
@@ -52,7 +54,7 @@ public abstract class OfflinePheromoneUpdate<C, E extends Environment> extends D
      * @param configurationProvider Algorithm configuration.
      * @return New pheromone value.
      */
-    protected abstract double getNewPheromoneValue(Ant<C, E> ant,
-                                                   Integer positionInSolution, C solutionComponent,
-                                                   E environment, ConfigurationProvider configurationProvider);
+    protected abstract double getPheromoneDeposit(Ant<C, E> ant,
+                                                  Integer positionInSolution, C solutionComponent,
+                                                  E environment, ConfigurationProvider configurationProvider);
 }

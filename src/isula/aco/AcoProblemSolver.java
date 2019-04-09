@@ -114,9 +114,7 @@ public class AcoProblemSolver<C, E extends Environment> {
             // Maybe with the Policy hierarchy.
             applyDaemonActions(DaemonActionType.AFTER_ITERATION_CONSTRUCTION);
 
-            updateBestSolution(environment);
-            logger.info("Current iteration: " + iteration + " Best solution cost: " + bestSolutionCost);
-
+            evaluateIterationPerformance(iteration, environment);
             iteration++;
         }
 
@@ -137,7 +135,7 @@ public class AcoProblemSolver<C, E extends Environment> {
      *
      * @param environment Environment where the solutions where produced.
      */
-    public void updateBestSolution(E environment) {
+    public void evaluateIterationPerformance(int iteration, E environment) {
         logger.log(Level.FINE, "GETTING BEST SOLUTION FOUND");
 
         Ant<C, E> bestAnt = antColony.getBestPerformingAnt(environment);
@@ -154,6 +152,9 @@ public class AcoProblemSolver<C, E extends Environment> {
                     + ", Solution: " + bestSolutionAsString);
 
         }
+
+        logger.info("Current iteration: " + iteration + " Iteration best: " + bestIterationCost + " Best solution cost: "
+                + bestSolutionCost);
 
     }
 
