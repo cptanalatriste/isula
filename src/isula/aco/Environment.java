@@ -43,6 +43,8 @@ public abstract class Environment {
 
     /**
      * Creates a pheromone matrix depending of the nature of the problem to solve.
+     * When overriding this method, you can call getProblemRepresentation() to obtain
+     * problem context information.
      *
      * @return Pheromone matrix instance.
      */
