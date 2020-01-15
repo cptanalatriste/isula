@@ -71,8 +71,8 @@ public class RandomNodeSelection<C, E extends Environment> extends
 
         double denominator = Double.MIN_VALUE;
 
-        List<C> neighbouhood = getAnt().getNeighbourhood(environment);
-        if (neighbouhood == null) {
+        List<C> neighborhood = getAnt().getNeighbourhood(environment);
+        if (neighborhood == null) {
             throw new SolutionConstructionException("The ant's neighbourhood is null. There are no candidate " +
                     "components to add.");
         }
@@ -109,6 +109,7 @@ public class RandomNodeSelection<C, E extends Environment> extends
         if (componentsWithProbabilities.size() < 1) {
             return doIfNoComponentsFound(environment, configurationProvider);
         }
+
         double delta = 0.001;
         if (Math.abs(totalProbability - 1.0) > delta) {
             throw new ConfigurationException("The sum of probabilities for the possible components is " +

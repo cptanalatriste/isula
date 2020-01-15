@@ -34,6 +34,11 @@ public abstract class OfflinePheromoneUpdate<C, E extends Environment> extends D
                 C solutionComponent = ant.getSolution()[positionInSolution];
                 double pheromoneDeposit = this.getPheromoneDeposit(ant, positionInSolution, solutionComponent,
                         environment, configurationProvider);
+                if (Double.isNaN(pheromoneDeposit) || Double.isInfinite(pheromoneDeposit)) {
+                    throw new RuntimeException("The ant deposit for component " + solutionComponent.toString() +
+                            " is not valid. Current value: " + String.valueOf(pheromoneDeposit));
+                }
+
                 double originalPheromoneValue = ant.getPheromoneTrailValue(solutionComponent, positionInSolution, environment);
 
                 ant.setPheromoneTrailValue(solutionComponent, positionInSolution, environment,
