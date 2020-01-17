@@ -26,7 +26,6 @@ public class RandomNodeSelection<C, E extends Environment> extends
     @Override
     public boolean applyPolicy(E environment, ConfigurationProvider configurationProvider) {
         Random random = new Random();
-        C nextNode = null;
 
         double value = random.nextDouble();
         double total = 0;
@@ -48,7 +47,7 @@ public class RandomNodeSelection<C, E extends Environment> extends
             total += probability;
 
             if (total >= value) {
-                nextNode = componentWithProbability.getKey();
+                C nextNode = componentWithProbability.getKey();
                 getAnt().visitNode(nextNode);
                 return true;
             }
@@ -103,6 +102,12 @@ public class RandomNodeSelection<C, E extends Environment> extends
             Double probability = numerator / denominator;
             totalProbability += probability;
 
+            if (probability.isNaN() || probability.isInfinite()) {
+                throw new ConfigurationException("The probability for component " + componentWithProbability.getKey() +
+                        " is not a valid number. Current value: " + probability + " (" + numerator + "/" + denominator +
+                        ")");
+            }
+
             componentWithProbability.setValue(probability);
         }
 
@@ -140,15 +145,17 @@ public class RandomNodeSelection<C, E extends Environment> extends
         Double pheromoneTrailValue = getAnt().getPheromoneTrailValue(possibleMove,
                 getAnt().getCurrentIndex(), environment);
 
-        if (heuristicValue == null || pheromoneTrailValue == null) {
+        if (heuristicValue == null || heuristicValue.isNaN() || heuristicValue.isInfinite() || pheromoneTrailValue == null
+                || pheromoneTrailValue.isNaN() || pheromoneTrailValue.isInfinite()) {
+
             throw new SolutionConstructionException("The current ant is not producing valid pheromone/heuristic values" +
-                    " for the solution component: " + possibleMove + " .Heuristic value " + heuristicValue +
+                    " for the solution component: " + possibleMove + " . Heuristic value " + heuristicValue +
                     " Pheromone value: " + pheromoneTrailValue);
         }
 
-        return Math.pow(heuristicValue,
-                configurationProvider.getHeuristicImportance())
-                * Math.pow(pheromoneTrailValue,
-                configurationProvider.getPheromoneImportance());
+        double result = Math.pow(heuristicValue, configurationProvider.getHeuristicImportance())
+                * Math.pow(pheromoneTrailValue, configurationProvider.getPheromoneImportance());
+
+        return result;
     }
 }
