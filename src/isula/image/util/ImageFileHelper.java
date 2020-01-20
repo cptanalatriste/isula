@@ -24,17 +24,21 @@ public class ImageFileHelper {
             {255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
     private static final int GRAYSCALE_DELTA = 10;
 
-    /**
-     * Transforms an image into an array of ints.
-     *
-     * @param fileName Image file.
-     * @return An array of ints.
-     * @throws IOException In case file reading fails.
-     */
     public static int[][] getImageArrayFromFile(String fileName)
             throws IOException {
 
-        File imageFile = new File(ImageFileHelper.class.getClassLoader().getResource(fileName).getFile());
+        return getImageArrayFromFile(new File(fileName));
+    }
+
+    /**
+     * Transforms an image into an array of ints.
+     *
+     * @param imageFile Image file.
+     * @return An array of ints.
+     * @throws IOException In case file reading fails.
+     */
+    public static int[][] getImageArrayFromFile(File imageFile)
+            throws IOException {
 
         BufferedImage image = ImageIO.read(imageFile);
         Raster imageRaster = image.getData();
