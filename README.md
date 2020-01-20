@@ -58,6 +58,8 @@ The Javadoc of every class on the framework is available here: http://cptanalatr
 
 Also, in this article Ant Colony Optimization algorithms are discussed and Isula is used to implement them in the Java Programming Language: http://www.codeproject.com/Articles/1011148/A-Java-Primer-of-Ant-Colony-Algorithms
 
+Finally, for an in-depht discussion of the framework and its features you can read our paper in the SoftwareX journal: https://www.sciencedirect.com/science/article/pii/S2352711019300639 
+
 How to use this code
 --------------------
 The code uploaded to this GitHub Repository corresponds to a Maven Java Project. As such, it is strongly recommended that you have Maven installed before working with Isula.
