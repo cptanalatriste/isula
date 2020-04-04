@@ -1,5 +1,7 @@
 # Isula: A Framework for Ant Colony Algorithms
 
+*For an in-depht discussion of the framework and its features you can read our paper in the SoftwareX journal: https://www.sciencedirect.com/science/article/pii/S2352711019300639*
+
 Isula allows an easy implementation of Ant-Colony Optimization algorithms using the Java Programming Language. It contains the common elements present in the meta-heuristic to allow algorithm designers the reutilization of common behaviors. With Isula, solving optimization problems with Ant Colony can be done in few lines of code.
 
 Isula in Action
@@ -58,7 +60,6 @@ The Javadoc of every class on the framework is available here: http://cptanalatr
 
 Also, in this article Ant Colony Optimization algorithms are discussed and Isula is used to implement them in the Java Programming Language: http://www.codeproject.com/Articles/1011148/A-Java-Primer-of-Ant-Colony-Algorithms
 
-Finally, for an in-depht discussion of the framework and its features you can read our paper in the SoftwareX journal: https://www.sciencedirect.com/science/article/pii/S2352711019300639 
 
 How to use this code
 --------------------
