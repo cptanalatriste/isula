@@ -65,20 +65,28 @@ Also, in this article Ant Colony Optimization algorithms are discussed and Isula
 
 How to use this code
 --------------------
-The code uploaded to this GitHub Repository corresponds to a Maven Java Project. As such, it is strongly recommended that you have Maven installed before working with Isula.
+The code uploaded to this GitHub Repository corresponds to a Maven Java Project. 
+As such, it is strongly recommended that you have Maven installed before working with Isula.
 
-After downloading - or cloning – the Isula code, just execute `mvn install` at the Isula folder to add it to your local repository. Once the Isula Project is installed in your Maven repository, you can use it as a dependency on your personal Ant Colony Optimization project by adding:
+You can use Isula as a dependency on your personal Ant Colony Optimization project by adding the following
+to your `pom.xml` file:
 
 ```xml
+    <repositories>
+        <repository>
+            <id>isula</id>
+            <url>https://packagecloud.io/cgavidia/isula/maven2
+            </url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>isula</groupId>
             <artifactId>isula</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>1.1.1</version>
         </dependency>
     </dependencies>
 ```
-To your project `pom.xml` file. Or if you prefer, you can generate a JAR file of the framework if it is more convenient for you and use your IDE support for external libraries.
 
 Questions, issues or support?
 ----------------------------
