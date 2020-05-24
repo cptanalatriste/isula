@@ -4,6 +4,11 @@
     <groupId>isula</groupId>
     <artifactId>isula</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <properties>
+        <project.java.version>1.8</project.java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
     <build>
         <sourceDirectory>src</sourceDirectory>
         <testSourceDirectory>test</testSourceDirectory>
@@ -20,6 +25,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.0</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -30,6 +36,13 @@
                 </executions>
             </plugin>
         </plugins>
+        <extensions>
+            <extension>
+                <groupId>io.packagecloud.maven.wagon</groupId>
+                <artifactId>maven-packagecloud-wagon</artifactId>
+                <version>0.0.4</version>
+            </extension>
+        </extensions>
     </build>
     <dependencies>
         <dependency>
@@ -44,4 +57,15 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>packagecloud-travis</id>
+            <url>packagecloud+https://packagecloud.io/cgavidia/isula</url>
+        </repository>
+        <snapshotRepository>
+            <id>packagecloud-travis</id>
+            <url>packagecloud+https://packagecloud.io/cgavidia/isula</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
