@@ -72,20 +72,20 @@ You can use Isula as a dependency on your personal Ant Colony Optimization proje
 to your `pom.xml` file:
 
 ```xml
-    <repositories>
-        <repository>
-            <id>isula</id>
-            <url>https://packagecloud.io/cgavidia/isula/maven2
-            </url>
-        </repository>
-    </repositories>
-    <dependencies>
-        <dependency>
-            <groupId>isula</groupId>
-            <artifactId>isula</artifactId>
-            <version>1.1.1</version>
-        </dependency>
-    </dependencies>
+<repositories>
+    <repository>
+        <id>isula</id>
+        <url>https://packagecloud.io/cgavidia/isula/maven2
+        </url>
+    </repository>
+</repositories>
+<dependencies>
+    <dependency>
+        <groupId>isula</groupId>
+        <artifactId>isula</artifactId>
+        <version>1.1.1</version>
+    </dependency>
+</dependencies>
 ```
 
 Questions, issues or support?
