@@ -1,7 +1,7 @@
 # Isula: A Framework for Ant Colony Algorithms
 
 [![Build Status](https://travis-ci.org/cptanalatriste/isula.svg?branch=master)](https://travis-ci.org/cptanalatriste/isula)
-[![Build Status](https://img.shields.io/badge/java-packagecloud.io-844fec.svg)](https://packagecloud.io/cgavidia/isula)
+[![packagecloud](https://img.shields.io/badge/java-packagecloud.io-844fec.svg)](https://packagecloud.io/cgavidia/isula)
 
 
 *For an in-depht discussion of the framework and its features you can read our paper in the SoftwareX journal: https://www.sciencedirect.com/science/article/pii/S2352711019300639*
