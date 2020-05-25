@@ -26,7 +26,8 @@ $RECYCLE.BIN/
 .LSOverride
 
 # Icon must ends with two \r.
-Icon
+Icon
+
 
 # Thumbnails
 ._*
@@ -43,3 +44,4 @@ Icon
 *.iml
 .idea/libraries/Maven__junit_junit_4_4.xml
 .idea/libraries/Maven__org_apache_commons_commons_lang3_3_0.xml
+/.idea/
