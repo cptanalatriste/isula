@@ -32,17 +32,21 @@ public abstract class OfflinePheromoneUpdate<C, E extends Environment> extends D
         for (Ant<C, E> ant : getAntColony().getHive()) {
             for (int positionInSolution = 0; positionInSolution < ant.getSolution().length; positionInSolution++) {
                 C solutionComponent = ant.getSolution()[positionInSolution];
-                double pheromoneDeposit = this.getPheromoneDeposit(ant, positionInSolution, solutionComponent,
-                        environment, configurationProvider);
-                if (Double.isNaN(pheromoneDeposit) || Double.isInfinite(pheromoneDeposit)) {
-                    throw new RuntimeException("The ant deposit for component " + solutionComponent.toString() +
-                            " is not valid. Current value: " + String.valueOf(pheromoneDeposit));
+
+                if (solutionComponent != null) {
+                    double pheromoneDeposit = this.getPheromoneDeposit(ant, positionInSolution, solutionComponent,
+                            environment, configurationProvider);
+                    if (Double.isNaN(pheromoneDeposit) || Double.isInfinite(pheromoneDeposit)) {
+                        throw new RuntimeException("The ant deposit for component " + solutionComponent.toString() +
+                                " is not valid. Current value: " + pheromoneDeposit);
+                    }
+
+                    double originalPheromoneValue = ant.getPheromoneTrailValue(solutionComponent, positionInSolution, environment);
+
+                    ant.setPheromoneTrailValue(solutionComponent, positionInSolution, environment,
+                            originalPheromoneValue + pheromoneDeposit);
                 }
 
-                double originalPheromoneValue = ant.getPheromoneTrailValue(solutionComponent, positionInSolution, environment);
-
-                ant.setPheromoneTrailValue(solutionComponent, positionInSolution, environment,
-                        originalPheromoneValue + pheromoneDeposit);
             }
         }
 

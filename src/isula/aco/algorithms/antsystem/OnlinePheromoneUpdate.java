@@ -26,16 +26,19 @@ public abstract class OnlinePheromoneUpdate<C, E extends Environment> extends
 
         for (int i = 0; i < getAnt().getSolution().length; i++) {
             C solutionComponent = getAnt().getSolution()[i];
-            double newPheromoneValue = this.getNewPheromoneValue(solutionComponent, i,
-                    environment, configurationProvider);
 
-            if (Double.isNaN(newPheromoneValue) || Double.isInfinite(newPheromoneValue)) {
-                throw new RuntimeException("The new pheromone value for component " + solutionComponent.toString() +
-                        " is not valid. Current value: " + String.valueOf(newPheromoneValue));
+            if (solutionComponent != null) {
+                double newPheromoneValue = this.getNewPheromoneValue(solutionComponent, i,
+                        environment, configurationProvider);
+
+                if (Double.isNaN(newPheromoneValue) || Double.isInfinite(newPheromoneValue)) {
+                    throw new RuntimeException("The new pheromone value for component " + solutionComponent.toString() +
+                            " is not valid. Current value: " + newPheromoneValue);
+                }
+
+                getAnt().setPheromoneTrailValue(solutionComponent, i, environment,
+                        newPheromoneValue);
             }
-
-            getAnt().setPheromoneTrailValue(solutionComponent, i, environment,
-                    newPheromoneValue);
         }
 
         return true;
