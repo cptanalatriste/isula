@@ -13,6 +13,20 @@ public class BasicConfigurationProvider implements ConfigurationProvider {
     private double heuristicImportance;
     private double pheromoneImportance;
 
+    public BasicConfigurationProvider() {
+
+    }
+
+    public BasicConfigurationProvider(ConfigurationProvider configurationProvider) {
+        this.numberOfAnts = configurationProvider.getNumberOfAnts();
+        this.evaporationRatio = configurationProvider.getEvaporationRatio();
+        this.numberOfIterations = configurationProvider.getNumberOfIterations();
+        this.initialPheromoneValue = configurationProvider.getInitialPheromoneValue();
+        this.heuristicImportance = configurationProvider.getHeuristicImportance();
+        this.pheromoneImportance = configurationProvider.getPheromoneImportance();
+
+    }
+
     @Override
     public int getNumberOfAnts() {
         return numberOfAnts;

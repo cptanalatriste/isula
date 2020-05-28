@@ -35,4 +35,8 @@ public class PerformEvaporation<C, E extends Environment> extends
         getEnvironment().applyFactorToPheromoneMatrix(evaporationRatio);
     }
 
+    @Override
+    public String toString() {
+        return "PerformEvaporation{}";
+    }
 }

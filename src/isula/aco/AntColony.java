@@ -3,6 +3,7 @@ package isula.aco;
 import isula.aco.exception.ConfigurationException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +21,8 @@ public abstract class AntColony<C, E extends Environment> {
     private static Logger logger = Logger.getLogger(AntColony.class.getName());
 
     private int numberOfAnts;
-    private List<Ant<C, E>> hive = new ArrayList<Ant<C, E>>();
+    private List<Ant<C, E>> hive = new ArrayList<>();
+    private List<AntPolicy<C, E>> antPolicies = new ArrayList<>();
 
     /**
      * Creates a colony of ants
@@ -137,6 +139,9 @@ public abstract class AntColony<C, E extends Environment> {
      */
     @SafeVarargs
     public final void addAntPolicies(AntPolicy<C, E>... antPolicies) {
+
+        Collections.addAll(this.antPolicies, antPolicies);
+
         List<Ant<C, E>> hive = getHive();
         for (Ant<C, E> ant : hive) {
             for (AntPolicy<C, E> antPolicy : antPolicies) {
@@ -153,4 +158,11 @@ public abstract class AntColony<C, E extends Environment> {
         this.numberOfAnts = numberOfAnts;
     }
 
+    @Override
+    public String toString() {
+        return "AntColony{" +
+                "numberOfAnts=" + numberOfAnts +
+                ", antPolicies=" + antPolicies +
+                '}';
+    }
 }

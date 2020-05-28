@@ -32,12 +32,8 @@ public class RandomNodeSelection<C, E extends Environment> extends
 
         HashMap<C, Double> componentsWithProbabilities = this
                 .getComponentsWithProbabilities(environment, configurationProvider);
-        Iterator<Map.Entry<C, Double>> componentWithProbabilitiesIterator = componentsWithProbabilities
-                .entrySet().iterator();
-        while (componentWithProbabilitiesIterator.hasNext()) {
-            Map.Entry<C, Double> componentWithProbability = componentWithProbabilitiesIterator
-                    .next();
-
+        for (Map.Entry<C, Double> componentWithProbability : componentsWithProbabilities
+                .entrySet()) {
             Double probability = componentWithProbability.getValue();
             if (probability.isNaN()) {
                 throw new ConfigurationException("The probability for component " + componentWithProbability.getKey() +
@@ -66,7 +62,7 @@ public class RandomNodeSelection<C, E extends Environment> extends
      */
     public HashMap<C, Double> getComponentsWithProbabilities(E environment,
                                                              ConfigurationProvider configurationProvider) {
-        HashMap<C, Double> componentsWithProbabilities = new HashMap<C, Double>();
+        HashMap<C, Double> componentsWithProbabilities = new HashMap<>();
 
         double denominator = Double.MIN_VALUE;
 
@@ -89,12 +85,9 @@ public class RandomNodeSelection<C, E extends Environment> extends
             }
         }
 
-        Double totalProbability = 0.0;
-        Iterator<Map.Entry<C, Double>> componentWithProbabilitiesIterator = componentsWithProbabilities
-                .entrySet().iterator();
-        while (componentWithProbabilitiesIterator.hasNext()) {
-            Map.Entry<C, Double> componentWithProbability = componentWithProbabilitiesIterator
-                    .next();
+        double totalProbability = 0.0;
+        for (Map.Entry<C, Double> componentWithProbability : componentsWithProbabilities
+                .entrySet()) {
             C component = componentWithProbability.getKey();
 
             Double numerator = getHeuristicTimesPheromone(environment,
@@ -153,9 +146,12 @@ public class RandomNodeSelection<C, E extends Environment> extends
                     " Pheromone value: " + pheromoneTrailValue);
         }
 
-        double result = Math.pow(heuristicValue, configurationProvider.getHeuristicImportance())
+        return Math.pow(heuristicValue, configurationProvider.getHeuristicImportance())
                 * Math.pow(pheromoneTrailValue, configurationProvider.getPheromoneImportance());
+    }
 
-        return result;
+    @Override
+    public String toString() {
+        return "RandomNodeSelection{}";
     }
 }

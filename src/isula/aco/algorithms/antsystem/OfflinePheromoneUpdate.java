@@ -66,4 +66,9 @@ public abstract class OfflinePheromoneUpdate<C, E extends Environment> extends D
     protected abstract double getPheromoneDeposit(Ant<C, E> ant,
                                                   Integer positionInSolution, C solutionComponent,
                                                   E environment, ConfigurationProvider configurationProvider);
+
+    @Override
+    public String toString() {
+        return "OfflinePheromoneUpdate{}";
+    }
 }

@@ -46,4 +46,9 @@ public class StartPheromoneMatrix<C, E extends Environment> extends
             ConfigurationProvider configurationProvider) {
         return configurationProvider.getInitialPheromoneValue();
     }
+
+    @Override
+    public String toString() {
+        return "StartPheromoneMatrix{}";
+    }
 }

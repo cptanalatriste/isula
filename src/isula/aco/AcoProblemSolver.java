@@ -27,6 +27,7 @@ public class AcoProblemSolver<C, E extends Environment> {
 
     private C[] bestSolution;
     private double bestSolutionCost = 0.0;
+    private double executionTime = 0.0;
     private String bestSolutionAsString = "";
 
     private E environment;
@@ -35,7 +36,7 @@ public class AcoProblemSolver<C, E extends Environment> {
     // TODO(cgavidia): Maybe we should handle a list of configuration providers.
     private ConfigurationProvider configurationProvider;
 
-    private List<DaemonAction<C, E>> daemonActions = new ArrayList<DaemonAction<C, E>>();
+    private List<DaemonAction<C, E>> daemonActions = new ArrayList<>();
 
     /**
      * Prepares the solver for problem resolution.
@@ -120,7 +121,7 @@ public class AcoProblemSolver<C, E extends Environment> {
 
         logger.info("Finishing computation at: " + new Date());
         long endTime = System.nanoTime();
-        double executionTime = (endTime - startTime) / 1000000000.0;
+        executionTime = (endTime - startTime) / 1000000000.0;
         logger.info("Duration (in seconds): " + executionTime);
 
         logger.info("EXECUTION FINISHED");
@@ -139,7 +140,7 @@ public class AcoProblemSolver<C, E extends Environment> {
         logger.log(Level.FINE, "GETTING BEST SOLUTION FOUND");
 
         Ant<C, E> bestAnt = antColony.getBestPerformingAnt(environment);
-        Double bestIterationCost = bestAnt.getSolutionCost(environment);
+        double bestIterationCost = bestAnt.getSolutionCost(environment);
         logger.fine("Iteration best cost: " + bestIterationCost);
 
         if (bestSolution == null
@@ -217,4 +218,16 @@ public class AcoProblemSolver<C, E extends Environment> {
         this.bestSolutionCost = bestSolutionCost;
     }
 
+    @Override
+    public String toString() {
+        return "AcoProblemSolver{" +
+                "bestSolutionCost=" + bestSolutionCost +
+                ", executionTime=" + executionTime +
+                ", bestSolutionAsString='" + bestSolutionAsString + '\'' +
+                ", environment=" + environment +
+                ", antColony=" + antColony +
+                ", configurationProvider=" + configurationProvider +
+                ", daemonActions=" + daemonActions +
+                '}';
+    }
 }
