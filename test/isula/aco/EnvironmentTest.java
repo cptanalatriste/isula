@@ -21,7 +21,6 @@ public class EnvironmentTest {
    * We're creating a dummy Environment class, with a pheromone matrix with the
    * dimensions specified in the constants.
    * 
-   * @throws Exception
    */
   @Before
   public void setUp() throws Exception {

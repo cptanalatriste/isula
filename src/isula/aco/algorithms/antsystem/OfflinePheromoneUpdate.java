@@ -16,7 +16,7 @@ import static isula.aco.algorithms.PheromoneUtils.updatePheromoneForAntSolution;
  * @param <E> Class representing the Environment.
  * @author Carlos G. Gavidia
  */
-public abstract class OfflinePheromoneUpdate<C, E extends Environment> extends DaemonAction<C, E> {
+public class OfflinePheromoneUpdate<C, E extends Environment> extends DaemonAction<C, E> {
 
     private static Logger logger = Logger.getLogger(OfflinePheromoneUpdate.class.getName());
 
@@ -35,11 +35,13 @@ public abstract class OfflinePheromoneUpdate<C, E extends Environment> extends D
             C solutionComponent = ant.getSolution()[positionInSolution];
 
             if (solutionComponent != null) {
-                double pheromoneDeposit = this.getPheromoneDeposit(ant, positionInSolution, solutionComponent,
-                        environment, configurationProvider);
 
                 double originalPheromoneValue = ant.getPheromoneTrailValue(solutionComponent, positionInSolution,
                         environment);
+
+                double pheromoneDeposit = this.getPheromoneDeposit(ant, positionInSolution, solutionComponent,
+                        environment, configurationProvider);
+
                 return originalPheromoneValue + pheromoneDeposit;
             }
             return null;
@@ -58,9 +60,12 @@ public abstract class OfflinePheromoneUpdate<C, E extends Environment> extends D
      * @param configurationProvider Algorithm configuration.
      * @return New pheromone value.
      */
-    protected abstract double getPheromoneDeposit(Ant<C, E> ant,
-                                                  Integer positionInSolution, C solutionComponent,
-                                                  E environment, ConfigurationProvider configurationProvider);
+    protected double getPheromoneDeposit(Ant<C, E> ant,
+                                         Integer positionInSolution, C solutionComponent,
+                                         E environment, ConfigurationProvider configurationProvider) {
+        AntSystemConfigurationProvider antSystemConfiguration = (AntSystemConfigurationProvider) configurationProvider;
+        return antSystemConfiguration.getPheromoneDepositFactor() / ant.getSolutionCost(environment);
+    }
 
     @Override
     public String toString() {

@@ -4,6 +4,7 @@ import isula.aco.Ant;
 import isula.aco.ConfigurationProvider;
 import isula.aco.Environment;
 import isula.aco.algorithms.acs.AcsConfigurationProvider;
+import isula.aco.algorithms.antsystem.AntSystemConfigurationProvider;
 import isula.aco.exception.InvalidInputException;
 
 import java.util.List;
@@ -35,32 +36,37 @@ public class DummyFactory {
      * Creates a configuration provider for testing purposes.
      */
     public static ConfigurationProvider createDummyConfigurationProvider() {
-        return new ConfigurationProvider() {
+        return new AntSystemConfigurationProvider() {
+
+            @Override
+            public double getPheromoneDepositFactor() {
+                return 1.0;
+            }
 
             public int getNumberOfIterations() {
-                return 0;
+                return 1;
             }
 
             public int getNumberOfAnts() {
-                return 0;
+                return 1;
             }
 
             public double getInitialPheromoneValue() {
-                return 0;
+                return 1.0;
             }
 
             @Override
             public double getHeuristicImportance() {
-                return 0;
+                return 1;
             }
 
             @Override
             public double getPheromoneImportance() {
-                return 0;
+                return 1;
             }
 
             public double getEvaporationRatio() {
-                return 0;
+                return 0.1;
             }
         };
     }
