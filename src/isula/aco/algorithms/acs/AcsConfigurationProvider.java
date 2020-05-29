@@ -10,4 +10,6 @@ import isula.aco.ConfigurationProvider;
 public interface AcsConfigurationProvider extends ConfigurationProvider {
 
     double getBestChoiceProbability();
+
+    double getPheromoneDecayCoefficient();
 }

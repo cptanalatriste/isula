@@ -3,6 +3,7 @@ package isula.aco.test;
 import isula.aco.Ant;
 import isula.aco.ConfigurationProvider;
 import isula.aco.Environment;
+import isula.aco.algorithms.acs.AcsConfigurationProvider;
 import isula.aco.exception.InvalidInputException;
 
 import java.util.List;
@@ -16,12 +17,6 @@ public class DummyFactory {
     /**
      * We're creating a dummy Environment instance, with a pheromone matrix with
      * the dimensions specified in the parameters.
-     *
-     * @param problemGraph
-     * @param pheromoneRows
-     * @param pheromoneColumns
-     * @return
-     * @throws InvalidInputException
      */
     public static Environment createDummyEnvironment(double[][] problemGraph,
                                                      final int pheromoneRows, final int pheromoneColumns)
@@ -38,8 +33,6 @@ public class DummyFactory {
 
     /**
      * Creates a configuration provider for testing purposes.
-     *
-     * @return
      */
     public static ConfigurationProvider createDummyConfigurationProvider() {
         return new ConfigurationProvider() {
@@ -72,10 +65,53 @@ public class DummyFactory {
         };
     }
 
+    public static AcsConfigurationProvider createDummyAcsConfigurationProvider() {
+        return new AcsConfigurationProvider() {
+
+            @Override
+            public int getNumberOfAnts() {
+                return 1;
+            }
+
+            @Override
+            public double getEvaporationRatio() {
+                return 0.1;
+            }
+
+            @Override
+            public int getNumberOfIterations() {
+                return 1;
+            }
+
+            @Override
+            public double getInitialPheromoneValue() {
+                return 1.0;
+            }
+
+            @Override
+            public double getHeuristicImportance() {
+                return 1;
+            }
+
+            @Override
+            public double getPheromoneImportance() {
+                return 1;
+            }
+
+            @Override
+            public double getBestChoiceProbability() {
+                return 0.5;
+            }
+
+            @Override
+            public double getPheromoneDecayCoefficient() {
+                return 0.1;
+            }
+        };
+    }
+
     /**
      * Configures a Dummy Ant for testing.
-     *
-     * @return
      */
     public static Ant<Integer, Environment> createDummyAnt(
             final int expectedCost, final int indexLimit) {
@@ -89,7 +125,7 @@ public class DummyFactory {
             @Override
             public Double getPheromoneTrailValue(Integer solutionComponent,
                                                  Integer positionInSolution, Environment environment) {
-                return null;
+                return environment.getPheromoneMatrix()[solutionComponent][positionInSolution];
             }
 
             @Override
@@ -101,6 +137,10 @@ public class DummyFactory {
             @Override
             public void setPheromoneTrailValue(Integer solutionComponent,
                                                Integer positionInSolution, Environment environment, Double value) {
+
+                double[][] pheromoneMatrix = environment.getPheromoneMatrix();
+                pheromoneMatrix[solutionComponent][positionInSolution] = value;
+
             }
 
             @Override

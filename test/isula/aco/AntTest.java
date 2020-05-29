@@ -18,7 +18,7 @@ public class AntTest {
     private static final double[][] SAMPLE_PROBLEM_GRAPH = new double[3][3];
 
     private Ant<Integer, Environment> dummyAnt;
-    private OnlinePheromoneUpdate<Integer, Environment> antPolicy =
+    private OnlinePheromoneUpdate<Integer, Environment> onlinePheromoneUpdatePolicy =
             new OnlinePheromoneUpdate<Integer, Environment>() {
                 @Override
                 protected double getNewPheromoneValue(Integer solutionComponent, Integer positionInSolution,
@@ -29,11 +29,9 @@ public class AntTest {
 
     /**
      * Configures a Dummy Ant for testing.
-     *
-     * @throws Exception
      */
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.dummyAnt = DummyFactory.createDummyAnt(0, 1);
 
         this.dummyAnt.setSolution(new Integer[SOLUTION_SIZE]);
@@ -77,11 +75,11 @@ public class AntTest {
     @Test
     public void testAddPolicy() {
 
-        this.dummyAnt.addPolicy(antPolicy);
+        this.dummyAnt.addPolicy(onlinePheromoneUpdatePolicy);
 
-        assertEquals(antPolicy,
-                this.dummyAnt.getAntPolicy(antPolicy.getPolicyType(), 1));
-        assertNull(this.dummyAnt.getAntPolicy(AntPolicyType.NODE_SELECTION, -1));
+        AntPolicy<Integer, Environment> extractedPolicy = this.dummyAnt.getAntPolicies(onlinePheromoneUpdatePolicy.getPolicyType(), 1).get(0);
+        assertEquals(onlinePheromoneUpdatePolicy, extractedPolicy);
+        assertEquals(this.dummyAnt.getAntPolicies(AntPolicyType.NODE_SELECTION, -1).size(), 0);
     }
 
     @Test
@@ -93,11 +91,11 @@ public class AntTest {
         ConfigurationProvider configurationProvider = DummyFactory
                 .createDummyConfigurationProvider();
 
-        this.dummyAnt.addPolicy(antPolicy);
+        this.dummyAnt.addPolicy(onlinePheromoneUpdatePolicy);
         this.dummyAnt.doAfterSolutionIsReady(dummyEnvironment,
                 configurationProvider);
 
-        assertEquals(this.dummyAnt, antPolicy.getAnt());
+        assertEquals(this.dummyAnt, onlinePheromoneUpdatePolicy.getAnt());
     }
 
 }

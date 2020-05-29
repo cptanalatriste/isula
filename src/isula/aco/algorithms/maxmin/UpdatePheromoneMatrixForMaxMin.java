@@ -5,11 +5,13 @@ import isula.aco.ConfigurationProvider;
 import isula.aco.DaemonAction;
 import isula.aco.DaemonActionType;
 import isula.aco.Environment;
-import isula.aco.exception.ConfigurationException;
 
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static isula.aco.algorithms.PheromoneUtils.updatePheromoneForAntSolution;
+import static isula.aco.algorithms.PheromoneUtils.validatePheromoneValue;
 
 /**
  * The procedure for pheromone update for MMAS. It keeps the pheromone values in
@@ -56,11 +58,7 @@ public abstract class UpdatePheromoneMatrixForMaxMin<C, E extends Environment>
                 double newValue = pheromoneMatrix[i][j]
                         * configurationProvider.getEvaporationRatio();
 
-                if (newValue >= getMinimumPheromoneValue(configurationProvider)) {
-                    pheromoneMatrix[i][j] = newValue;
-                } else {
-                    pheromoneMatrix[i][j] = getMinimumPheromoneValue(configurationProvider);
-                }
+                pheromoneMatrix[i][j] = Math.max(newValue, getMinimumPheromoneValue(configurationProvider));
 
                 validatePheromoneValue(pheromoneMatrix[i][j]);
             }
@@ -69,39 +67,19 @@ public abstract class UpdatePheromoneMatrixForMaxMin<C, E extends Environment>
         logger.log(Level.FINE, "Depositing pheromone on Best Ant trail.");
 
         Ant<C, E> bestAnt = getAntColony().getBestPerformingAnt(getEnvironment());
-
         C[] bestSolution = bestAnt.getSolution();
 
-        // TODO(cgavidia): From here, we can factor the policy of only best ant
-        // deposits pheromone.
-
-        for (int componentIndex = 0; componentIndex < bestSolution.length; componentIndex += 1) {
+        updatePheromoneForAntSolution(bestAnt, getEnvironment(), (componentIndex) -> {
             C solutionComponent = bestSolution[componentIndex];
-            // TODO(cgavidia): This makes me think a solution type is necessary...
             double newValue = getNewPheromoneValue(bestAnt, componentIndex,
                     solutionComponent, configurationProvider);
-
-            if (newValue <= getMaximumPheromoneValue(configurationProvider)) {
-                bestAnt.setPheromoneTrailValue(solutionComponent, componentIndex, getEnvironment(),
-                        newValue);
-            } else {
-                bestAnt.setPheromoneTrailValue(solutionComponent, componentIndex, getEnvironment(),
-                        getMaximumPheromoneValue(configurationProvider));
-            }
-
-            validatePheromoneValue(bestAnt.getPheromoneTrailValue(solutionComponent, componentIndex, getEnvironment()));
-        }
+            return Math.min(newValue, getMaximumPheromoneValue(configurationProvider));
+        });
 
         logger.log(Level.FINE, "After pheromone update: " + Arrays.deepToString(getEnvironment().getPheromoneMatrix()));
 
     }
 
-    private void validatePheromoneValue(double v) {
-        if (Double.isInfinite(v) || Double.isNaN(v)) {
-            throw new ConfigurationException("The pheromone value calculated is not a valid number: " +
-                    v);
-        }
-    }
 
     /**
      * The maximum value permitted for a pheromone matrix cell.

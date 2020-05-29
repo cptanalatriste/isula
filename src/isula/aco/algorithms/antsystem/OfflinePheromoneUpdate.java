@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static isula.aco.algorithms.PheromoneUtils.updatePheromoneForAntSolution;
+
 /**
  * Update pheromone process triggered after every ant has build a feasible solution. This action only considers the
  * increment caused by pheromone deposit.
@@ -29,26 +31,19 @@ public abstract class OfflinePheromoneUpdate<C, E extends Environment> extends D
 
         E environment = getEnvironment();
 
-        for (Ant<C, E> ant : getAntColony().getHive()) {
-            for (int positionInSolution = 0; positionInSolution < ant.getSolution().length; positionInSolution++) {
-                C solutionComponent = ant.getSolution()[positionInSolution];
+        getAntColony().getHive().forEach((ant) -> updatePheromoneForAntSolution(ant, getEnvironment(), (positionInSolution) -> {
+            C solutionComponent = ant.getSolution()[positionInSolution];
 
-                if (solutionComponent != null) {
-                    double pheromoneDeposit = this.getPheromoneDeposit(ant, positionInSolution, solutionComponent,
-                            environment, configurationProvider);
-                    if (Double.isNaN(pheromoneDeposit) || Double.isInfinite(pheromoneDeposit)) {
-                        throw new RuntimeException("The ant deposit for component " + solutionComponent.toString() +
-                                " is not valid. Current value: " + pheromoneDeposit);
-                    }
+            if (solutionComponent != null) {
+                double pheromoneDeposit = this.getPheromoneDeposit(ant, positionInSolution, solutionComponent,
+                        environment, configurationProvider);
 
-                    double originalPheromoneValue = ant.getPheromoneTrailValue(solutionComponent, positionInSolution, environment);
-
-                    ant.setPheromoneTrailValue(solutionComponent, positionInSolution, environment,
-                            originalPheromoneValue + pheromoneDeposit);
-                }
-
+                double originalPheromoneValue = ant.getPheromoneTrailValue(solutionComponent, positionInSolution,
+                        environment);
+                return originalPheromoneValue + pheromoneDeposit;
             }
-        }
+            return null;
+        }));
 
         logger.fine("Pheromone matrix after update :" + Arrays.deepToString(environment.getPheromoneMatrix()));
     }

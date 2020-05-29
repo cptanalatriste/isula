@@ -5,6 +5,8 @@ import isula.aco.AntPolicyType;
 import isula.aco.ConfigurationProvider;
 import isula.aco.Environment;
 
+import static isula.aco.algorithms.PheromoneUtils.updatePheromoneForAntSolution;
+
 /**
  * The pheromone update policy of Ant System. After an Ant has built a solution,
  * pheromone is deposited in each of the solution components.
@@ -24,22 +26,16 @@ public abstract class OnlinePheromoneUpdate<C, E extends Environment> extends
     public boolean applyPolicy(E environment,
                                ConfigurationProvider configurationProvider) {
 
-        for (int i = 0; i < getAnt().getSolution().length; i++) {
-            C solutionComponent = getAnt().getSolution()[i];
+
+        updatePheromoneForAntSolution(getAnt(), environment, (positionInSolution) -> {
+            C solutionComponent = getAnt().getSolution()[positionInSolution];
 
             if (solutionComponent != null) {
-                double newPheromoneValue = this.getNewPheromoneValue(solutionComponent, i,
+                return this.getNewPheromoneValue(solutionComponent, positionInSolution,
                         environment, configurationProvider);
-
-                if (Double.isNaN(newPheromoneValue) || Double.isInfinite(newPheromoneValue)) {
-                    throw new RuntimeException("The new pheromone value for component " + solutionComponent.toString() +
-                            " is not valid. Current value: " + newPheromoneValue);
-                }
-
-                getAnt().setPheromoneTrailValue(solutionComponent, i, environment,
-                        newPheromoneValue);
             }
-        }
+            return null;
+        });
 
         return true;
     }

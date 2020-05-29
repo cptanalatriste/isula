@@ -3,10 +3,7 @@ package isula.aco;
 import isula.aco.exception.ConfigurationException;
 import isula.aco.exception.SolutionConstructionException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The little workers that build solutions: They belong to a colony. This is an
@@ -41,7 +38,7 @@ public abstract class Ant<C, E extends Environment> {
 
     private int currentIndex = 0;
 
-    private List<AntPolicy<C, E>> policies = new ArrayList<AntPolicy<C, E>>();
+    private List<AntPolicy<C, E>> policies = new ArrayList<>();
 
     // TODO(cgavidia): Temporarly, we're using an array of items. It will later
     // evolve to an array of solution components, or a List.
@@ -49,7 +46,7 @@ public abstract class Ant<C, E extends Environment> {
 
     // TODO(cgavidia): This is redundant. Or it should be implemented as another
     // data structure.
-    private Map<C, Boolean> visitedComponents = new HashMap<C, Boolean>();
+    private Map<C, Boolean> visitedComponents = new HashMap<>();
 
 
     /**
@@ -85,9 +82,7 @@ public abstract class Ant<C, E extends Environment> {
                     " each ant instance have the solution array properly initialized.");
         }
 
-        for (int i = 0; i < getSolution().length; i++) {
-            getSolution()[i] = null;
-        }
+        Arrays.fill(getSolution(), null);
 
         visitedComponents.clear();
     }
@@ -98,37 +93,35 @@ public abstract class Ant<C, E extends Environment> {
      * @return Solution as a String.
      */
     public String getSolutionAsString() {
-        String solutionString = "";
-        for (int i = 0; i < solution.length; i++) {
-            if (solution[i] != null) {
-                solutionString = solutionString + " " + solution[i].toString();
+        StringBuilder solutionString = new StringBuilder();
+        for (C c : solution) {
+            if (c != null) {
+                solutionString.append(" ").append(c.toString());
             }
         }
-        return solutionString;
+        return solutionString.toString();
     }
 
     public void addPolicy(AntPolicy<C, E> antPolicy) {
         this.policies.add(antPolicy);
     }
 
-    AntPolicy<C, E> getAntPolicy(AntPolicyType policyType, int expectedNumber) {
-        int numberOfPolicies = 0;
-        AntPolicy<C, E> selectedPolicy = null;
+    List<AntPolicy<C, E>> getAntPolicies(AntPolicyType policyType, int expectedNumber) {
+        List<AntPolicy<C, E>> selectedPolicies = new ArrayList<>();
 
         for (AntPolicy<C, E> policy : policies) {
             if (policyType.equals(policy.getPolicyType())) {
-                selectedPolicy = policy;
-                numberOfPolicies += 1;
+                selectedPolicies.add(policy);
             }
         }
 
-        if (expectedNumber > 0 && numberOfPolicies != expectedNumber) {
+        if (expectedNumber > 0 && selectedPolicies.size() != expectedNumber) {
             throw new ConfigurationException("The number of " + policyType
-                    + " policies was " + numberOfPolicies + ". We were expecting "
+                    + " policies was " + selectedPolicies.size() + ". We were expecting "
                     + expectedNumber);
         }
 
-        return selectedPolicy;
+        return selectedPolicies;
     }
 
     /**
@@ -140,17 +133,23 @@ public abstract class Ant<C, E extends Environment> {
     public void selectNextNode(E environment,
                                ConfigurationProvider configurationProvider) {
 
-        AntPolicy<C, E> selectNodePolicity = getAntPolicy(
-                AntPolicyType.NODE_SELECTION, ONE_POLICY);
+        AntPolicy<C, E> selectNodePolicity = getAntPolicies(
+                AntPolicyType.NODE_SELECTION, ONE_POLICY).get(0);
 
-        // TODO(cgavidia): With this approach, the policy is a shared resource
-        // between ants. This doesn't allow parallelism.
+        // TODO(cgavidia): With this approach, the policy is a shared resource between ants. This doesn't allow parallelism.
         selectNodePolicity.setAnt(this);
         boolean policyResult = selectNodePolicity.applyPolicy(environment, configurationProvider);
         if (!policyResult) {
             throw new ConfigurationException("The node selection policy " + selectNodePolicity.getClass().getName() +
                     " wasn't able to select a node.");
         }
+
+        List<AntPolicy<C, E>> afterNodeSelection = getAntPolicies(AntPolicyType.AFTER_NODE_SELECTION, DONT_CHECK_NUMBERS);
+        afterNodeSelection.forEach((antPolicy) -> {
+            antPolicy.setAnt(this);
+            antPolicy.applyPolicy(environment, configurationProvider);
+        });
+
     }
 
     /**
@@ -161,15 +160,14 @@ public abstract class Ant<C, E extends Environment> {
      */
     public void doAfterSolutionIsReady(E environment,
                                        ConfigurationProvider configurationProvider) {
-        AntPolicy<C, E> selectNodePolicity = getAntPolicy(
+        List<AntPolicy<C, E>> antPolicies = getAntPolicies(
                 AntPolicyType.AFTER_SOLUTION_IS_READY, DONT_CHECK_NUMBERS);
+        // TODO(cgavidia): With this approach, the policy is a shared resource between ants. This doesn't allow parallelism.
+        antPolicies.forEach((antPolicy) -> {
+            antPolicy.setAnt(this);
+            antPolicy.applyPolicy(environment, configurationProvider);
+        });
 
-        if (selectNodePolicity != null) {
-            // TODO(cgavidia): With this approach, the policy is a shared resource
-            // between ants. This doesn't allow parallelism.
-            selectNodePolicity.setAnt(this);
-            selectNodePolicity.applyPolicy(environment, configurationProvider);
-        }
     }
 
     /**
