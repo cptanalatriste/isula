@@ -2,6 +2,8 @@ package isula.aco.algorithms.acs;
 
 import isula.aco.*;
 
+import java.util.List;
+
 import static isula.aco.algorithms.PheromoneUtils.updatePheromoneForAntSolution;
 
 public class PheromoneDepositForAcs<C, E extends Environment>
@@ -14,10 +16,10 @@ public class PheromoneDepositForAcs<C, E extends Environment>
     @Override
     public void applyDaemonAction(ConfigurationProvider configurationProvider) {
         Ant<C, E> bestAnt = getAntColony().getBestPerformingAnt(getEnvironment());
-        C[] bestSolution = bestAnt.getSolution();
+        List<C> bestSolution = bestAnt.getSolution();
 
         updatePheromoneForAntSolution(bestAnt, getEnvironment(), (componentIndex) -> {
-            C solutionComponent = bestSolution[componentIndex];
+            C solutionComponent = bestSolution.get(componentIndex);
             return getNewPheromoneValue(bestAnt, componentIndex,
                     solutionComponent, configurationProvider);
         });

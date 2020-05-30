@@ -4,7 +4,6 @@ import isula.aco.ConfigurationProvider;
 import isula.aco.DaemonAction;
 import isula.aco.DaemonActionType;
 import isula.aco.Environment;
-import isula.aco.algorithms.maxmin.StartPheromoneMatrixForMaxMin;
 
 import java.util.Arrays;
 import java.util.logging.Logger;

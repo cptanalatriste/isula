@@ -4,6 +4,7 @@ import isula.aco.Ant;
 import isula.aco.Environment;
 import isula.aco.exception.ConfigurationException;
 
+import java.util.List;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
@@ -19,9 +20,9 @@ public class PheromoneUtils {
     public static <C, E extends Environment> void updatePheromoneForAntSolution(Ant<C, E> ant, E environment,
                                                                                 Function<Integer, Double> pheromoneUpdater) {
 
-        C[] antSolution = ant.getSolution();
-        IntStream.range(0, antSolution.length).forEach((componentIndex) -> {
-            C solutionComponent = antSolution[componentIndex];
+        List<C> antSolution = ant.getSolution();
+        IntStream.range(0, antSolution.size()).forEach((componentIndex) -> {
+            C solutionComponent = antSolution.get(componentIndex);
             Double newValue = pheromoneUpdater.apply(componentIndex);
 
             if (newValue != null) {

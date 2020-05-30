@@ -28,7 +28,7 @@ public class BaseAntColonyTest {
             @Override
             public boolean applyPolicy(Environment environment,
                                        ConfigurationProvider configurationProvider) {
-                this.getAnt().visitNode(COMPONENT_FROM_POLICY);
+                this.getAnt().visitNode(COMPONENT_FROM_POLICY, environment);
                 return true;
             }
         };

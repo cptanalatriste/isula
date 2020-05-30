@@ -1,12 +1,13 @@
 package isula.aco;
 
+import javax.naming.ConfigurationException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.naming.ConfigurationException;
 
 /**
  * The main component of the framework: Is the one in charge of making a colony
@@ -25,7 +26,7 @@ public class AcoProblemSolver<C, E extends Environment> {
     private static Logger logger = Logger.getLogger(AcoProblemSolver.class
             .getName());
 
-    private C[] bestSolution;
+    private List<C> bestSolution;
     private double bestSolutionCost = 0.0;
     private double executionTime = 0.0;
     private String bestSolutionAsString = "";
@@ -107,6 +108,7 @@ public class AcoProblemSolver<C, E extends Environment> {
         int iteration = 0;
 
         while (iteration < numberOfIterations) {
+            Instant iterationStart = Instant.now();
 
             antColony.clearAntSolutions();
             antColony.buildSolutions(environment, configurationProvider);
@@ -115,7 +117,10 @@ public class AcoProblemSolver<C, E extends Environment> {
             // Maybe with the Policy hierarchy.
             applyDaemonActions(DaemonActionType.AFTER_ITERATION_CONSTRUCTION);
 
-            evaluateIterationPerformance(iteration, environment);
+
+            Instant iterationEnd = Instant.now();
+            long iterationTime = Duration.between(iterationStart, iterationEnd).getSeconds();
+            evaluateIterationPerformance(iteration, iterationTime, environment);
             iteration++;
         }
 
@@ -134,9 +139,10 @@ public class AcoProblemSolver<C, E extends Environment> {
      * Updates the information of the best solution produced with the solutions
      * produced by the Colony.
      *
-     * @param environment Environment where the solutions where produced.
+     * @param iterationTimeInSeconds
+     * @param environment            Environment where the solutions where produced.
      */
-    public void evaluateIterationPerformance(int iteration, E environment) {
+    public void evaluateIterationPerformance(int iteration, long iterationTimeInSeconds, E environment) {
         logger.log(Level.FINE, "GETTING BEST SOLUTION FOUND");
 
         Ant<C, E> bestAnt = antColony.getBestPerformingAnt(environment);
@@ -145,7 +151,7 @@ public class AcoProblemSolver<C, E extends Environment> {
 
         if (bestSolution == null
                 || bestSolutionCost > bestIterationCost) {
-            bestSolution = bestAnt.getSolution().clone();
+            bestSolution = new ArrayList<>(bestAnt.getSolution());
             bestSolutionCost = bestIterationCost;
             bestSolutionAsString = bestAnt.getSolutionAsString();
 
@@ -155,7 +161,7 @@ public class AcoProblemSolver<C, E extends Environment> {
         }
 
         logger.info("Current iteration: " + iteration + " Iteration best: " + bestIterationCost + " Best solution cost: "
-                + bestSolutionCost);
+                + bestSolutionCost + " Iteration Duration (s): " + iterationTimeInSeconds);
 
     }
 
@@ -202,7 +208,7 @@ public class AcoProblemSolver<C, E extends Environment> {
         this.configurationProvider = configurationProvider;
     }
 
-    public C[] getBestSolution() {
+    public List<C> getBestSolution() {
         return bestSolution;
     }
 

@@ -12,6 +12,9 @@ import isula.aco.test.DummyFactory;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AntTest {
 
     private static final int SOLUTION_SIZE = 3;
@@ -34,11 +37,11 @@ public class AntTest {
     public void setUp() {
         this.dummyAnt = DummyFactory.createDummyAnt(0, 1);
 
-        this.dummyAnt.setSolution(new Integer[SOLUTION_SIZE]);
+        this.dummyAnt.setSolution(new ArrayList<>());
 
-        this.dummyAnt.visitNode(0);
-        this.dummyAnt.visitNode(1);
-        this.dummyAnt.visitNode(2);
+        this.dummyAnt.visitNode(0, null);
+        this.dummyAnt.visitNode(1, null);
+        this.dummyAnt.visitNode(2, null);
     }
 
     @Test
@@ -58,7 +61,7 @@ public class AntTest {
         assertEquals(0, this.dummyAnt.getCurrentIndex());
         assertTrue(this.dummyAnt.getVisited().isEmpty());
 
-        Integer[] solution = this.dummyAnt.getSolution();
+        List<Integer> solution = this.dummyAnt.getSolution();
 
         for (Integer component : solution) {
             assertNull(component);

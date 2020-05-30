@@ -40,9 +40,7 @@ public abstract class Ant<C, E extends Environment> {
 
     private List<AntPolicy<C, E>> policies = new ArrayList<>();
 
-    // TODO(cgavidia): Temporarly, we're using an array of items. It will later
-    // evolve to an array of solution components, or a List.
-    private C[] solution;
+    private List<C> solution;
 
     // TODO(cgavidia): This is redundant. Or it should be implemented as another
     // data structure.
@@ -54,16 +52,14 @@ public abstract class Ant<C, E extends Environment> {
      *
      * @param visitedNode Visited node.
      */
-    public void visitNode(C visitedNode) {
-        if (currentIndex < getSolution().length) {
-
-            getSolution()[currentIndex] = visitedNode;
+    public void visitNode(C visitedNode, E environment) {
+        if (getSolution() != null) {
+            getSolution().add(visitedNode);
             visitedComponents.put(visitedNode, true);
             currentIndex++;
         } else {
             throw new SolutionConstructionException("Couldn't add component "
                     + visitedNode.toString() + " at index " + currentIndex
-                    + ": Solution length is: " + getSolution().length
                     + ". \nPartial solution is " + this.getSolutionAsString());
         }
 
@@ -82,8 +78,7 @@ public abstract class Ant<C, E extends Environment> {
                     " each ant instance have the solution array properly initialized.");
         }
 
-        Arrays.fill(getSolution(), null);
-
+        getSolution().clear();
         visitedComponents.clear();
     }
 
@@ -272,13 +267,11 @@ public abstract class Ant<C, E extends Environment> {
                                                 Integer positionInSolution, E environment, Double value);
 
 
-    // TODO(cgavidia): For convenience, we're accesing this data structures
-    // directly.
-    public C[] getSolution() {
+    public List<C> getSolution() {
         return solution;
     }
 
-    public void setSolution(C[] solution) {
+    public void setSolution(List<C> solution) {
         this.solution = solution;
     }
 

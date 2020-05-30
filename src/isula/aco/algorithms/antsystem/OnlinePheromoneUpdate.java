@@ -28,7 +28,7 @@ public abstract class OnlinePheromoneUpdate<C, E extends Environment> extends
 
 
         updatePheromoneForAntSolution(getAnt(), environment, (positionInSolution) -> {
-            C solutionComponent = getAnt().getSolution()[positionInSolution];
+            C solutionComponent = getAnt().getSolution().get(positionInSolution);
 
             if (solutionComponent != null) {
                 return this.getNewPheromoneValue(solutionComponent, positionInSolution,

@@ -7,6 +7,7 @@ import isula.aco.DaemonActionType;
 import isula.aco.Environment;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -67,10 +68,10 @@ public abstract class UpdatePheromoneMatrixForMaxMin<C, E extends Environment>
         logger.log(Level.FINE, "Depositing pheromone on Best Ant trail.");
 
         Ant<C, E> bestAnt = getAntColony().getBestPerformingAnt(getEnvironment());
-        C[] bestSolution = bestAnt.getSolution();
+        List<C> bestSolution = bestAnt.getSolution();
 
         updatePheromoneForAntSolution(bestAnt, getEnvironment(), (componentIndex) -> {
-            C solutionComponent = bestSolution[componentIndex];
+            C solutionComponent = bestSolution.get(componentIndex);
             double newValue = getNewPheromoneValue(bestAnt, componentIndex,
                     solutionComponent, configurationProvider);
             return Math.min(newValue, getMaximumPheromoneValue(configurationProvider));

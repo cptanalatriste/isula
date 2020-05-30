@@ -32,7 +32,7 @@ public class OfflinePheromoneUpdate<C, E extends Environment> extends DaemonActi
         E environment = getEnvironment();
 
         getAntColony().getHive().forEach((ant) -> updatePheromoneForAntSolution(ant, getEnvironment(), (positionInSolution) -> {
-            C solutionComponent = ant.getSolution()[positionInSolution];
+            C solutionComponent = ant.getSolution().get(positionInSolution);
 
             if (solutionComponent != null) {
 

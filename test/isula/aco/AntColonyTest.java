@@ -72,7 +72,7 @@ public class AntColonyTest {
         List<Ant<Integer, Environment>> hive = this.dummyColony.getHive();
 
         for (Ant<Integer, Environment> ant : hive) {
-            ant.visitNode(1);
+            ant.visitNode(1, environment);
         }
 
         this.dummyColony.clearAntSolutions();
@@ -91,7 +91,7 @@ public class AntColonyTest {
             @Override
             public boolean applyPolicy(Environment environment,
                                        ConfigurationProvider configurationProvider) {
-                this.getAnt().visitNode(SAMPLE_NODE);
+                this.getAnt().visitNode(SAMPLE_NODE, environment);
                 return true;
             }
         };
@@ -103,7 +103,7 @@ public class AntColonyTest {
                 DummyFactory.createDummyConfigurationProvider());
 
         for (Ant<Integer, Environment> ant : this.dummyColony.getHive()) {
-            assertEquals(SOLUTION_LENGTH, ant.getSolution().length);
+            assertEquals(SOLUTION_LENGTH, ant.getSolution().size());
 
             for (Integer component : ant.getSolution()) {
                 assertEquals(SAMPLE_NODE, component);

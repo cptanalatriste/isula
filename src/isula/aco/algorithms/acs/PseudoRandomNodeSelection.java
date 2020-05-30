@@ -6,7 +6,6 @@ import isula.aco.algorithms.antsystem.RandomNodeSelection;
 import isula.aco.exception.SolutionConstructionException;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -52,7 +51,7 @@ public class PseudoRandomNodeSelection<C, E extends Environment> extends
 
             if (nextNode != null) {
                 nodeWasSelected = true;
-                getAnt().visitNode(nextNode);
+                getAnt().visitNode(nextNode, environment);
             }
 
         } else {
@@ -93,12 +92,8 @@ public class PseudoRandomNodeSelection<C, E extends Environment> extends
         C nextNode = null;
         double currentMaximumProbability = -1;
 
-        Iterator<Entry<C, Double>> componentWithProbabilitiesIterator = componentsWithProbabilities
-                .entrySet().iterator();
-        while (componentWithProbabilitiesIterator.hasNext()) {
-            Entry<C, Double> componentWithProbability = componentWithProbabilitiesIterator
-                    .next();
-
+        for (Entry<C, Double> componentWithProbability : componentsWithProbabilities
+                .entrySet()) {
             C possibleMove = componentWithProbability.getKey();
             double currentProbability = componentWithProbability.getValue();
 

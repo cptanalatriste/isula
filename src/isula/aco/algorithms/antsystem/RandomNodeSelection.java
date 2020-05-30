@@ -44,7 +44,7 @@ public class RandomNodeSelection<C, E extends Environment> extends
 
             if (total >= value) {
                 C nextNode = componentWithProbability.getKey();
-                getAnt().visitNode(nextNode);
+                getAnt().visitNode(nextNode, environment);
                 return true;
             }
         }
@@ -122,8 +122,8 @@ public class RandomNodeSelection<C, E extends Environment> extends
                                                        ConfigurationProvider configurationProvider) {
         throw new SolutionConstructionException(
                 "We have no suitable components to add to the solution from current position."
-                        + "\n Previous Component: "
-                        + getAnt().getSolution()[getAnt().getCurrentIndex() - 1]
+                        + "\n Partial solution: "
+                        + getAnt().getSolution()
                         + " at position " + (getAnt().getCurrentIndex() - 1)
                         + "\n Environment: " + environment.toString()
                         + "\nPartial solution : " + getAnt().getSolutionAsString());

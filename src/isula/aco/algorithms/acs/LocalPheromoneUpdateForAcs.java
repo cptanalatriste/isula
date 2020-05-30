@@ -18,7 +18,7 @@ public class LocalPheromoneUpdateForAcs<C, E extends Environment> extends
     public boolean applyPolicy(E environment, ConfigurationProvider configurationProvider) {
 
         int lastVisitedPosition = getAnt().getCurrentIndex() - 1;
-        C solutionComponent = getAnt().getSolution()[lastVisitedPosition];
+        C solutionComponent = getAnt().getSolution().get(lastVisitedPosition);
 
         double newPheromoneValue = this.getNewPheromoneValue(solutionComponent, lastVisitedPosition,
                 environment, configurationProvider);

@@ -3,10 +3,12 @@ package isula.aco.test;
 import isula.aco.Ant;
 import isula.aco.ConfigurationProvider;
 import isula.aco.Environment;
+import isula.aco.MatrixEnvironment;
 import isula.aco.algorithms.acs.AcsConfigurationProvider;
 import isula.aco.algorithms.antsystem.AntSystemConfigurationProvider;
 import isula.aco.exception.InvalidInputException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DummyFactory {
@@ -19,10 +21,10 @@ public class DummyFactory {
      * We're creating a dummy Environment instance, with a pheromone matrix with
      * the dimensions specified in the parameters.
      */
-    public static Environment createDummyEnvironment(double[][] problemGraph,
-                                                     final int pheromoneRows, final int pheromoneColumns)
+    public static MatrixEnvironment createDummyEnvironment(double[][] problemGraph,
+                                                           final int pheromoneRows, final int pheromoneColumns)
             throws InvalidInputException {
-        return new Environment(problemGraph) {
+        return new MatrixEnvironment(problemGraph) {
 
             @Override
             protected double[][] createPheromoneMatrix() {
@@ -161,7 +163,7 @@ public class DummyFactory {
 
         };
 
-        ant.setSolution(new Integer[indexLimit]);
+        ant.setSolution(new ArrayList<>());
         return ant;
     }
 

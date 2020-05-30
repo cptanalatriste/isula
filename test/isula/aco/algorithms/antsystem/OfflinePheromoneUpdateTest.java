@@ -9,6 +9,8 @@ import org.junit.Test;
 
 import javax.naming.ConfigurationException;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 
 public class OfflinePheromoneUpdateTest extends BaseAntColonyTest {
@@ -23,7 +25,7 @@ public class OfflinePheromoneUpdateTest extends BaseAntColonyTest {
         getProblemSolver().addDaemonActions(new PerformEvaporation<>(), new OfflinePheromoneUpdate<>());
         getProblemSolver().solveProblem();
 
-        Integer[] solution = getProblemSolver().getBestSolution();
+        List<Integer> solution = getProblemSolver().getBestSolution();
         Ant<Integer, Environment> ant = getAntColony().getBestPerformingAnt(getEnvironment());
 
         AntSystemConfigurationProvider configurationProvider = (AntSystemConfigurationProvider) this.getConfigurationProvider();
@@ -34,8 +36,8 @@ public class OfflinePheromoneUpdateTest extends BaseAntColonyTest {
 
         double expectedPheromone = (1 - rho) * t_ij + Q / F;
 
-        for (int componentIndex = 0; componentIndex < solution.length; componentIndex++) {
-            double pheromoneValue = ant.getPheromoneTrailValue(solution[componentIndex], componentIndex,
+        for (int componentIndex = 0; componentIndex < solution.size(); componentIndex++) {
+            double pheromoneValue = ant.getPheromoneTrailValue(solution.get(componentIndex), componentIndex,
                     getEnvironment());
             assertEquals(expectedPheromone, pheromoneValue, 0.001);
         }

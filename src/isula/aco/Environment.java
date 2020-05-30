@@ -1,9 +1,8 @@
 package isula.aco;
 
 import isula.aco.exception.ConfigurationException;
-import isula.aco.exception.InvalidInputException;
 
-import java.util.logging.Logger;
+import java.util.Arrays;
 
 /**
  * The place that our ants traverse, where they gather the information to build
@@ -18,28 +17,10 @@ import java.util.logging.Logger;
  */
 public abstract class Environment {
 
-    private static Logger logger = Logger.getLogger(Environment.class.getName());
-
-    private double[][] problemRepresentation;
 
     // TODO(cgavidia): We're supporting pheromone deposition on vertex. On other
     // problems, the pheromone is deposited on edges.
     private double[][] pheromoneMatrix;
-
-    /**
-     * Creates an Environment for the Ants to traverse.
-     *
-     * @param problemRepresentation Graph representation of the problem to be solved.
-     * @throws InvalidInputException When the problem graph is incorrectly formed.
-     */
-    public Environment(double[][] problemRepresentation) throws InvalidInputException {
-        this.problemRepresentation = problemRepresentation;
-        this.pheromoneMatrix = createPheromoneMatrix();
-
-        if (!this.isProblemRepresentationValid()) {
-            throw new InvalidInputException();
-        }
-    }
 
     /**
      * Creates a pheromone matrix depending of the nature of the problem to solve.
@@ -50,19 +31,13 @@ public abstract class Environment {
      */
     protected abstract double[][] createPheromoneMatrix();
 
-
     /**
-     * Verifies if the problem graph matrix provided is valid. By default this
-     * method returns true: override if necessary.
+     * Creates an Environment for the Ants to traverse.
      *
-     * @return True if valid, false otherwise.
      */
-    protected boolean isProblemRepresentationValid() {
-        return true;
-    }
+    public Environment() {
+        this.pheromoneMatrix = createPheromoneMatrix();
 
-    public double[][] getProblemRepresentation() {
-        return problemRepresentation;
     }
 
     public void setPheromoneMatrix(double[][] pheromoneMatrix) {
@@ -97,9 +72,9 @@ public abstract class Environment {
 
     @Override
     public String toString() {
-        return "Problem Representation: Rows " + problemRepresentation.length + " Columns "
-                + problemRepresentation[0].length + "\n" + "Pheromone Matrix: Rows "
-                + pheromoneMatrix.length + " Columns " + pheromoneMatrix[0].length;
+        return "Environment{" +
+                "pheromoneMatrix=" + Arrays.toString(pheromoneMatrix) +
+                '}';
     }
 
     /**
