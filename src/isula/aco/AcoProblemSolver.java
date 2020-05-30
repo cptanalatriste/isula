@@ -46,7 +46,8 @@ public class AcoProblemSolver<C, E extends Environment> {
      * @param colony      The Ant Colony with specialized ants.
      * @param config      Algorithm configuration.
      */
-    public void initialize(E environment, AntColony<C, E> colony, ConfigurationProvider config) throws ConfigurationException {
+    public void initialize(E environment, AntColony<C, E> colony, ConfigurationProvider config)
+            throws ConfigurationException {
 
         if (colony == null) {
             throw new ConfigurationException("The problem solver needs an instance of AntColony to be initialized");
@@ -56,6 +57,13 @@ public class AcoProblemSolver<C, E extends Environment> {
 
         this.setConfigurationProvider(config);
         this.setEnvironment(environment);
+    }
+
+    public void initialize(E environment, AntColony<C, E> colony, ConfigurationProvider config, Duration timeLimit)
+            throws ConfigurationException {
+
+        initialize(environment, colony, config);
+        colony.setTimeLimit(timeLimit);
     }
 
     /**
@@ -91,7 +99,7 @@ public class AcoProblemSolver<C, E extends Environment> {
      */
     public void solveProblem() throws ConfigurationException {
         logger.info("Starting computation at: " + new Date());
-        final long startTime = System.nanoTime();
+        Instant executionStartTime = Instant.now();
 
         applyDaemonActions(DaemonActionType.INITIAL_CONFIGURATION);
 
@@ -111,22 +119,25 @@ public class AcoProblemSolver<C, E extends Environment> {
             Instant iterationStart = Instant.now();
 
             antColony.clearAntSolutions();
-            antColony.buildSolutions(environment, configurationProvider);
+            boolean terminateExecution = antColony.buildSolutions(environment, configurationProvider, executionStartTime);
 
-            // TODO(cgavidia): This should reference the Update Pheromone routine.
-            // Maybe with the Policy hierarchy.
+
+            // TODO(cgavidia): This should reference the Update Pheromone routine. Maybe with the Policy hierarchy.
             applyDaemonActions(DaemonActionType.AFTER_ITERATION_CONSTRUCTION);
-
 
             Instant iterationEnd = Instant.now();
             long iterationTime = Duration.between(iterationStart, iterationEnd).getSeconds();
             evaluateIterationPerformance(iteration, iterationTime, environment);
             iteration++;
+
+            if (terminateExecution) {
+                break;
+            }
         }
 
         logger.info("Finishing computation at: " + new Date());
-        long endTime = System.nanoTime();
-        executionTime = (endTime - startTime) / 1000000000.0;
+        Instant executionEndTime = Instant.now();
+        executionTime = Duration.between(executionStartTime, executionEndTime).getSeconds();
         logger.info("Duration (in seconds): " + executionTime);
 
         logger.info("EXECUTION FINISHED");
@@ -139,7 +150,7 @@ public class AcoProblemSolver<C, E extends Environment> {
      * Updates the information of the best solution produced with the solutions
      * produced by the Colony.
      *
-     * @param iterationTimeInSeconds
+     * @param iterationTimeInSeconds Time spent during the iteration.
      * @param environment            Environment where the solutions where produced.
      */
     public void evaluateIterationPerformance(int iteration, long iterationTimeInSeconds, E environment) {

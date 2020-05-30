@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 
 public class AntColonyTest {
@@ -22,8 +23,6 @@ public class AntColonyTest {
 
     /**
      * Prepares a dummy colony for testing.
-     *
-     * @throws Exception
      */
     @Before
     public void setUp() throws Exception {
@@ -61,6 +60,8 @@ public class AntColonyTest {
 
         this.dummyColony.buildColony(environment);
         this.dummyColony.getHive().add(theBestAnt);
+
+        IntStream.range(0, SOLUTION_LENGTH).forEach((solutionIndex) -> theBestAnt.visitNode(SAMPLE_NODE, environment));
 
         assertEquals(BEST_COST,
                 this.dummyColony.getBestPerformingAnt(this.environment)
@@ -100,7 +101,7 @@ public class AntColonyTest {
         this.dummyColony.addAntPolicies(nodeSelectionPolicy);
 
         this.dummyColony.buildSolutions(this.environment,
-                DummyFactory.createDummyConfigurationProvider());
+                DummyFactory.createDummyConfigurationProvider(), null);
 
         for (Ant<Integer, Environment> ant : this.dummyColony.getHive()) {
             assertEquals(SOLUTION_LENGTH, ant.getSolution().size());

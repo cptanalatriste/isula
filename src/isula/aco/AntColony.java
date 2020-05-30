@@ -2,6 +2,8 @@ package isula.aco;
 
 import isula.aco.exception.ConfigurationException;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +25,8 @@ public abstract class AntColony<C, E extends Environment> {
     private int numberOfAnts;
     private List<Ant<C, E>> hive = new ArrayList<>();
     private List<AntPolicy<C, E>> antPolicies = new ArrayList<>();
+
+    private Duration timeLimit;
 
     /**
      * Creates a colony of ants
@@ -66,8 +70,8 @@ public abstract class AntColony<C, E extends Environment> {
 
         for (Ant<C, E> ant : hive) {
 
-            if (ant.getSolutionCost(environment) < bestAnt
-                    .getSolutionCost(environment)) {
+            if (ant.isSolutionReady(environment) &&
+                    (ant.getSolutionCost(environment) < bestAnt.getSolutionCost(environment))) {
                 bestAnt = ant;
             }
         }
@@ -102,8 +106,9 @@ public abstract class AntColony<C, E extends Environment> {
      * @param environment           Environment that represents the problem.
      * @param configurationProvider Configuration provider.
      */
-    public void buildSolutions(E environment,
-                               ConfigurationProvider configurationProvider) {
+    public boolean buildSolutions(E environment,
+                               ConfigurationProvider configurationProvider,
+                               Instant executionStartTime) {
         logger.log(Level.FINE, "BUILDING ANT SOLUTIONS");
 
         int antCounter = 0;
@@ -123,12 +128,32 @@ public abstract class AntColony<C, E extends Environment> {
             }
 
             ant.doAfterSolutionIsReady(environment, configurationProvider);
-
             logger.log(Level.FINE,
                     "Solution is ready > Cost: " + ant.getSolutionCost(environment)
                             + ", Solution: " + ant.getSolutionAsString());
+
+            if (shouldTerminateExecution(executionStartTime)) {
+                return true;
+            }
             antCounter++;
         }
+
+        return false;
+    }
+
+    private boolean shouldTerminateExecution(Instant executionStartTime) {
+
+        if (timeLimit != null && executionStartTime != null) {
+            Duration elapsedTime = Duration.between(executionStartTime, Instant.now());
+
+            if (elapsedTime.compareTo(timeLimit) > 0) {
+                logger.warning("TIMEOUT: Finishing solution generation after " + elapsedTime.getSeconds() +
+                        " seconds.");
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -149,6 +174,11 @@ public abstract class AntColony<C, E extends Environment> {
             }
         }
     }
+
+    public void setTimeLimit(Duration timeLimit) {
+        this.timeLimit = timeLimit;
+    }
+
 
     public int getNumberOfAnts() {
         return numberOfAnts;

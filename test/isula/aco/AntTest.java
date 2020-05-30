@@ -17,7 +17,6 @@ import java.util.List;
 
 public class AntTest {
 
-    private static final int SOLUTION_SIZE = 3;
     private static final double[][] SAMPLE_PROBLEM_GRAPH = new double[3][3];
 
     private Ant<Integer, Environment> dummyAnt;
