@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * @param <E> Class representing the Environment.
  * @author Carlos G. Gavidia
  */
-public abstract class AntColony<C, E extends Environment> {
+public class AntColony<C, E extends Environment> {
 
     private static Logger logger = Logger.getLogger(AntColony.class.getName());
 
@@ -57,7 +57,10 @@ public abstract class AntColony<C, E extends Environment> {
      * @param environment Environment with problem specific information.
      * @return An Ant instance.
      */
-    protected abstract Ant<C, E> createAnt(E environment);
+    protected  Ant<C, E> createAnt(E environment) {
+        throw new ConfigurationException("You need to override the createAnt method and provide " +
+                "a suitable Ant instance for your problem.");
+    }
 
     /**
      * Returns the ant with the best performance so far, that is the one with the lowest cost.
@@ -107,8 +110,8 @@ public abstract class AntColony<C, E extends Environment> {
      * @param configurationProvider Configuration provider.
      */
     public boolean buildSolutions(E environment,
-                               ConfigurationProvider configurationProvider,
-                               Instant executionStartTime) {
+                                  ConfigurationProvider configurationProvider,
+                                  Instant executionStartTime) {
         logger.log(Level.FINE, "BUILDING ANT SOLUTIONS");
 
         int antCounter = 0;
@@ -187,6 +190,7 @@ public abstract class AntColony<C, E extends Environment> {
     public void setNumberOfAnts(int numberOfAnts) {
         this.numberOfAnts = numberOfAnts;
     }
+
 
     @Override
     public String toString() {

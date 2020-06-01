@@ -1,13 +1,11 @@
 package isula.aco.algorithms.antsystem;
 
-import isula.aco.AntPolicy;
-import isula.aco.AntPolicyType;
-import isula.aco.ConfigurationProvider;
-import isula.aco.Environment;
+import isula.aco.*;
 import isula.aco.exception.ConfigurationException;
 import isula.aco.exception.SolutionConstructionException;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * This is the node selection policy used in Ant System algorithms, also known as Random Proportional Rule.
@@ -19,12 +17,17 @@ import java.util.*;
 public class RandomNodeSelection<C, E extends Environment> extends
         AntPolicy<C, E> {
 
+    private static Logger logger = Logger.getLogger(AntColony.class.getName());
+
+
     public RandomNodeSelection() {
         super(AntPolicyType.NODE_SELECTION);
     }
 
     @Override
     public boolean applyPolicy(E environment, ConfigurationProvider configurationProvider) {
+
+        logger.fine("Starting node selection");
         Random random = new Random();
 
         double value = random.nextDouble();
@@ -45,6 +48,9 @@ public class RandomNodeSelection<C, E extends Environment> extends
             if (total >= value) {
                 C nextNode = componentWithProbability.getKey();
                 getAnt().visitNode(nextNode, environment);
+
+                logger.fine("Ending node selection");
+
                 return true;
             }
         }

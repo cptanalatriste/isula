@@ -49,21 +49,28 @@ public class AcoProblemSolver<C, E extends Environment> {
     public void initialize(E environment, AntColony<C, E> colony, ConfigurationProvider config)
             throws ConfigurationException {
 
-        if (colony == null) {
-            throw new ConfigurationException("The problem solver needs an instance of AntColony to be initialized");
-        }
-        colony.buildColony(environment);
-        this.setAntColony(colony);
-
-        this.setConfigurationProvider(config);
-        this.setEnvironment(environment);
+        initialize(environment, colony, config, null);
     }
+
 
     public void initialize(E environment, AntColony<C, E> colony, ConfigurationProvider config, Duration timeLimit)
             throws ConfigurationException {
 
-        initialize(environment, colony, config);
+        this.setConfigurationProvider(config);
+        this.setEnvironment(environment);
+
+        if (colony == null) {
+            throw new ConfigurationException("The problem solver needs an instance of AntColony to be initialized");
+        }
+
+        this.configureAntColony(colony, environment, timeLimit);
+
+    }
+
+    protected void configureAntColony(AntColony<C, E> colony, E environment, Duration timeLimit) {
+        colony.buildColony(environment);
         colony.setTimeLimit(timeLimit);
+        this.setAntColony(colony);
     }
 
     /**
@@ -84,12 +91,17 @@ public class AcoProblemSolver<C, E extends Environment> {
      *
      * @param daemonAction Daemon action.
      */
-    private void addDaemonAction(DaemonAction<C, E> daemonAction) {
+    protected void addDaemonAction(DaemonAction<C, E> daemonAction) {
 
+        this.configureDaemonAction(antColony, daemonAction, environment);
+        daemonActions.add(daemonAction);
+
+    }
+
+    protected void configureDaemonAction(AntColony<C, E> antColony, DaemonAction<C, E> daemonAction, E environment) {
         daemonAction.setAntColony(antColony);
         daemonAction.setEnvironment(environment);
         daemonAction.setProblemSolver(this);
-        daemonActions.add(daemonAction);
     }
 
     /**
@@ -101,7 +113,18 @@ public class AcoProblemSolver<C, E extends Environment> {
         logger.info("Starting computation at: " + new Date());
         Instant executionStartTime = Instant.now();
 
-        applyDaemonActions(DaemonActionType.INITIAL_CONFIGURATION);
+        PerformanceTracker<C, E> performanceTracker = kickOffColony(this.antColony, this.environment,
+                executionStartTime);
+
+        this.updateGlobalMetrics(executionStartTime, performanceTracker);
+
+
+    }
+
+    protected PerformanceTracker<C, E> kickOffColony(AntColony<C, E> antColony, E environment,
+                                                     Instant executionStartTime)
+            throws ConfigurationException {
+        applyDaemonActions(antColony, DaemonActionType.INITIAL_CONFIGURATION);
 
         logger.info("STARTING ITERATIONS");
         int numberOfIterations = configurationProvider.getNumberOfIterations();
@@ -114,26 +137,34 @@ public class AcoProblemSolver<C, E extends Environment> {
         logger.info("Number of iterations: " + numberOfIterations);
 
         int iteration = 0;
-
+        PerformanceTracker<C, E> performanceTracker = new PerformanceTracker<>();
         while (iteration < numberOfIterations) {
             Instant iterationStart = Instant.now();
 
             antColony.clearAntSolutions();
-            boolean terminateExecution = antColony.buildSolutions(environment, configurationProvider, executionStartTime);
-
+            boolean terminateExecution = antColony.buildSolutions(environment, configurationProvider,
+                    executionStartTime);
 
             // TODO(cgavidia): This should reference the Update Pheromone routine. Maybe with the Policy hierarchy.
-            applyDaemonActions(DaemonActionType.AFTER_ITERATION_CONSTRUCTION);
-
+            applyDaemonActions(antColony, DaemonActionType.AFTER_ITERATION_CONSTRUCTION);
             Instant iterationEnd = Instant.now();
             long iterationTime = Duration.between(iterationStart, iterationEnd).getSeconds();
-            evaluateIterationPerformance(iteration, iterationTime, environment);
+
+            Ant<C, E> bestAnt = antColony.getBestPerformingAnt(environment);
+            performanceTracker.updateIterationPerformance(bestAnt, iteration, iterationTime, environment);
             iteration++;
 
             if (terminateExecution) {
                 break;
             }
         }
+        return performanceTracker;
+    }
+
+    protected void updateGlobalMetrics(Instant executionStartTime, PerformanceTracker<C, E> performanceTracker) {
+        this.bestSolution = performanceTracker.getBestSolution();
+        this.bestSolutionCost = performanceTracker.getBestSolutionCost();
+        this.bestSolutionAsString = performanceTracker.getBestSolutionAsString();
 
         logger.info("Finishing computation at: " + new Date());
         Instant executionEndTime = Instant.now();
@@ -143,7 +174,6 @@ public class AcoProblemSolver<C, E extends Environment> {
         logger.info("EXECUTION FINISHED");
         logger.info("Best solution cost: " + bestSolutionCost);
         logger.info("Best solution:" + bestSolutionAsString);
-
     }
 
     /**
@@ -153,10 +183,9 @@ public class AcoProblemSolver<C, E extends Environment> {
      * @param iterationTimeInSeconds Time spent during the iteration.
      * @param environment            Environment where the solutions where produced.
      */
-    public void evaluateIterationPerformance(int iteration, long iterationTimeInSeconds, E environment) {
+    public void updateIterationPerformance(Ant<C, E> bestAnt, int iteration, long iterationTimeInSeconds, E environment) {
         logger.log(Level.FINE, "GETTING BEST SOLUTION FOUND");
 
-        Ant<C, E> bestAnt = antColony.getBestPerformingAnt(environment);
         double bestIterationCost = bestAnt.getSolutionCost(environment);
         logger.fine("Iteration best cost: " + bestIterationCost);
 
@@ -179,11 +208,10 @@ public class AcoProblemSolver<C, E extends Environment> {
     /**
      * Applies all daemon actions of a specific type.
      *
-     * @param daemonActionType Daemon action type.
      */
-    private void applyDaemonActions(DaemonActionType daemonActionType) {
+    private void applyDaemonActions(AntColony<C, E> antColony, DaemonActionType daemonActionType) {
         for (DaemonAction<C, E> daemonAction : daemonActions) {
-            if (daemonActionType.equals(daemonAction.getAcoPhase())) {
+            if (daemonAction.getAntColony().equals(antColony) && daemonActionType.equals(daemonAction.getAcoPhase())) {
                 daemonAction.applyDaemonAction(this.getConfigurationProvider());
             }
         }
@@ -233,6 +261,10 @@ public class AcoProblemSolver<C, E extends Environment> {
 
     public void setBestSolutionCost(double bestSolutionCost) {
         this.bestSolutionCost = bestSolutionCost;
+    }
+
+    public List<DaemonAction<C, E>> getDaemonActions() {
+        return daemonActions;
     }
 
     @Override
