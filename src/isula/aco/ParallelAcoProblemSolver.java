@@ -1,5 +1,7 @@
 package isula.aco;
 
+import isula.aco.exception.MethodNotImplementedException;
+
 import javax.naming.ConfigurationException;
 import java.time.Duration;
 import java.time.Instant;
@@ -45,8 +47,23 @@ public class ParallelAcoProblemSolver<C, E extends Environment> extends AcoProbl
                 .min(Comparator.comparing(PerformanceTracker::getBestSolutionCost))
                 .orElseThrow(NoSuchElementException::new);
 
+        Long totalSolutions = performancePerColony
+                .stream()
+                .mapToLong(PerformanceTracker::getGeneratedSolutions).sum();
+        bestPerformingTracker.setGeneratedSolutions(totalSolutions);
+
         this.updateGlobalMetrics(executionStartTime, bestPerformingTracker);
 
+    }
+
+    @Override
+    public E getEnvironment() {
+        throw new MethodNotImplementedException();
+    }
+
+    @Override
+    public AntColony<C, E> getAntColony() {
+        throw new MethodNotImplementedException();
     }
 
     public void initialize(Supplier<E> environmentProvider, Function<ConfigurationProvider, AntColony<C, E>> colonySupplier, ConfigurationProvider config,

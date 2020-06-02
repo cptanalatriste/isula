@@ -152,13 +152,13 @@ public class DummyFactory {
             }
 
             @Override
-            public double getSolutionCost(Environment environment) {
-                return expectedCost;
+            public boolean isSolutionReady(Environment environment) {
+                return this.getCurrentIndex() == indexLimit;
             }
 
             @Override
-            public boolean isSolutionReady(Environment environment) {
-                return this.getCurrentIndex() == indexLimit;
+            public double getSolutionCost(Environment environment, List<Integer> solution) {
+                return expectedCost;
             }
 
         };

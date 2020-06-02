@@ -44,7 +44,7 @@ public class BaseAntColonyTest {
         startPheromoneMatrix.applyDaemonAction(configurationProvider);
 
         problemSolver = new AcoProblemSolver<>();
-        antColony = new AntColony<Integer, Environment>(1) {
+        antColony = new AntColony<>(1) {
             @Override
             protected Ant<Integer, Environment> createAnt(Environment environment) {
                 return DummyFactory.createDummyAnt(SOLUTION_COST, SOLUTION_LENGTH);

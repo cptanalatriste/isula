@@ -88,6 +88,10 @@ public abstract class Ant<C, E extends Environment> {
      * @return Solution as a String.
      */
     public String getSolutionAsString() {
+        return getSolutionAsString(this.solution);
+    }
+
+    public String getSolutionAsString(List<C> solution) {
         StringBuilder solutionString = new StringBuilder();
         for (C c : solution) {
             if (c != null) {
@@ -184,6 +188,11 @@ public abstract class Ant<C, E extends Environment> {
         return visited;
     }
 
+    public double getSolutionCost(E environment) {
+        return this.getSolutionCost(environment, this.solution);
+
+    }
+
     public boolean isNodeValid(C node) {
         return true;
     }
@@ -220,7 +229,7 @@ public abstract class Ant<C, E extends Environment> {
      * @param environment Environment instance with problem information.
      * @return The cost of the solution built.
      */
-    public abstract double getSolutionCost(E environment);
+    public abstract double getSolutionCost(E environment, List<C> solution);
 
     /**
      * Calculates the heuristic contribution for the cost of the solution by adding a component at an specific position.

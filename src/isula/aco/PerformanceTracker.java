@@ -1,9 +1,11 @@
 package isula.aco;
 
-import java.util.Collections;
+import isula.aco.exception.SolutionConstructionException;
+
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class PerformanceTracker<C, E extends Environment> {
 
@@ -14,6 +16,8 @@ public class PerformanceTracker<C, E extends Environment> {
     private double bestSolutionCost;
     private String bestSolutionAsString;
 
+    private long generatedSolutions;
+
     /**
      * Updates the information of the best solution produced with the solutions
      * produced by the Colony.
@@ -21,26 +25,62 @@ public class PerformanceTracker<C, E extends Environment> {
      * @param iterationTimeInSeconds Time spent during the iteration.
      * @param environment            Environment where the solutions where produced.
      */
-    public void updateIterationPerformance(Ant<C, E> bestAnt, int iteration, long iterationTimeInSeconds, E environment) {
+    public void updateIterationPerformance(AntColony<C, E> antColony, int iteration, long iterationTimeInSeconds,
+                                           E environment) {
         logger.log(Level.FINE, "GETTING BEST SOLUTION FOUND");
+
+
+        long iterationSolutions = antColony.getHive()
+                .stream()
+                .filter((ant) -> ant.isSolutionReady(environment))
+                .count();
+
+        this.generatedSolutions += iterationSolutions;
+
+        Ant<C, E> bestAnt = antColony.getBestPerformingAnt(environment);
+
+        if (!this.isStateValid(bestAnt, environment)) {
+            throw new SolutionConstructionException("Performance Tracker is in an inconsistent state. Solution:"
+                    + this.bestSolution + " Solution Cost: " + bestSolutionCost + " String representation: " +
+                    bestSolutionAsString);
+        }
 
         double bestIterationCost = bestAnt.getSolutionCost(environment);
         logger.fine("Iteration best cost: " + bestIterationCost);
 
         if (bestSolution == null
                 || bestSolutionCost > bestIterationCost) {
-            bestSolution = Collections.unmodifiableList(bestAnt.getSolution());
+            bestSolution = bestAnt.getSolution().stream().collect(Collectors.toUnmodifiableList());
             bestSolutionCost = bestIterationCost;
             bestSolutionAsString = bestAnt.getSolutionAsString();
 
             logger.fine("Best solution so far > Cost: " + bestSolutionCost
-                    + ", Solution: " + bestSolutionAsString);
+                    + ", Solution as string: " + bestSolutionAsString + " Stored solution: " + bestSolution);
 
         }
 
-        logger.info("Current iteration: " + iteration + " Iteration best: " + bestIterationCost + " Best solution cost: "
-                + bestSolutionCost + " Iteration Duration (s): " + iterationTimeInSeconds);
+        logger.info("Current iteration: " + iteration + " Iteration solutions: " + iterationSolutions +
+                " Iteration best: " + bestIterationCost + " Iteration Duration (s): " + iterationTimeInSeconds);
 
+        logger.info(" Global solution cost: " + bestSolutionCost);
+        logger.fine(" Stored solution: " + bestSolution + " Solution as String: " + bestSolutionAsString);
+    }
+
+    private boolean isStateValid(Ant<C, E> ant, E environment) {
+
+        if (this.bestSolution == null && this.bestSolutionAsString == null && this.bestSolutionCost == 0.0) {
+            return true;
+        }
+
+        double expectedSolutionCost = ant.getSolutionCost(environment, bestSolution);
+        String expectedSolutionAsString = ant.getSolutionAsString(bestSolution);
+
+        if (Math.abs(expectedSolutionCost - bestSolutionCost) <= 0.001 &&
+                expectedSolutionAsString.equals(bestSolutionAsString)) {
+            return true;
+        }
+
+        return false;
     }
 
 
@@ -54,5 +94,13 @@ public class PerformanceTracker<C, E extends Environment> {
 
     public String getBestSolutionAsString() {
         return bestSolutionAsString;
+    }
+
+    public long getGeneratedSolutions() {
+        return generatedSolutions;
+    }
+
+    public void setGeneratedSolutions(Long generatedSolutions) {
+        this.generatedSolutions = generatedSolutions;
     }
 }

@@ -121,8 +121,8 @@ public class AcoProblemSolver<C, E extends Environment> {
 
     }
 
-    protected PerformanceTracker<C, E> kickOffColony(AntColony<C, E> antColony, E environment,
-                                                     Instant executionStartTime)
+    public PerformanceTracker<C, E> kickOffColony(AntColony<C, E> antColony, E environment,
+                                                  Instant executionStartTime)
             throws ConfigurationException {
         applyDaemonActions(antColony, DaemonActionType.INITIAL_CONFIGURATION);
 
@@ -150,8 +150,7 @@ public class AcoProblemSolver<C, E extends Environment> {
             Instant iterationEnd = Instant.now();
             long iterationTime = Duration.between(iterationStart, iterationEnd).getSeconds();
 
-            Ant<C, E> bestAnt = antColony.getBestPerformingAnt(environment);
-            performanceTracker.updateIterationPerformance(bestAnt, iteration, iterationTime, environment);
+            performanceTracker.updateIterationPerformance(antColony, iteration, iterationTime, environment);
             iteration++;
 
             if (terminateExecution) {
@@ -172,8 +171,10 @@ public class AcoProblemSolver<C, E extends Environment> {
         logger.info("Duration (in seconds): " + executionTime);
 
         logger.info("EXECUTION FINISHED");
+        logger.info("Solutions generated: " + performanceTracker.getGeneratedSolutions());
         logger.info("Best solution cost: " + bestSolutionCost);
         logger.info("Best solution:" + bestSolutionAsString);
+
     }
 
     /**
@@ -207,7 +208,6 @@ public class AcoProblemSolver<C, E extends Environment> {
 
     /**
      * Applies all daemon actions of a specific type.
-     *
      */
     private void applyDaemonActions(AntColony<C, E> antColony, DaemonActionType daemonActionType) {
         for (DaemonAction<C, E> daemonAction : daemonActions) {
@@ -257,10 +257,6 @@ public class AcoProblemSolver<C, E extends Environment> {
 
     public String getBestSolutionAsString() {
         return bestSolutionAsString;
-    }
-
-    public void setBestSolutionCost(double bestSolutionCost) {
-        this.bestSolutionCost = bestSolutionCost;
     }
 
     public List<DaemonAction<C, E>> getDaemonActions() {
