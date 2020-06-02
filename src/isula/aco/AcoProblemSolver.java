@@ -126,7 +126,7 @@ public class AcoProblemSolver<C, E extends Environment> {
             throws ConfigurationException {
         applyDaemonActions(antColony, DaemonActionType.INITIAL_CONFIGURATION);
 
-        logger.info("STARTING ITERATIONS");
+        logger.info(" Colony index: " + antColony.getColonyIndex() + " STARTING ITERATIONS");
         int numberOfIterations = configurationProvider.getNumberOfIterations();
 
         if (numberOfIterations < 1) {
@@ -134,7 +134,7 @@ public class AcoProblemSolver<C, E extends Environment> {
                     "No iterations are programed for this solver. Check your Configuration Provider.");
         }
 
-        logger.info("Number of iterations: " + numberOfIterations);
+        logger.info(" Colony index: " + antColony.getColonyIndex() + " Number of iterations: " + numberOfIterations);
 
         int iteration = 0;
         PerformanceTracker<C, E> performanceTracker = new PerformanceTracker<>();

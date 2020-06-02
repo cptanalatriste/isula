@@ -42,7 +42,7 @@ public class PerformanceTracker<C, E extends Environment> {
         if (!this.isStateValid(bestAnt, environment)) {
             throw new SolutionConstructionException("Performance Tracker is in an inconsistent state. Solution:"
                     + this.bestSolution + " Solution Cost: " + bestSolutionCost + " String representation: " +
-                    bestSolutionAsString);
+                    bestSolutionAsString + " Colony index: " + antColony.getColonyIndex());
         }
 
         double bestIterationCost = bestAnt.getSolutionCost(environment);
@@ -59,11 +59,10 @@ public class PerformanceTracker<C, E extends Environment> {
 
         }
 
-        logger.info("Current iteration: " + iteration + " Iteration solutions: " + iterationSolutions +
-                " Iteration best: " + bestIterationCost + " Iteration Duration (s): " + iterationTimeInSeconds);
-
-        logger.info(" Global solution cost: " + bestSolutionCost);
-        logger.fine(" Stored solution: " + bestSolution + " Solution as String: " + bestSolutionAsString);
+        logger.info(" Colony index: " + antColony.getColonyIndex() + " Current iteration: " + iteration + " Iteration solutions: " + iterationSolutions +
+                " Iteration best: " + bestIterationCost + " Iteration Duration (s): " + iterationTimeInSeconds +
+                " Global solution cost: " + bestSolutionCost);
+        logger.fine(" Global solution cost: " + bestSolutionCost + " Stored solution: " + bestSolution + " Solution as String: " + bestSolutionAsString);
     }
 
     private boolean isStateValid(Ant<C, E> ant, E environment) {

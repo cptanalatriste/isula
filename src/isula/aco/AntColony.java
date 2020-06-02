@@ -27,6 +27,7 @@ public class AntColony<C, E extends Environment> {
     private List<AntPolicy<C, E>> antPolicies = new ArrayList<>();
 
     private Duration timeLimit;
+    private int colonyIndex;
 
     /**
      * Creates a colony of ants
@@ -57,7 +58,7 @@ public class AntColony<C, E extends Environment> {
      * @param environment Environment with problem specific information.
      * @return An Ant instance.
      */
-    protected  Ant<C, E> createAnt(E environment) {
+    protected Ant<C, E> createAnt(E environment) {
         throw new ConfigurationException("You need to override the createAnt method and provide " +
                 "a suitable Ant instance for your problem.");
     }
@@ -182,6 +183,13 @@ public class AntColony<C, E extends Environment> {
         this.timeLimit = timeLimit;
     }
 
+    public void setColonyIndex(int colonyIndex) {
+        this.colonyIndex = colonyIndex;
+    }
+
+    public int getColonyIndex() {
+        return colonyIndex;
+    }
 
     public int getNumberOfAnts() {
         return numberOfAnts;
@@ -191,12 +199,12 @@ public class AntColony<C, E extends Environment> {
         this.numberOfAnts = numberOfAnts;
     }
 
-
     @Override
     public String toString() {
         return "AntColony{" +
                 "numberOfAnts=" + numberOfAnts +
                 ", antPolicies=" + antPolicies +
+                ", colonyIndex=" + colonyIndex +
                 '}';
     }
 }

@@ -70,9 +70,6 @@ public class ParallelAcoProblemSolver<C, E extends Environment> extends AcoProbl
                            Duration timeLimit, int parallelRuns)
             throws ConfigurationException {
 
-        this.setAntColony(null);
-        this.setEnvironment(null);
-
         this.parallelRuns = parallelRuns;
         this.setConfigurationProvider(config);
 
@@ -83,11 +80,11 @@ public class ParallelAcoProblemSolver<C, E extends Environment> extends AcoProbl
         antColonies = new ArrayList<>();
         environments = new ArrayList<>();
 
-        IntStream.range(0, parallelRuns).forEachOrdered((run) -> {
+        IntStream.range(0, parallelRuns).forEachOrdered((runIndex) -> {
             AntColony<C, E> antColony = colonySupplier.apply(config);
             E environment = environmentProvider.get();
             this.configureAntColony(antColony, environment, timeLimit);
-
+            antColony.setColonyIndex(runIndex);
             antColonies.add(antColony);
             environments.add(environment);
         });
