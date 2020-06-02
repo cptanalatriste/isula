@@ -20,6 +20,7 @@ public class PerformanceTrackerTest extends BaseAntColonyTest {
         PerformanceTracker<Integer, Environment> performanceTracker = getProblemSolver().kickOffColony(getAntColony(),
                 this.getEnvironment(), Instant.now());
 
+        performanceTracker.getBestSolution().add(-1);
         performanceTracker.getBestSolution().clear();
     }
 }
