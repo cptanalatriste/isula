@@ -38,6 +38,7 @@ public class AcoProblemSolver<C, E extends Environment> {
     private ConfigurationProvider configurationProvider;
 
     private List<DaemonAction<C, E>> daemonActions = new ArrayList<>();
+    private long totalGeneratedSolutions;
 
     /**
      * Prepares the solver for problem resolution.
@@ -64,13 +65,13 @@ public class AcoProblemSolver<C, E extends Environment> {
         }
 
         this.configureAntColony(colony, environment, timeLimit);
+        this.setAntColony(colony);
 
     }
 
     protected void configureAntColony(AntColony<C, E> colony, E environment, Duration timeLimit) {
         colony.buildColony(environment);
         colony.setTimeLimit(timeLimit);
-        this.setAntColony(colony);
     }
 
     /**
@@ -164,6 +165,7 @@ public class AcoProblemSolver<C, E extends Environment> {
         this.bestSolution = performanceTracker.getBestSolution();
         this.bestSolutionCost = performanceTracker.getBestSolutionCost();
         this.bestSolutionAsString = performanceTracker.getBestSolutionAsString();
+        this.totalGeneratedSolutions = performanceTracker.getGeneratedSolutions();
 
         logger.info("Finishing computation at: " + new Date());
         Instant executionEndTime = Instant.now();
@@ -171,7 +173,7 @@ public class AcoProblemSolver<C, E extends Environment> {
         logger.info("Duration (in seconds): " + executionTime);
 
         logger.info("EXECUTION FINISHED");
-        logger.info("Solutions generated: " + performanceTracker.getGeneratedSolutions());
+        logger.info("Solutions generated: " + totalGeneratedSolutions);
         logger.info("Best solution cost: " + bestSolutionCost);
         logger.info("Best solution:" + bestSolutionAsString);
 
@@ -247,6 +249,7 @@ public class AcoProblemSolver<C, E extends Environment> {
         this.configurationProvider = configurationProvider;
     }
 
+
     public List<C> getBestSolution() {
         return bestSolution;
     }
@@ -263,16 +266,21 @@ public class AcoProblemSolver<C, E extends Environment> {
         return daemonActions;
     }
 
+
     @Override
     public String toString() {
         return "AcoProblemSolver{" +
-                "bestSolutionCost=" + bestSolutionCost +
+                "bestSolution=" + bestSolution +
+                ", bestSolutionCost=" + bestSolutionCost +
                 ", executionTime=" + executionTime +
-                ", bestSolutionAsString='" + bestSolutionAsString + '\'' +
                 ", environment=" + environment +
                 ", antColony=" + antColony +
                 ", configurationProvider=" + configurationProvider +
                 ", daemonActions=" + daemonActions +
+                ", totalGeneratedSolutions=" + totalGeneratedSolutions +
                 '}';
     }
+
+
+
 }

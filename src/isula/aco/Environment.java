@@ -33,7 +33,6 @@ public abstract class Environment {
 
     /**
      * Creates an Environment for the Ants to traverse.
-     *
      */
     public Environment() {
         this.pheromoneMatrix = createPheromoneMatrix();
@@ -68,13 +67,6 @@ public abstract class Environment {
                 pheromoneMatrix[i][j] = pheromoneValue;
             }
         }
-    }
-
-    @Override
-    public String toString() {
-        return "Environment{" +
-                "pheromoneMatrix=" + Arrays.toString(pheromoneMatrix) +
-                '}';
     }
 
     /**

@@ -66,8 +66,8 @@ public class ParallelAcoProblemSolver<C, E extends Environment> extends AcoProbl
         throw new MethodNotImplementedException();
     }
 
-    public void initialize(Supplier<E> environmentProvider, Function<ConfigurationProvider, AntColony<C, E>> colonySupplier, ConfigurationProvider config,
-                           Duration timeLimit, int parallelRuns)
+    public void initialize(Supplier<E> environmentProvider, Function<ConfigurationProvider, AntColony<C, E>> colonySupplier,
+                           ConfigurationProvider config, Duration timeLimit, int parallelRuns)
             throws ConfigurationException {
 
         this.parallelRuns = parallelRuns;
@@ -107,5 +107,14 @@ public class ParallelAcoProblemSolver<C, E extends Environment> extends AcoProbl
             getDaemonActions().add(daemonAction);
         });
 
+    }
+
+    @Override
+    public String toString() {
+        return "ParallelAcoProblemSolver{" +
+                "antColonies=" + antColonies +
+                ", environments=" + environments +
+                ", parallelRuns=" + parallelRuns +
+                "} " + super.toString();
     }
 }
