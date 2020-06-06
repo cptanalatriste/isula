@@ -21,7 +21,7 @@ public class AntTest {
 
     private Ant<Integer, Environment> dummyAnt;
     private OnlinePheromoneUpdate<Integer, Environment> onlinePheromoneUpdatePolicy =
-            new OnlinePheromoneUpdate<Integer, Environment>() {
+            new OnlinePheromoneUpdate<>() {
                 @Override
                 protected double getNewPheromoneValue(Integer solutionComponent, Integer positionInSolution,
                                                       Environment environment, ConfigurationProvider configurationProvider) {
@@ -34,7 +34,7 @@ public class AntTest {
      */
     @Before
     public void setUp() {
-        this.dummyAnt = DummyFactory.createDummyAnt(0, 1);
+        this.dummyAnt = DummyFactory.createDummyAnt(0, 1, null);
 
         this.dummyAnt.setSolution(new ArrayList<>());
 
@@ -79,7 +79,8 @@ public class AntTest {
 
         this.dummyAnt.addPolicy(onlinePheromoneUpdatePolicy);
 
-        AntPolicy<Integer, Environment> extractedPolicy = this.dummyAnt.getAntPolicies(onlinePheromoneUpdatePolicy.getPolicyType(), 1).get(0);
+        AntPolicy<Integer, Environment> extractedPolicy = this.dummyAnt.getAntPolicies(
+                onlinePheromoneUpdatePolicy.getPolicyType(), 1).get(0);
         assertEquals(onlinePheromoneUpdatePolicy, extractedPolicy);
         assertEquals(this.dummyAnt.getAntPolicies(AntPolicyType.NODE_SELECTION, -1).size(), 0);
     }

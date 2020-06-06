@@ -26,11 +26,11 @@ public class AntColonyTest {
      */
     @Before
     public void setUp() throws Exception {
-        this.dummyColony = new AntColony<Integer, Environment>(NUMBER_OF_ANTS) {
+        this.dummyColony = new AntColony<>(NUMBER_OF_ANTS) {
 
             @Override
             protected Ant<Integer, Environment> createAnt(Environment environment) {
-                return DummyFactory.createDummyAnt(COMMON_COST, SOLUTION_LENGTH);
+                return DummyFactory.createDummyAnt(COMMON_COST, SOLUTION_LENGTH, environment);
             }
         };
 
@@ -56,7 +56,7 @@ public class AntColonyTest {
     @Test
     public void testGetBestPerformingAnt() {
         Ant<Integer, Environment> theBestAnt = DummyFactory.createDummyAnt(
-                BEST_COST, SOLUTION_LENGTH);
+                BEST_COST, SOLUTION_LENGTH, environment);
 
         this.dummyColony.buildColony(environment);
         this.dummyColony.getHive().add(theBestAnt);
@@ -86,7 +86,7 @@ public class AntColonyTest {
     @Test
     public void testBuildSolutions() {
 
-        AntPolicy<Integer, Environment> nodeSelectionPolicy = new AntPolicy<Integer, Environment>(
+        AntPolicy<Integer, Environment> nodeSelectionPolicy = new AntPolicy<>(
                 AntPolicyType.NODE_SELECTION) {
 
             @Override

@@ -6,6 +6,7 @@ import isula.aco.Environment;
 import isula.aco.MatrixEnvironment;
 import isula.aco.algorithms.acs.AcsConfigurationProvider;
 import isula.aco.algorithms.antsystem.AntSystemConfigurationProvider;
+import isula.aco.algorithms.iteratedants.AntWithPartialSolution;
 import isula.aco.exception.InvalidInputException;
 
 import java.util.ArrayList;
@@ -122,8 +123,13 @@ public class DummyFactory {
      * Configures a Dummy Ant for testing.
      */
     public static Ant<Integer, Environment> createDummyAnt(
-            final int expectedCost, final int indexLimit) {
-        Ant<Integer, Environment> ant = new Ant<Integer, Environment>() {
+            final int expectedCost, final int indexLimit, Environment environment) {
+        AntWithPartialSolution<Integer, Environment> ant = new AntWithPartialSolution<>() {
+
+            @Override
+            public Environment getEnvironment() {
+                return environment;
+            }
 
             @Override
             public List<Integer> getNeighbourhood(Environment environment) {

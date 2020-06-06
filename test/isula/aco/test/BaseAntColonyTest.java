@@ -22,7 +22,7 @@ public class BaseAntColonyTest {
             InvalidInputException, ConfigurationException {
 
         this.configurationProvider = configurationProvider;
-        AntPolicy<Integer, Environment> nodeSelectionPolicy = new AntPolicy<Integer, Environment>(
+        AntPolicy<Integer, Environment> nodeSelectionPolicy = new AntPolicy<>(
                 AntPolicyType.NODE_SELECTION) {
 
             @Override
@@ -47,7 +47,7 @@ public class BaseAntColonyTest {
         antColony = new AntColony<>(1) {
             @Override
             protected Ant<Integer, Environment> createAnt(Environment environment) {
-                return DummyFactory.createDummyAnt(SOLUTION_COST, SOLUTION_LENGTH);
+                return DummyFactory.createDummyAnt(SOLUTION_COST, SOLUTION_LENGTH, environment);
             }
         };
         problemSolver.initialize(environment, antColony, configurationProvider);

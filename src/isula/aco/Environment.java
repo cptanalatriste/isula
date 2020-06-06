@@ -2,8 +2,6 @@ package isula.aco;
 
 import isula.aco.exception.ConfigurationException;
 
-import java.util.Arrays;
-
 /**
  * The place that our ants traverse, where they gather the information to build
  * solutions.

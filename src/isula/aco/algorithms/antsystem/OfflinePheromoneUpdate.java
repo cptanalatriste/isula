@@ -31,21 +31,24 @@ public class OfflinePheromoneUpdate<C, E extends Environment> extends DaemonActi
 
         E environment = getEnvironment();
 
-        getAntColony().getHive().forEach((ant) -> updatePheromoneForAntSolution(ant, getEnvironment(), (positionInSolution) -> {
-            C solutionComponent = ant.getSolution().get(positionInSolution);
+        getAntColony().getHive()
+                .stream()
+                .filter((ant) -> ant.isSolutionReady(environment))
+                .forEach((ant) -> updatePheromoneForAntSolution(ant, getEnvironment(), (positionInSolution) -> {
+                    C solutionComponent = ant.getSolution().get(positionInSolution);
 
-            if (solutionComponent != null) {
+                    if (solutionComponent != null) {
 
-                double originalPheromoneValue = ant.getPheromoneTrailValue(solutionComponent, positionInSolution,
-                        environment);
+                        double originalPheromoneValue = ant.getPheromoneTrailValue(solutionComponent, positionInSolution,
+                                environment);
 
-                double pheromoneDeposit = this.getPheromoneDeposit(ant, positionInSolution, solutionComponent,
-                        environment, configurationProvider);
+                        double pheromoneDeposit = this.getPheromoneDeposit(ant, positionInSolution, solutionComponent,
+                                environment, configurationProvider);
 
-                return originalPheromoneValue + pheromoneDeposit;
-            }
-            return null;
-        }));
+                        return originalPheromoneValue + pheromoneDeposit;
+                    }
+                    return null;
+                }));
 
         logger.fine("Pheromone matrix after update :" + Arrays.deepToString(environment.getPheromoneMatrix()));
     }
