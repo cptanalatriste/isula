@@ -43,7 +43,7 @@ public abstract class ConstructPartialSolution<C, E extends Environment> extends
         }
 
         List<Integer> indexesForRemoval = getComponentIndexesForRemoval(ant, getNumberOfComponentsToRemove());
-        logger.info("indexesForRemoval: " + indexesForRemoval);
+        logger.fine("indexesForRemoval: " + indexesForRemoval);
         return getNewPartialSolution(indexesForRemoval);
     }
 

@@ -28,6 +28,7 @@ public class ParallelAcoProblemSolver<C, E extends Environment> extends AcoProbl
         Instant executionStartTime = Instant.now();
 
         List<PerformanceTracker<C, E>> performancePerColony = IntStream.range(0, this.parallelRuns)
+                .unordered()
                 .parallel()
                 .mapToObj((runIndex) -> {
                     try {
