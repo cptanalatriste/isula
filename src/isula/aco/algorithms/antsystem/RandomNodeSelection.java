@@ -3,9 +3,12 @@ package isula.aco.algorithms.antsystem;
 import isula.aco.*;
 import isula.aco.exception.ConfigurationException;
 import isula.aco.exception.SolutionConstructionException;
+import org.apache.commons.math3.distribution.EnumeratedIntegerDistribution;
 
 import java.util.*;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * This is the node selection policy used in Ant System algorithms, also known as Random Proportional Rule.
@@ -28,34 +31,30 @@ public class RandomNodeSelection<C, E extends Environment> extends
     public boolean applyPolicy(E environment, ConfigurationProvider configurationProvider) {
 
         logger.fine("Starting node selection");
-        Random random = new Random();
 
-        double value = random.nextDouble();
-        double total = 0;
+        HashMap<C, Double> componentsWithProbabilities = this.getComponentsWithProbabilities(environment,
+                configurationProvider);
 
-        HashMap<C, Double> componentsWithProbabilities = this
-                .getComponentsWithProbabilities(environment, configurationProvider);
-        for (Map.Entry<C, Double> componentWithProbability : componentsWithProbabilities
-                .entrySet()) {
-            Double probability = componentWithProbability.getValue();
-            if (probability.isNaN()) {
-                throw new ConfigurationException("The probability for component " + componentWithProbability.getKey() +
-                        " is not a number.");
-            }
+        C nextNode = getNextComponent(componentsWithProbabilities);
+        getAnt().visitNode(nextNode, environment);
+        logger.fine("Ending node selection");
+        return true;
+    }
 
-            total += probability;
+    public C getNextComponent(HashMap<C, Double> componentsWithProbabilities) {
+        List<C> listOfComponents = new ArrayList<>(componentsWithProbabilities.keySet());
+        List<Double> probabilities = listOfComponents
+                .stream()
+                .mapToDouble(componentsWithProbabilities::get)
+                .boxed()
+                .collect(Collectors.toList());
 
-            if (total >= value) {
-                C nextNode = componentWithProbability.getKey();
-                getAnt().visitNode(nextNode, environment);
+        int[] componentIndexes = IntStream.range(0, listOfComponents.size()).toArray();
+        double[] arrayOfProbabilities = probabilities.stream().mapToDouble((probability) -> probability).toArray();
 
-                logger.fine("Ending node selection");
-
-                return true;
-            }
-        }
-
-        return false;
+        EnumeratedIntegerDistribution distribution = new EnumeratedIntegerDistribution(componentIndexes,
+                arrayOfProbabilities);
+        return listOfComponents.get(distribution.sample(1)[0]);
     }
 
     /**
@@ -68,9 +67,6 @@ public class RandomNodeSelection<C, E extends Environment> extends
      */
     public HashMap<C, Double> getComponentsWithProbabilities(E environment,
                                                              ConfigurationProvider configurationProvider) {
-        HashMap<C, Double> componentsWithProbabilities = new HashMap<>();
-
-        double denominator = Double.MIN_VALUE;
 
         List<C> neighborhood = getAnt().getNeighbourhood(environment);
         if (neighborhood == null) {
@@ -78,41 +74,36 @@ public class RandomNodeSelection<C, E extends Environment> extends
                     "components to add.");
         }
 
-        for (C possibleMove : getAnt().getNeighbourhood(environment)) {
+        return getProbabilitiesForNeighbourhood(environment, configurationProvider, neighborhood);
+    }
 
-            if (!getAnt().isNodeVisited(possibleMove)
-                    && getAnt().isNodeValid(possibleMove)) {
-
-                Double heuristicTimesPheromone = getHeuristicTimesPheromone(
-                        environment, configurationProvider, possibleMove);
-
-                denominator += heuristicTimesPheromone;
-                componentsWithProbabilities.put(possibleMove, 0.0);
-            }
-        }
-
-        double totalProbability = 0.0;
-        for (Map.Entry<C, Double> componentWithProbability : componentsWithProbabilities
-                .entrySet()) {
-            C component = componentWithProbability.getKey();
-
-            Double numerator = getHeuristicTimesPheromone(environment,
-                    configurationProvider, component);
-            Double probability = numerator / denominator;
-            totalProbability += probability;
-
-            if (probability.isNaN() || probability.isInfinite()) {
-                throw new ConfigurationException("The probability for component " + componentWithProbability.getKey() +
-                        " is not a valid number. Current value: " + probability + " (" + numerator + "/" + denominator +
-                        ")");
-            }
-
-            componentWithProbability.setValue(probability);
-        }
+    public HashMap<C, Double> getProbabilitiesForNeighbourhood(E environment, ConfigurationProvider configurationProvider, List<C> neighborhood) {
+        HashMap<C, Double> componentsWithProbabilities = new HashMap<>();
+        neighborhood
+                .stream()
+                .filter((component) -> !getAnt().isNodeVisited(component) && getAnt().isNodeValid(component))
+                .forEach((component) -> componentsWithProbabilities.put(
+                        component, getHeuristicTimesPheromone(environment, configurationProvider, component)));
 
         if (componentsWithProbabilities.size() < 1) {
             return doIfNoComponentsFound(environment, configurationProvider);
         }
+
+        double sumOfMapValues = componentsWithProbabilities.values().stream().mapToDouble((value) -> value).sum();
+
+        componentsWithProbabilities
+                .forEach((key, value) -> {
+                    Double probabilityValue = value / sumOfMapValues;
+                    if (probabilityValue.isNaN() || probabilityValue.isInfinite()) {
+                        throw new ConfigurationException("The probability for component " + key +
+                                " is not a valid number. Current value: " + probabilityValue + " (" + value
+                                + "/" + sumOfMapValues + ")");
+                    }
+
+                    componentsWithProbabilities.put(key, probabilityValue);
+                });
+
+        double totalProbability = componentsWithProbabilities.values().stream().mapToDouble((value) -> value).sum();
 
         double delta = 0.001;
         if (Math.abs(totalProbability - 1.0) > delta) {
@@ -135,14 +126,13 @@ public class RandomNodeSelection<C, E extends Environment> extends
                         + "\nPartial solution : " + getAnt().getSolutionAsString());
     }
 
-    private Double getHeuristicTimesPheromone(E environment,
-                                              ConfigurationProvider configurationProvider, C possibleMove) {
+    public Double getHeuristicTimesPheromone(E environment,
+                                             ConfigurationProvider configurationProvider, C possibleMove) {
 
 
-        Double heuristicValue = getAnt().getHeuristicValue(possibleMove,
-                getAnt().getCurrentIndex(), environment);
-        Double pheromoneTrailValue = getAnt().getPheromoneTrailValue(possibleMove,
-                getAnt().getCurrentIndex(), environment);
+        Double heuristicValue = getAnt().getHeuristicValue(possibleMove, getAnt().getCurrentIndex(), environment);
+        Double pheromoneTrailValue = getAnt().getPheromoneTrailValue(possibleMove, getAnt().getCurrentIndex(),
+                environment);
 
         if (heuristicValue == null || heuristicValue.isNaN() || heuristicValue.isInfinite() || pheromoneTrailValue == null
                 || pheromoneTrailValue.isNaN() || pheromoneTrailValue.isInfinite()) {
