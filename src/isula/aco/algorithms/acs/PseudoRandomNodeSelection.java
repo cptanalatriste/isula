@@ -5,7 +5,7 @@ import isula.aco.Environment;
 import isula.aco.algorithms.antsystem.RandomNodeSelection;
 import isula.aco.exception.SolutionConstructionException;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -41,7 +41,7 @@ public class PseudoRandomNodeSelection<C, E extends Environment> extends
         C nextNode;
         AcsConfigurationProvider configurationProvider = (AcsConfigurationProvider) configuration;
 
-        HashMap<C, Double> componentsWithProbabilities = this
+        Map<C, Double> componentsWithProbabilities = this
                 .getComponentsWithProbabilities(environment, configurationProvider);
 
         if (selectMostConvenient(configurationProvider)) {
@@ -88,7 +88,7 @@ public class PseudoRandomNodeSelection<C, E extends Environment> extends
      * @param componentsWithProbabilities Possible components.
      * @return Most convenient component.
      */
-    public C getMostConvenient(HashMap<C, Double> componentsWithProbabilities) {
+    public C getMostConvenient(Map<C, Double> componentsWithProbabilities) {
         C nextNode = null;
         double currentMaximumProbability = -1;
 

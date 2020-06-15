@@ -32,7 +32,7 @@ public class RandomNodeSelection<C, E extends Environment> extends
 
         logger.fine("Starting node selection");
 
-        HashMap<C, Double> componentsWithProbabilities = this.getComponentsWithProbabilities(environment,
+        Map<C, Double> componentsWithProbabilities = this.getComponentsWithProbabilities(environment,
                 configurationProvider);
 
         C nextNode = getNextComponent(componentsWithProbabilities);
@@ -41,7 +41,7 @@ public class RandomNodeSelection<C, E extends Environment> extends
         return true;
     }
 
-    public C getNextComponent(HashMap<C, Double> componentsWithProbabilities) {
+    public C getNextComponent(Map<C, Double> componentsWithProbabilities) {
         List<C> listOfComponents = new ArrayList<>(componentsWithProbabilities.keySet());
         List<Double> probabilities = listOfComponents
                 .stream()
@@ -65,8 +65,8 @@ public class RandomNodeSelection<C, E extends Environment> extends
      * @param configurationProvider Configuration provider.
      * @return Probabilities for the adjacent nodes.
      */
-    public HashMap<C, Double> getComponentsWithProbabilities(E environment,
-                                                             ConfigurationProvider configurationProvider) {
+    public Map<C, Double> getComponentsWithProbabilities(E environment,
+                                                         ConfigurationProvider configurationProvider) {
 
         List<C> neighborhood = getAnt().getNeighbourhood(environment);
         if (neighborhood == null) {
@@ -77,13 +77,14 @@ public class RandomNodeSelection<C, E extends Environment> extends
         return getProbabilitiesForNeighbourhood(environment, configurationProvider, neighborhood);
     }
 
-    public HashMap<C, Double> getProbabilitiesForNeighbourhood(E environment, ConfigurationProvider configurationProvider, List<C> neighborhood) {
-        HashMap<C, Double> componentsWithProbabilities = new HashMap<>();
-        neighborhood
+    public Map<C, Double> getProbabilitiesForNeighbourhood(E environment, ConfigurationProvider configurationProvider,
+                                                           List<C> neighborhood) {
+        Map<C, Double> componentsWithProbabilities = neighborhood
                 .stream()
+                .unordered()
                 .filter((component) -> !getAnt().isNodeVisited(component) && getAnt().isNodeValid(component))
-                .forEach((component) -> componentsWithProbabilities.put(
-                        component, getHeuristicTimesPheromone(environment, configurationProvider, component)));
+                .collect(Collectors.toMap((component) -> component,
+                        (component) -> getHeuristicTimesPheromone(environment, configurationProvider, component)));
 
         if (componentsWithProbabilities.size() < 1) {
             return doIfNoComponentsFound(environment, configurationProvider);
