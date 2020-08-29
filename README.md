@@ -85,7 +85,7 @@ to your `pom.xml` file:
     <dependency>
         <groupId>isula</groupId>
         <artifactId>isula</artifactId>
-        <version>1.1.1</version>
+        <version>2.0.1</version>
     </dependency>
 </dependencies>
 ```
