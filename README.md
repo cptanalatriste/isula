@@ -23,7 +23,28 @@ Here are some advanced examples of optimization problems solved with Isula-based
 
 An Isula Primer
 ---------------
-To solve a problem with an Ant-Colony Optimization algorithm, you need a Colony of Agents (a.k.a Ants), a graph representing the problem, and a pheromone data-structure to allow communication between this agents. Isula tries to emulate that pattern:
+
+Ant Colony Optimisation (ACO) is an algorithmic framework for solving
+combinatorial optimisation problems.
+Algorithms in the framework imitate the foraging behaviour of ants.
+Ants in the wild traverse a terrain looking for food, while depositing
+pheromones over the path they take.
+Pheromone is a chemical substance attractive to ants.
+Efficient ants find shorter paths, making more trips from the food source to
+the colony than fellow ants on longer routes.
+This produces an accumulation of pheromone over short paths, getting the
+attention of the rest the colony.
+Over time, the whole colony converges towards the shortest path found.
+In a similar fashion, artificial ants in ACO algorithms traverse the solution
+space of an optimisation problem, depositing pheromone over the components
+of the solution they built.
+The amount of pheromone is proportional to the quality of their
+solution, so pheromone accumulates in the most valuable solution components.
+Over time, ants in the artificial colony converge to high-quality solutions
+for a given optimisation problem.
+
+To solve a problem with an Ant-Colony Optimization algorithm, you need a Colony of Agents (a.k.a Ants), a graph 
+representing the problem, and a pheromone data-structure to allow communication between this agents. Isula tries to emulate that pattern:
 
 ```java
     TspProblemConfiguration configurationProvider = new TspProblemConfiguration(problemRepresentation);
