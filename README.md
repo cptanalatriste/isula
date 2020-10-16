@@ -16,7 +16,8 @@ If you are not familiar with the framework, a good place to start is the classic
 
 
 Here are some advanced examples of optimization problems solved with Isula-based algorithms:
-* The Flow-Shop Scheduling  Problem, using Max-Min Ant System: https://github.com/cptanalatriste/aco-flowshop
+* Flow-Shop Scheduling Problem, using Max-Min Ant System: https://github.com/cptanalatriste/aco-flowshop
+* Unicost Set Covering Problem, using a parallelization strategy: https://github.com/cptanalatriste/aco-set-covering
 * Binary Image Segmentation using Ant System: https://github.com/cptanalatriste/aco-image-thresholding
 * Image Clustering using Max-Min Ant System: https://github.com/cptanalatriste/aco-image-segmentation
 
