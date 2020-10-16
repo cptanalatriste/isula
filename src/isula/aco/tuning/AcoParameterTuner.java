@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 public class AcoParameterTuner {
 
     private static Logger logger = Logger.getLogger(AcoProblemSolver.class
-            .getName());
+        .getName());
 
     private List<Integer> numberOfAntsValues;
     private List<Double> evaporationRatioValues;
@@ -23,7 +23,7 @@ public class AcoParameterTuner {
     private BasicConfigurationProvider optimalConfiguration;
 
     private double executionTime = 0.0;
-    private double bestSolutionCost = 0.0;
+    private Double bestSolutionCost = null;
 
 
     public AcoParameterTuner(List<Integer> numberOfAntsValues, List<Double> evaporationRatioValues,
@@ -53,22 +53,24 @@ public class AcoParameterTuner {
         final long startTime = System.nanoTime();
 
         this.setOptimalValue(optimisationTarget, optimalConfiguration::setNumberOfAnts,
-                this.numberOfAntsValues);
+            this.numberOfAntsValues);
 
         this.setOptimalValue(optimisationTarget, optimalConfiguration::setEvaporationRatio,
-                this.evaporationRatioValues);
+            this.evaporationRatioValues);
 
         this.setOptimalValue(optimisationTarget, optimalConfiguration::setNumberOfIterations,
-                this.numberOfIterationValues);
+            this.numberOfIterationValues);
 
         this.setOptimalValue(optimisationTarget, optimalConfiguration::setInitialPheromoneValue,
-                this.initialPheromoneValues);
+            this.initialPheromoneValues);
 
         this.setOptimalValue(optimisationTarget, optimalConfiguration::setHeuristicImportance,
-                this.heuristicImportanceValues);
+            this.heuristicImportanceValues);
 
-        bestSolutionCost = this.setOptimalValue(optimisationTarget, optimalConfiguration::setPheromoneImportance,
-                this.pheromoneImportanceValues);
+        this.setOptimalValue(optimisationTarget, optimalConfiguration::setPheromoneImportance,
+            this.pheromoneImportanceValues);
+
+        this.bestSolutionCost = optimisationTarget.getSolutionCost(this.optimalConfiguration);
 
         logger.info("Finishing computation at: " + new Date());
         long endTime = System.nanoTime();
@@ -83,21 +85,21 @@ public class AcoParameterTuner {
     }
 
 
-    private <T> double setOptimalValue(ParameterOptimisationTarget optimisationTarget, Consumer<T> parameterSetter,
+    private <T> Double setOptimalValue(ParameterOptimisationTarget optimisationTarget, Consumer<T> parameterSetter,
                                        List<T> parameterValues) {
         if (parameterValues.size() == 1) {
             parameterSetter.accept(parameterValues.get(0));
-            return 0;
+            return null;
         }
 
-        double bestSolutionCost = -1;
+        Double bestSolutionCost = null;
         T bestParameterValue = null;
 
         for (T parameterValue : parameterValues) {
             parameterSetter.accept(parameterValue);
 
             double currentSolutionCost = optimisationTarget.getSolutionCost(this.optimalConfiguration);
-            if (bestParameterValue == null || bestSolutionCost > currentSolutionCost) {
+            if (bestSolutionCost == null || bestParameterValue == null || bestSolutionCost > currentSolutionCost) {
                 bestSolutionCost = currentSolutionCost;
                 bestParameterValue = parameterValue;
             }
@@ -111,15 +113,15 @@ public class AcoParameterTuner {
     @Override
     public String toString() {
         return "AcoParameterTuner{" +
-                "numberOfAntsValues=" + numberOfAntsValues +
-                ", evaporationRatioValues=" + evaporationRatioValues +
-                ", numberOfIterationValues=" + numberOfIterationValues +
-                ", initialPheromoneValues=" + initialPheromoneValues +
-                ", heuristicImportanceValues=" + heuristicImportanceValues +
-                ", pheromoneImportanceValues=" + pheromoneImportanceValues +
-                ", optimalConfiguration=" + optimalConfiguration +
-                ", executionTime=" + executionTime +
-                ", bestSolutionCost=" + bestSolutionCost +
-                '}';
+            "numberOfAntsValues=" + numberOfAntsValues +
+            ", evaporationRatioValues=" + evaporationRatioValues +
+            ", numberOfIterationValues=" + numberOfIterationValues +
+            ", initialPheromoneValues=" + initialPheromoneValues +
+            ", heuristicImportanceValues=" + heuristicImportanceValues +
+            ", pheromoneImportanceValues=" + pheromoneImportanceValues +
+            ", optimalConfiguration=" + optimalConfiguration +
+            ", executionTime=" + executionTime +
+            ", bestSolutionCost=" + bestSolutionCost +
+            '}';
     }
 }
