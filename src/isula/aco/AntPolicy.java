@@ -18,7 +18,7 @@ public abstract class AntPolicy<C, E extends Environment> {
     private AntPolicyType policyType;
     private Ant<C, E> ant;
 
-    public AntPolicy(AntPolicyType antPhase) {
+    protected AntPolicy(AntPolicyType antPhase) {
         this.policyType = antPhase;
     }
 
