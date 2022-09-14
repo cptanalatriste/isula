@@ -10,7 +10,7 @@
 </p>
 
 
-## Introducion
+## Introduction
 Ant Colony Optimisation (ACO) is an algorithmic framework for solving
 combinatorial optimisation problems.
 Algorithms in the framework imitate the foraging behaviour of ants.
