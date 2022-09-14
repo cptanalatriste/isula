@@ -49,6 +49,13 @@
                 </executions>
             </plugin>
         </plugins>
+        <extensions>
+            <extension>
+                <groupId>io.packagecloud.maven.wagon</groupId>
+                <artifactId>maven-packagecloud-wagon</artifactId>
+                <version>0.0.6</version>
+            </extension>
+        </extensions>
     </build>
     <dependencies>
         <dependency>
@@ -62,7 +69,6 @@
             <version>4.4</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>
@@ -71,9 +77,12 @@
     </dependencies>
     <distributionManagement>
         <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/cptanalatriste/isula</url>
+            <id>packagecloud-cgavidia</id>
+            <url>packagecloud+https://packagecloud.io/cgavidia/isula</url>
         </repository>
+        <snapshotRepository>
+            <id>packagecloud-cgavidia</id>
+            <url>packagecloud+https://packagecloud.io/cgavidia/isula</url>
+        </snapshotRepository>
     </distributionManagement>
 </project>

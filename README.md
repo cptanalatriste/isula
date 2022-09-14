@@ -1,7 +1,8 @@
 # isula
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=isula&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=isula)
 ![example workflow](https://github.com/cptanalatriste/isula/actions/workflows/build.yml/badge.svg)
+[![packagecloud](https://img.shields.io/badge/java-packagecloud.io-844fec.svg)](https://packagecloud.io/cgavidia/isula)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=isula&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=isula)
 
 <p style="text-align:center">
   <a href="https://cptanalatriste.github.io/isula/">
@@ -58,7 +59,7 @@ to your `pom.xml` file:
 <dependency>
     <groupId>isula</groupId>
     <artifactId>isula</artifactId>
-    <version>2.0.1</version>
+    <version>2.1.2</version>
 </dependency>
 </dependencies>
 ```
