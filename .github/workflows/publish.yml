@@ -16,6 +16,6 @@ jobs:
           distribution: 'adopt'
       - uses: s4u/maven-settings-action@v2.6.0
         with:
-          servers: '[{"id": "packagecloud-cgavidia", "password": "${{ secrets.PACKAGE_CLOUD_TOKEN }}"}]'
+          servers: '[{"id": "packagecloud-cgavidia", "username": "packagecloud-cgavidia",  "password": "${{ secrets.PACKAGE_CLOUD_TOKEN }}"}]'
       - name: Publish package
         run: mvn --batch-mode deploy
