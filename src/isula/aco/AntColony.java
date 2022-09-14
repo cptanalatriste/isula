@@ -37,7 +37,7 @@ public class AntColony<C, E extends Environment> {
     public AntColony(int numberOfAnts) {
         this.numberOfAnts = numberOfAnts;
 
-        logger.info("Number of Ants in Colony: " + numberOfAnts);
+        logger.log(Level.INFO, "Number of Ants in Colony: {0} ", numberOfAnts);
     }
 
     /**
@@ -117,7 +117,7 @@ public class AntColony<C, E extends Environment> {
 
         int antCounter = 0;
 
-        if (hive.size() == 0) {
+        if (hive.isEmpty()) {
             throw new ConfigurationException(
                     "Your colony is empty: You have no ants to solve the problem. "
                             + "Have you called the buildColony() method?. Number of ants from configuration provider: " +
@@ -125,7 +125,7 @@ public class AntColony<C, E extends Environment> {
         }
 
         for (Ant<C, E> ant : hive) {
-            logger.fine("Current ant: " + antCounter);
+            logger.log(Level.FINE, "Current ant: {0}", antCounter);
 
             while (!ant.isSolutionReady(environment)) {
                 ant.selectNextNode(environment, configurationProvider);
@@ -133,8 +133,8 @@ public class AntColony<C, E extends Environment> {
 
             ant.doAfterSolutionIsReady(environment, configurationProvider);
             logger.log(Level.FINE,
-                    "Solution is ready > Cost: " + ant.getSolutionCost(environment)
-                            + ", Solution: " + ant.getSolutionAsString());
+                    "Solution is ready > Cost: {0} , Solution: {1}", new Object[]{ant.getSolutionCost(environment)
+                            , ant.getSolutionAsString()});
 
             if (shouldTerminateExecution(executionStartTime)) {
                 return true;
@@ -171,8 +171,8 @@ public class AntColony<C, E extends Environment> {
 
         Collections.addAll(this.antPolicies, antPolicies);
 
-        List<Ant<C, E>> hive = getHive();
-        for (Ant<C, E> ant : hive) {
+        List<Ant<C, E>> antCollection = getHive();
+        for (Ant<C, E> ant : antCollection) {
             for (AntPolicy<C, E> antPolicy : antPolicies) {
                 ant.addPolicy(antPolicy);
             }
