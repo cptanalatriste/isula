@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"isula.aco"},{"l":"isula.aco.algorithms"},{"l":"isula.aco.algorithms.acs"},{"l":"isula.aco.algorithms.antsystem"},{"l":"isula.aco.algorithms.iteratedants"},{"l":"isula.aco.algorithms.maxmin"},{"l":"isula.aco.exception"},{"l":"isula.aco.tuning"},{"l":"isula.image.util"}];updateSearchResults();
