@@ -1,4 +1,4 @@
-# About
+## About
 
 [![Build Status](https://travis-ci.org/cptanalatriste/isula.svg?branch=master)](https://travis-ci.org/cptanalatriste/isula)
 [![packagecloud](https://img.shields.io/badge/java-packagecloud.io-844fec.svg)](https://packagecloud.io/cgavidia/isula)
@@ -33,9 +33,9 @@ It contains the common elements present in the meta-heuristic, to allow algorith
 behaviors.
 With Isula, solving optimisation problems with Ant Colony can be done in few lines of code.
 
-# Usage
+## Usage
 
-## Setup
+### Setup
 The code uploaded to this GitHub Repository corresponds to a Maven Java Project.
 As such, it is strongly recommended that you have Maven installed before working with Isula.
 
@@ -59,7 +59,7 @@ to your `pom.xml` file:
 </dependencies>
 ```
 
-## Algorithm Configuration
+### Algorithm Configuration
 
 
 To solve a problem with an Ant-Colony Optimization algorithm, you need a colony of agents (a.k.a. ants), a graph 
@@ -98,7 +98,7 @@ multiple ACO Algorithms. You can add daemon actions to a solver via the `addDaem
 to a colony via the `addAntPolicies` method.
 * Finally, you call the `solveProblem()` method and wait for the best solution to be obtained.
 
-## Isula Workflow
+### Isula Workflow
 Here is a sequence diagram of the `solveProblem()` method, for you to get an idea on how isula works:
 
 
@@ -120,7 +120,7 @@ can have global impact (`DaemonAction` instances, like pheromone update rules) o
 representative algorithms (take a look at the `isula.aco.algorithms` package) ,but you might need to define
 your own policies or extend the ones already available.
 
-# Examples
+## Examples
 If you are not familiar with the framework, a good place to start is the classic Travelling Salesman Problem:
 * [The Travelling Salesman Problem, using Ant System](https://github.com/cptanalatriste/aco-tsp).
 * [The Travelling Salesman Problem, using Ant Colony System](https://github.com/cptanalatriste/aco-acs-tsp).
@@ -133,7 +133,7 @@ Here are some advanced examples of optimization problems solved with Isula-based
 * [Image Clustering using Max-Min Ant System](https://github.com/cptanalatriste/aco-image-segmentation)
 
 
-# Resources
+## Resources
  * [The JavaDoc of every class on the framework](http://cptanalatriste.github.io/isula/doc/).
  * [Our paper in the SoftwareX journal](https://www.sciencedirect.com/science/article/pii/S2352711019300639), for an 
  in-depth discussion of the framework and its features.
@@ -144,5 +144,5 @@ how to solve the Travelling Salesman Problem using brute-force and an Isula-base
  * [A CodeProject article](http://www.codeproject.com/Articles/1011148/A-Java-Primer-of-Ant-Colony-Algorithms), 
  where Ant Colony Optimization algorithms are discussed and Isula is used to implement them.
 
-# Support
+## Support
 Feel free to contact me [via email](mailto:carlos.gavidia@pucp.edu.pe), or create a GitHub Issue here.
