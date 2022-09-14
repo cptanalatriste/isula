@@ -51,6 +51,7 @@ public abstract class Ant<C, E extends Environment> {
      * Mark a node as visited.
      *
      * @param visitedNode Visited node.
+     * @param environment Environment instance.
      */
     public void visitNode(C visitedNode, E environment) {
         if (getSolution() != null) {
@@ -144,7 +145,7 @@ public abstract class Ant<C, E extends Environment> {
         }
 
         List<AntPolicy<C, E>> afterNodeSelection = getAntPolicies(AntPolicyType.AFTER_NODE_SELECTION, DONT_CHECK_NUMBERS);
-        afterNodeSelection.forEach((antPolicy) -> {
+        afterNodeSelection.forEach(antPolicy -> {
             antPolicy.setAnt(this);
             antPolicy.applyPolicy(environment, configurationProvider);
         });
@@ -162,7 +163,7 @@ public abstract class Ant<C, E extends Environment> {
         List<AntPolicy<C, E>> antPolicies = getAntPolicies(
                 AntPolicyType.AFTER_SOLUTION_IS_READY, DONT_CHECK_NUMBERS);
         // TODO(cgavidia): With this approach, the policy is a shared resource between ants. This doesn't allow parallelism.
-        antPolicies.forEach((antPolicy) -> {
+        antPolicies.forEach(antPolicy -> {
             antPolicy.setAnt(this);
             antPolicy.applyPolicy(environment, configurationProvider);
         });
@@ -193,6 +194,12 @@ public abstract class Ant<C, E extends Environment> {
 
     }
 
+    /**
+     * Returns true in case the node can be added to the candidate solution.
+     *
+     * @param node The node to evaluate.
+     * @return True if valid node, false otherwise.
+     */
     public boolean isNodeValid(C node) {
         return true;
     }
