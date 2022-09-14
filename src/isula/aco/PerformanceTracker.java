@@ -32,7 +32,7 @@ public class PerformanceTracker<C, E extends Environment> {
 
         long iterationSolutions = antColony.getHive()
                 .stream()
-                .filter((ant) -> ant.isSolutionReady(environment))
+                .filter(ant -> ant.isSolutionReady(environment))
                 .count();
 
         this.generatedSolutions += iterationSolutions;
@@ -46,7 +46,7 @@ public class PerformanceTracker<C, E extends Environment> {
         }
 
         double bestIterationCost = bestAnt.getSolutionCost(environment);
-        logger.fine("Iteration best cost: " + bestIterationCost);
+        logger.log(Level.FINE, "Iteration best cost: {0} ", bestIterationCost);
 
         if (bestSolution == null
                 || bestSolutionCost > bestIterationCost) {
@@ -54,15 +54,16 @@ public class PerformanceTracker<C, E extends Environment> {
             bestSolutionCost = bestIterationCost;
             bestSolutionAsString = bestAnt.getSolutionAsString();
 
-            logger.fine("Best solution so far > Cost: " + bestSolutionCost
-                    + ", Solution as string: " + bestSolutionAsString + " Stored solution: " + bestSolution);
+            logger.log(Level.FINE, "Best solution so far > Cost: {0} , Solution as string: {1}  Stored solution: {2}",
+                    new Object[]{bestSolutionCost, bestSolutionAsString, bestSolution});
 
         }
 
-        logger.info(" Colony index: " + antColony.getColonyIndex() + " Current iteration: " + iteration + " Iteration solutions: " + iterationSolutions +
-                " Iteration best: " + bestIterationCost + " Iteration Duration (s): " + iterationTimeInSeconds +
-                " Global solution cost: " + bestSolutionCost);
-        logger.fine(" Global solution cost: " + bestSolutionCost + " Stored solution: " + bestSolution + " Solution as String: " + bestSolutionAsString);
+        logger.log(Level.INFO, " Colony index: {0} Current iteration: {1} Iteration solutions: {2} Iteration best: {3} " +
+                " Iteration Duration (s): {4} Global solution cost: {5} ", new Object[]{antColony.getColonyIndex(), iteration,
+                iterationSolutions, bestIterationCost, iterationTimeInSeconds, bestSolutionCost});
+        logger.log(Level.FINE, " Global solution cost: {0} Stored solution: {1}  Solution as String: {2}",
+                new Object[]{bestSolutionCost, bestSolution, bestSolutionAsString});
     }
 
     private boolean isStateValid(Ant<C, E> ant, E environment) {
@@ -74,12 +75,8 @@ public class PerformanceTracker<C, E extends Environment> {
         double expectedSolutionCost = ant.getSolutionCost(environment, bestSolution);
         String expectedSolutionAsString = ant.getSolutionAsString(bestSolution);
 
-        if (Math.abs(expectedSolutionCost - bestSolutionCost) <= 0.001 &&
-                expectedSolutionAsString.equals(bestSolutionAsString)) {
-            return true;
-        }
-
-        return false;
+        return Math.abs(expectedSolutionCost - bestSolutionCost) <= 0.001 &&
+                expectedSolutionAsString.equals(bestSolutionAsString);
     }
 
 

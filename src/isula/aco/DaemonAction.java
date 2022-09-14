@@ -20,7 +20,7 @@ public abstract class DaemonAction<C, E extends Environment> {
     private AntColony<C, E> antColony;
     private AcoProblemSolver<C, E> problemSolver;
 
-    public DaemonAction(DaemonActionType acoPhase) {
+    protected DaemonAction(DaemonActionType acoPhase) {
         super();
         this.acoPhase = acoPhase;
     }

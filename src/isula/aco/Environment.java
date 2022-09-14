@@ -32,7 +32,7 @@ public abstract class Environment {
     /**
      * Creates an Environment for the Ants to traverse.
      */
-    public Environment() {
+    protected Environment() {
         this.pheromoneMatrix = createPheromoneMatrix();
 
     }

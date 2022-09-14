@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -24,13 +25,13 @@ public class ParallelAcoProblemSolver<C, E extends Environment> extends AcoProbl
     @Override
     public void solveProblem() {
 
-        logger.info("Starting computation at: " + new Date());
+        logger.log(Level.INFO, "Starting computation at: {0}", new Date());
         Instant executionStartTime = Instant.now();
 
         List<PerformanceTracker<C, E>> performancePerColony = IntStream.range(0, this.parallelRuns)
                 .unordered()
                 .parallel()
-                .mapToObj((runIndex) -> {
+                .mapToObj(runIndex -> {
                     try {
                         AntColony<C, E> antColony = this.antColonies.get(runIndex);
                         E environment = this.environments.get(runIndex);
@@ -81,7 +82,7 @@ public class ParallelAcoProblemSolver<C, E extends Environment> extends AcoProbl
         antColonies = new ArrayList<>();
         environments = new ArrayList<>();
 
-        IntStream.range(0, parallelRuns).forEachOrdered((runIndex) -> {
+        IntStream.range(0, parallelRuns).forEachOrdered(runIndex -> {
             AntColony<C, E> antColony = colonySupplier.apply(config);
             E environment = environmentProvider.get();
             this.configureAntColony(antColony, environment, timeLimit);
@@ -99,7 +100,7 @@ public class ParallelAcoProblemSolver<C, E extends Environment> extends AcoProbl
 
     public void addDaemonAction(Supplier<DaemonAction<C, E>> daemonActionSupplier) {
 
-        IntStream.range(0, this.parallelRuns).forEachOrdered((colonyIndex) -> {
+        IntStream.range(0, this.parallelRuns).forEachOrdered(colonyIndex -> {
             AntColony<C, E> antColony = this.antColonies.get(colonyIndex);
             E environment = this.environments.get(colonyIndex);
 
