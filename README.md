@@ -139,7 +139,7 @@ Here are some advanced examples of optimization problems solved with Isula-based
 
 
 ## Resources
- * [The JavaDoc of every class on the framework](apidocs/).
+ * [The JavaDoc of every class on the framework](https://cptanalatriste.github.io/isula/apidocs/).
  * [Our paper in the SoftwareX journal](https://www.sciencedirect.com/science/article/pii/S2352711019300639), for an 
  in-depth discussion of the framework and its features.
  * [A video of our tutorial at GECCO 2022](https://www.youtube.com/watch?v=gHB-7J_TDmk), where we describe how 
