@@ -49,13 +49,6 @@
                 </executions>
             </plugin>
         </plugins>
-        <extensions>
-            <extension>
-                <groupId>io.packagecloud.maven.wagon</groupId>
-                <artifactId>maven-packagecloud-wagon</artifactId>
-                <version>0.0.4</version>
-            </extension>
-        </extensions>
     </build>
     <dependencies>
         <dependency>
@@ -76,4 +69,11 @@
             <version>3.6.1</version>
         </dependency>
     </dependencies>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/cptanalatriste/isula</url>
+        </repository>
+    </distributionManagement>
 </project>
