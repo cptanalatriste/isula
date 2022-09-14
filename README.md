@@ -1,11 +1,11 @@
-# Isula: A Framework for Ant Colony Algorithms
+# isula
 
 [![Build Status](https://travis-ci.org/cptanalatriste/isula.svg?branch=master)](https://travis-ci.org/cptanalatriste/isula)
 [![packagecloud](https://img.shields.io/badge/java-packagecloud.io-844fec.svg)](https://packagecloud.io/cgavidia/isula)
 
 <p style="text-align:center">
   <a href="https://cptanalatriste.github.io/isula/">
-    <img alt="GitPoint" title="GitPoint" src="img/Isulas_(8583611782).jpg" width="672">
+    <img alt="Isula" title="Isula" src="img/Isulas_(8583611782).jpg" width="672">
   </a>
 </p>
 
@@ -106,7 +106,7 @@ Here is a sequence diagram of the `solveProblem()` method, for you to get an ide
 
 <p style="text-align:center">
   <a href="https://cptanalatriste.github.io/isula/">
-    <img alt="GitPoint" title="GitPoint" src="img/ACO_metaheuristic.png" width="1428">
+    <img alt="Isula Workflow" title="Isula Workflow" src="img/ACO_metaheuristic.png" width="1428">
   </a>
 </p>
 
