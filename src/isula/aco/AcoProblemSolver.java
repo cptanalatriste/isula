@@ -111,7 +111,7 @@ public class AcoProblemSolver<C, E extends Environment> {
      * @throws ConfigurationException If algorithm parameters aren't properly configured.
      */
     public void solveProblem() throws ConfigurationException {
-        logger.info("Starting computation at: " + new Date());
+        logger.log(Level.INFO, "Starting computation at: {0} ", new Date());
         Instant executionStartTime = Instant.now();
 
         PerformanceTracker<C, E> performanceTracker = kickOffColony(this.antColony, this.environment,
@@ -135,7 +135,8 @@ public class AcoProblemSolver<C, E extends Environment> {
                     "No iterations are programed for this solver. Check your Configuration Provider.");
         }
 
-        logger.info(" Colony index: " + antColony.getColonyIndex() + " Number of iterations: " + numberOfIterations);
+        logger.log(Level.INFO, " Colony index: {0}  Number of iterations: {1}",
+                new Object[]{antColony.getColonyIndex(), numberOfIterations});
 
         int iteration = 0;
         PerformanceTracker<C, E> performanceTracker = new PerformanceTracker<>();
@@ -167,15 +168,15 @@ public class AcoProblemSolver<C, E extends Environment> {
         this.bestSolutionAsString = performanceTracker.getBestSolutionAsString();
         this.totalGeneratedSolutions = performanceTracker.getGeneratedSolutions();
 
-        logger.info("Finishing computation at: " + new Date());
+        logger.log(Level.INFO, "Finishing computation at: {0}", new Date());
         Instant executionEndTime = Instant.now();
         executionTime = Duration.between(executionStartTime, executionEndTime).getSeconds();
-        logger.info("Duration (in seconds): " + executionTime);
+        logger.log(Level.INFO, "Duration (in seconds): {0}", executionTime);
 
         logger.info("EXECUTION FINISHED");
-        logger.info("Solutions generated: " + totalGeneratedSolutions);
-        logger.info("Best solution cost: " + bestSolutionCost);
-        logger.info("Best solution:" + bestSolutionAsString);
+        logger.log(Level.INFO, "Solutions generated: {0}", totalGeneratedSolutions);
+        logger.log(Level.INFO, "Best solution cost: {0}", bestSolutionCost);
+        logger.log(Level.INFO, "Best solution: {0}", bestSolutionAsString);
 
     }
 
@@ -190,7 +191,7 @@ public class AcoProblemSolver<C, E extends Environment> {
         logger.log(Level.FINE, "GETTING BEST SOLUTION FOUND");
 
         double bestIterationCost = bestAnt.getSolutionCost(environment);
-        logger.fine("Iteration best cost: " + bestIterationCost);
+        logger.log(Level.FINE, "Iteration best cost: {0} ", bestIterationCost);
 
         if (bestSolution == null
                 || bestSolutionCost > bestIterationCost) {
@@ -198,13 +199,13 @@ public class AcoProblemSolver<C, E extends Environment> {
             bestSolutionCost = bestIterationCost;
             bestSolutionAsString = bestAnt.getSolutionAsString();
 
-            logger.fine("Best solution so far > Cost: " + bestSolutionCost
-                    + ", Solution: " + bestSolutionAsString);
+            logger.log(Level.FINE, "Best solution so far > Cost: {0} , Solution: {1}", new Object[]{bestSolutionCost,
+                    bestSolutionAsString});
 
         }
 
-        logger.info("Current iteration: " + iteration + " Iteration best: " + bestIterationCost + " Best solution cost: "
-                + bestSolutionCost + " Iteration Duration (s): " + iterationTimeInSeconds);
+        logger.log(Level.INFO, "Current iteration: {0} Iteration best: {1}  Best solution cost: {2} Iteration Duration (s): {3}",
+                new Object[]{iteration, bestIterationCost, bestSolutionCost, iterationTimeInSeconds});
 
     }
 
@@ -280,7 +281,6 @@ public class AcoProblemSolver<C, E extends Environment> {
                 ", totalGeneratedSolutions=" + totalGeneratedSolutions +
                 '}';
     }
-
 
 
 }
