@@ -16,3 +16,13 @@ notifications:
       - carlos.gavidia@pucp.edu.pe
     on_success: change
     on_failure: always
+
+addons:
+  sonarcloud:
+    organization: "cptanalatriste"
+    token:
+      secure: "AaBrTQTzUXXMfiK4xFQrX64jPwIYbVAoOi4Ta1JzBszigU00iFoo85/hd9AhVFdLig0652/p3zoo1m9gH5/8Os1ghlqrkH1ZGpyBJ5LcDjE2j7z1ozRQvUcNUhS6mO7qqbW1eCCrpLJ0YhCy10+WATcduc//AcZ+f/YaNvzZk5QJfrNpZhVbWL7XTfolebh6v7zRYTFUy/j63Q6qRo/csuybAUrnSFvyyPgF2lV9kG2mbptqZXi5Hb8xvb+qdg1J+ezkti0q/hvgaDYxz04H/NwKyNXN9b0zn0sBYtnn6BGKp0/4ZwO7VMLDQeWZNNU7oHjjPzogMxsAaN/qDmMR7D1mZZWcc367y3zQBWiXKXv7eq/w72g6aF0KspN3DRE17xbwG3BQdfMDby2Vg9h6bYym+CKQcBeCV0Pgtxf8o2rTXrjsvEy83t+Fk5LwARz+N1rERP+Z7u02F67bisPntxIUh9XAgqzn4TPWLLwIVDmgb/6r+sYaSMZ+n1XtbDT+zmgkh2XU9cpAhMGQOQVwXyLbicZ+EM6k0x/3sq2s4IMx518aIyA4wi2KB9BBErCKlO8mHS+EwQnTTiwCFS8eIbzcZeSrVHdE4jvVtdhq2SiDSd3PzFkP1+Bd/KbskxxjKZnX7mV6pyveuI+zGLF0flpmHjfQDrJ1JQq5TpxzQxE="
+
+script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=cptanalatriste_isula
