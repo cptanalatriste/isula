@@ -103,7 +103,12 @@ to a colony via the `addAntPolicies` method.
 ### Isula Workflow
 Here is a sequence diagram of the `solveProblem()` method, for you to get an idea on how isula works:
 
-![Alt text](https://github.com/cptanalatriste/isula/blob/master/resources/ACO_metaheuristic.png?raw=true "Title")
+
+<p style="text-align:center">
+  <a href="https://cptanalatriste.github.io/isula/">
+    <img alt="GitPoint" title="GitPoint" src="img/ACO_metaheuristic.png" width="1428">
+  </a>
+</p>
 
 Isula will provide you the basic execution flow for an algorithm in the ACO metaheuristic. Usually, you 
 can rely on the implementations already available for `AcoProblemSolver` and `AntColony` but you are free to override 
