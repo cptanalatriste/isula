@@ -1,8 +1,4 @@
----
-title: isula
----
-
-## About
+# isula
 
 [![Build Status](https://travis-ci.org/cptanalatriste/isula.svg?branch=master)](https://travis-ci.org/cptanalatriste/isula)
 [![packagecloud](https://img.shields.io/badge/java-packagecloud.io-844fec.svg)](https://packagecloud.io/cgavidia/isula)
@@ -12,6 +8,11 @@ title: isula
     <img alt="Isula" title="Isula" src="img/Isulas_(8583611782).jpg" width="672">
   </a>
 </p>
+
+## About
+
+
+
 
 Ant Colony Optimisation (ACO) is an algorithmic framework for solving
 combinatorial optimisation problems.
@@ -138,7 +139,7 @@ Here are some advanced examples of optimization problems solved with Isula-based
 
 
 ## Resources
- * [The JavaDoc of every class on the framework](http://cptanalatriste.github.io/isula/doc/).
+ * [The JavaDoc of every class on the framework](apidocs/).
  * [Our paper in the SoftwareX journal](https://www.sciencedirect.com/science/article/pii/S2352711019300639), for an 
  in-depth discussion of the framework and its features.
  * [A video of our tutorial at GECCO 2022](https://www.youtube.com/watch?v=gHB-7J_TDmk), where we describe how 
