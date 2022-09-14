@@ -76,15 +76,4 @@
             <version>3.6.1</version>
         </dependency>
     </dependencies>
-
-    <distributionManagement>
-        <repository>
-            <id>packagecloud-travis</id>
-            <url>packagecloud+https://packagecloud.io/cgavidia/isula</url>
-        </repository>
-        <snapshotRepository>
-            <id>packagecloud-travis</id>
-            <url>packagecloud+https://packagecloud.io/cgavidia/isula</url>
-        </snapshotRepository>
-    </distributionManagement>
 </project>
