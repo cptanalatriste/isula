@@ -47,7 +47,7 @@ public class OfflinePheromoneUpdate<C, E extends Environment> extends DaemonActi
 
                         return originalPheromoneValue + pheromoneDeposit;
                     }
-                    return null;
+                    return Double.MIN_VALUE;
                 }));
 
         logger.fine("Pheromone matrix after update :" + Arrays.deepToString(environment.getPheromoneMatrix()));

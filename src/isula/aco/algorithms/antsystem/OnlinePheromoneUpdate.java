@@ -34,7 +34,7 @@ public abstract class OnlinePheromoneUpdate<C, E extends Environment> extends
                 return this.getNewPheromoneValue(solutionComponent, positionInSolution,
                         environment, configurationProvider);
             }
-            return null;
+            return Double.MIN_VALUE;
         });
 
         return true;
