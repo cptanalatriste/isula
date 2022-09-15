@@ -324,7 +324,7 @@ public class ImageFileHelper {
      * @param imageGraph           Original image.
      * @param backgroundFilterMask Background filter.
      * @return A new image resulting of the application of the filter.
-     * @throws Exception In case of an error.
+     * @throws IllegalArgumentException In case of an error.
      */
     public static int[][] applyFilter(int[][] imageGraph,
                                       int[][] backgroundFilterMask) throws IllegalArgumentException {
