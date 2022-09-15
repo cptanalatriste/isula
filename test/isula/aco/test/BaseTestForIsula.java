@@ -2,9 +2,9 @@ package isula.aco.test;
 
 import isula.aco.*;
 import isula.aco.algorithms.antsystem.StartPheromoneMatrix;
+import isula.aco.exception.ConfigurationException;
 import isula.aco.exception.InvalidInputException;
 
-import javax.naming.ConfigurationException;
 
 public class BaseTestForIsula {
 

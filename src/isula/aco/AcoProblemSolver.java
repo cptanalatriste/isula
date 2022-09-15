@@ -1,6 +1,7 @@
 package isula.aco;
 
-import javax.naming.ConfigurationException;
+import isula.aco.exception.ConfigurationException;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -177,35 +178,6 @@ public class AcoProblemSolver<C, E extends Environment> {
         logger.log(Level.INFO, "Solutions generated: {0}", totalGeneratedSolutions);
         logger.log(Level.INFO, "Best solution cost: {0}", bestSolutionCost);
         logger.log(Level.INFO, "Best solution: {0}", bestSolutionAsString);
-
-    }
-
-    /**
-     * Updates the information of the best solution produced with the solutions
-     * produced by the Colony.
-     *
-     * @param iterationTimeInSeconds Time spent during the iteration.
-     * @param environment            Environment where the solutions where produced.
-     */
-    public void updateIterationPerformance(Ant<C, E> bestAnt, int iteration, long iterationTimeInSeconds, E environment) {
-        logger.log(Level.FINE, "GETTING BEST SOLUTION FOUND");
-
-        double bestIterationCost = bestAnt.getSolutionCost(environment);
-        logger.log(Level.FINE, "Iteration best cost: {0} ", bestIterationCost);
-
-        if (bestSolution == null
-                || bestSolutionCost > bestIterationCost) {
-            bestSolution = new ArrayList<>(bestAnt.getSolution());
-            bestSolutionCost = bestIterationCost;
-            bestSolutionAsString = bestAnt.getSolutionAsString();
-
-            logger.log(Level.FINE, "Best solution so far > Cost: {0} , Solution: {1}", new Object[]{bestSolutionCost,
-                    bestSolutionAsString});
-
-        }
-
-        logger.log(Level.INFO, "Current iteration: {0} Iteration best: {1}  Best solution cost: {2} Iteration Duration (s): {3}",
-                new Object[]{iteration, bestIterationCost, bestSolutionCost, iterationTimeInSeconds});
 
     }
 

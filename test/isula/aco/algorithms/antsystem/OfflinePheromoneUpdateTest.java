@@ -2,12 +2,12 @@ package isula.aco.algorithms.antsystem;
 
 import isula.aco.Ant;
 import isula.aco.Environment;
+import isula.aco.exception.ConfigurationException;
 import isula.aco.exception.InvalidInputException;
 import isula.aco.test.BaseTestForIsula;
 import isula.aco.test.DummyFactory;
 import org.junit.Test;
 
-import javax.naming.ConfigurationException;
 
 import java.util.List;
 

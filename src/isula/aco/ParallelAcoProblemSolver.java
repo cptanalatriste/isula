@@ -1,8 +1,8 @@
 package isula.aco;
 
+import isula.aco.exception.ConfigurationException;
 import isula.aco.exception.MethodNotImplementedException;
 
-import javax.naming.ConfigurationException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;

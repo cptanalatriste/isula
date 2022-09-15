@@ -96,7 +96,7 @@ public abstract class Ant<C, E extends Environment> {
         StringBuilder solutionString = new StringBuilder();
         for (C c : solution) {
             if (c != null) {
-                solutionString.append(" ").append(c.toString());
+                solutionString.append(" ").append(c);
             }
         }
         return solutionString.toString();
