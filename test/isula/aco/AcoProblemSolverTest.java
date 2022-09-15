@@ -17,8 +17,9 @@ import static org.junit.Assert.assertTrue;
 
 public class AcoProblemSolverTest extends BaseTestForIsula {
 
-    private PerformEvaporation<Integer, Environment> evaporationDaemonAction = new PerformEvaporation<>();
-    private OfflinePheromoneUpdate<Integer, Environment> pheromoneUpdateDaemonAction = new OfflinePheromoneUpdate<>();
+    private final PerformEvaporation<Integer, Environment> evaporationDaemonAction = new PerformEvaporation<>();
+    private final OfflinePheromoneUpdate<Integer, Environment> pheromoneUpdateDaemonAction =
+            new OfflinePheromoneUpdate<>();
 
     public AcoProblemSolverTest() throws InvalidInputException, ConfigurationException {
         super(DummyFactory.createDummyConfigurationProvider());
@@ -33,13 +34,21 @@ public class AcoProblemSolverTest extends BaseTestForIsula {
         List<String> expectedSolution = new ArrayList<>();
         IntStream.rangeClosed(1, SOLUTION_LENGTH)
                 .forEach((item) -> expectedSolution.add(String.valueOf(COMPONENT_FROM_POLICY)));
-        ;
 
-        assertEquals(String.join(" ", expectedSolution), getProblemSolver().getBestSolutionAsString().trim());
+        String bestSolutionAsString = String.join(" ", expectedSolution);
+        assertEquals(bestSolutionAsString, getProblemSolver().getBestSolutionAsString().trim());
+
+        String problemSolverAsString = getProblemSolver().toString();
+        assertTrue(problemSolverAsString.contains("bestSolution=" + expectedSolution));
+        assertTrue(problemSolverAsString.contains("bestSolutionCost=" + SOLUTION_COST));
+
     }
 
     @Test
-    public void testDaemonActionConfiguration() {
+    public void testSolverConfiguration() {
+        assertEquals(getEnvironment(), getProblemSolver().getEnvironment());
+        assertEquals(getAntColony(), getProblemSolver().getAntColony());
+
         assertEquals(2, getProblemSolver().getDaemonActions().size());
         assertTrue(getProblemSolver().getDaemonActions().stream().anyMatch(
                 action -> action.equals(evaporationDaemonAction)));
