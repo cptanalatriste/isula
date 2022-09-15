@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import isula.aco.algorithms.antsystem.OnlinePheromoneUpdate;
 import isula.aco.exception.InvalidInputException;
+import isula.aco.exception.SolutionConstructionException;
 import isula.aco.test.DummyFactory;
 
 import org.junit.Before;
@@ -14,6 +15,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class AntTest {
 
@@ -41,6 +43,20 @@ public class AntTest {
         this.dummyAnt.visitNode(0, null);
         this.dummyAnt.visitNode(1, null);
         this.dummyAnt.visitNode(2, null);
+    }
+
+    @Test(expected = SolutionConstructionException.class)
+    public void testAddingToNullSolution() {
+        Ant<Integer, Environment> testAnt = DummyFactory.createDummyAnt(0, 1, null);
+        testAnt.setSolution(null);
+        testAnt.visitNode(0, null);
+    }
+
+    @Test(expected = SolutionConstructionException.class)
+    public void testClearingNullSolution() {
+        Ant<Integer, Environment> testAnt = DummyFactory.createDummyAnt(0, 1, null);
+        testAnt.setSolution(null);
+        testAnt.clear();
     }
 
     @Test

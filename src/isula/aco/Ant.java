@@ -61,7 +61,7 @@ public abstract class Ant<C, E extends Environment> {
         } else {
             throw new SolutionConstructionException("Couldn't add component "
                     + visitedNode.toString() + " at index " + currentIndex
-                    + ". \nPartial solution is " + this.getSolutionAsString());
+                    + ". \nPartial solution is " + this.getSolution());
         }
 
     }
