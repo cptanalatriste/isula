@@ -1,6 +1,5 @@
 package isula.aco.tuning;
 
-import isula.aco.AcoProblemSolver;
 import isula.aco.ConfigurationProvider;
 
 import java.util.Date;
