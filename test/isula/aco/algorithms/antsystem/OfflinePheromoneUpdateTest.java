@@ -3,7 +3,7 @@ package isula.aco.algorithms.antsystem;
 import isula.aco.Ant;
 import isula.aco.Environment;
 import isula.aco.exception.InvalidInputException;
-import isula.aco.test.BaseAntColonyTest;
+import isula.aco.test.BaseTestForIsula;
 import isula.aco.test.DummyFactory;
 import org.junit.Test;
 
@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class OfflinePheromoneUpdateTest extends BaseAntColonyTest {
+public class OfflinePheromoneUpdateTest extends BaseTestForIsula {
 
     public OfflinePheromoneUpdateTest() throws InvalidInputException, ConfigurationException {
         super(DummyFactory.createDummyConfigurationProvider());

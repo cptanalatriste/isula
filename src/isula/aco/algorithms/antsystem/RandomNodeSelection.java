@@ -20,7 +20,7 @@ import java.util.stream.IntStream;
 public class RandomNodeSelection<C, E extends Environment> extends
         AntPolicy<C, E> {
 
-    private static Logger logger = Logger.getLogger(AntColony.class.getName());
+    private static Logger logger = Logger.getLogger(RandomNodeSelection.class.getName());
 
 
     public RandomNodeSelection() {
@@ -50,7 +50,7 @@ public class RandomNodeSelection<C, E extends Environment> extends
                 .collect(Collectors.toList());
 
         int[] componentIndexes = IntStream.range(0, listOfComponents.size()).toArray();
-        double[] arrayOfProbabilities = probabilities.stream().mapToDouble((probability) -> probability).toArray();
+        double[] arrayOfProbabilities = probabilities.stream().mapToDouble(probability -> probability).toArray();
 
         EnumeratedIntegerDistribution distribution = new EnumeratedIntegerDistribution(componentIndexes,
                 arrayOfProbabilities);
@@ -82,15 +82,15 @@ public class RandomNodeSelection<C, E extends Environment> extends
         Map<C, Double> componentsWithProbabilities = neighborhood
                 .stream()
                 .unordered()
-                .filter((component) -> !getAnt().isNodeVisited(component) && getAnt().isNodeValid(component))
-                .collect(Collectors.toMap((component) -> component,
-                        (component) -> getHeuristicTimesPheromone(environment, configurationProvider, component)));
+                .filter(component -> !getAnt().isNodeVisited(component) && getAnt().isNodeValid(component))
+                .collect(Collectors.toMap(component -> component,
+                        component -> getHeuristicTimesPheromone(environment, configurationProvider, component)));
 
         if (componentsWithProbabilities.size() < 1) {
             return doIfNoComponentsFound(environment, configurationProvider);
         }
 
-        double sumOfMapValues = componentsWithProbabilities.values().stream().mapToDouble((value) -> value).sum();
+        double sumOfMapValues = componentsWithProbabilities.values().stream().mapToDouble(value -> value).sum();
 
         componentsWithProbabilities
                 .forEach((key, value) -> {
@@ -104,7 +104,7 @@ public class RandomNodeSelection<C, E extends Environment> extends
                     componentsWithProbabilities.put(key, probabilityValue);
                 });
 
-        double totalProbability = componentsWithProbabilities.values().stream().mapToDouble((value) -> value).sum();
+        double totalProbability = componentsWithProbabilities.values().stream().mapToDouble(value -> value).sum();
 
         double delta = 0.001;
         if (Math.abs(totalProbability - 1.0) > delta) {

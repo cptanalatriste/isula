@@ -18,7 +18,7 @@ import static isula.aco.algorithms.PheromoneUtils.updatePheromoneForAntSolution;
 public abstract class OnlinePheromoneUpdate<C, E extends Environment> extends
         AntPolicy<C, E> {
 
-    public OnlinePheromoneUpdate() {
+    protected OnlinePheromoneUpdate() {
         super(AntPolicyType.AFTER_SOLUTION_IS_READY);
     }
 
@@ -27,7 +27,7 @@ public abstract class OnlinePheromoneUpdate<C, E extends Environment> extends
                                ConfigurationProvider configurationProvider) {
 
 
-        updatePheromoneForAntSolution(getAnt(), environment, (positionInSolution) -> {
+        updatePheromoneForAntSolution(getAnt(), environment, positionInSolution -> {
             C solutionComponent = getAnt().getSolution().get(positionInSolution);
 
             if (solutionComponent != null) {

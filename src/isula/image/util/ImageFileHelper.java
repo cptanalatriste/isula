@@ -6,11 +6,16 @@ import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
 public class ImageFileHelper {
+
+    private ImageFileHelper() {
+
+    }
 
     private static Logger logger = Logger.getLogger(ImageFileHelper.class
             .getName());
@@ -44,7 +49,7 @@ public class ImageFileHelper {
         Raster imageRaster = image.getData();
 
         int[][] imageAsArray;
-        int[] pixel = new int[1];
+        int[] pixel;
         int[] buffer = new int[1];
 
         imageAsArray = new int[imageRaster.getWidth()][imageRaster.getHeight()];
@@ -83,7 +88,7 @@ public class ImageFileHelper {
 
         File imageFile = new File(outputImageFile);
         ImageIO.write(outputImage, "bmp", imageFile);
-        logger.info("Resulting image stored in: " + outputImageFile);
+        logger.log(Level.INFO, "Resulting image stored in: {0}", outputImageFile);
     }
 
     /**
@@ -322,11 +327,11 @@ public class ImageFileHelper {
      * @throws Exception In case of an error.
      */
     public static int[][] applyFilter(int[][] imageGraph,
-                                      int[][] backgroundFilterMask) throws Exception {
+                                      int[][] backgroundFilterMask) throws IllegalArgumentException {
 
         if (imageGraph.length != backgroundFilterMask.length
                 || imageGraph[0].length != backgroundFilterMask[0].length) {
-            throw new Exception("Images are not comparable");
+            throw new IllegalArgumentException("Images are not comparable");
         }
         int[][] result = new int[imageGraph.length][imageGraph[0].length];
         for (int i = 0; i < imageGraph.length; i++) {

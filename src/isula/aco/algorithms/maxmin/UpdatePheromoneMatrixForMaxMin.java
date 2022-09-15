@@ -36,7 +36,7 @@ public abstract class UpdatePheromoneMatrixForMaxMin<C, E extends Environment>
     /**
      * Instantiates the Update Pheromone Matrix Policy.
      */
-    public UpdatePheromoneMatrixForMaxMin() {
+    protected UpdatePheromoneMatrixForMaxMin() {
         super(DaemonActionType.AFTER_ITERATION_CONSTRUCTION);
 
     }
@@ -47,8 +47,7 @@ public abstract class UpdatePheromoneMatrixForMaxMin<C, E extends Environment>
         MaxMinConfigurationProvider configurationProvider = (MaxMinConfigurationProvider) provider;
         logger.log(Level.FINE, "UPDATING PHEROMONE TRAILS");
         logger.log(Level.FINE, "Performing evaporation on all edges");
-        logger.log(Level.FINE,
-                "Evaporation ratio: " + configurationProvider.getEvaporationRatio());
+        logger.log(Level.FINE, "Evaporation ratio: {0}", configurationProvider.getEvaporationRatio());
 
         double[][] pheromoneMatrix = getEnvironment().getPheromoneMatrix();
         int matrixRows = pheromoneMatrix.length;
@@ -70,14 +69,15 @@ public abstract class UpdatePheromoneMatrixForMaxMin<C, E extends Environment>
         Ant<C, E> bestAnt = getAntColony().getBestPerformingAnt(getEnvironment());
         List<C> bestSolution = bestAnt.getSolution();
 
-        updatePheromoneForAntSolution(bestAnt, getEnvironment(), (componentIndex) -> {
+        updatePheromoneForAntSolution(bestAnt, getEnvironment(), componentIndex -> {
             C solutionComponent = bestSolution.get(componentIndex);
             double newValue = getNewPheromoneValue(bestAnt, componentIndex,
                     solutionComponent, configurationProvider);
             return Math.min(newValue, getMaximumPheromoneValue(configurationProvider));
         });
 
-        logger.log(Level.FINE, "After pheromone update: " + Arrays.deepToString(getEnvironment().getPheromoneMatrix()));
+        logger.log(Level.FINE, "After pheromone update: {0}",
+                Arrays.deepToString(getEnvironment().getPheromoneMatrix()));
 
     }
 

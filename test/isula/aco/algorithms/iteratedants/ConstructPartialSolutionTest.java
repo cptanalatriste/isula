@@ -1,9 +1,8 @@
 package isula.aco.algorithms.iteratedants;
 
 import isula.aco.Environment;
-import isula.aco.PerformanceTracker;
 import isula.aco.exception.InvalidInputException;
-import isula.aco.test.BaseAntColonyTest;
+import isula.aco.test.BaseTestForIsula;
 import isula.aco.test.DummyFactory;
 import org.junit.Test;
 
@@ -13,12 +12,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static junit.framework.Assert.*;
 
-public class ConstructPartialSolutionTest extends BaseAntColonyTest {
+public class ConstructPartialSolutionTest extends BaseTestForIsula {
 
 
     public ConstructPartialSolutionTest() throws InvalidInputException, ConfigurationException {

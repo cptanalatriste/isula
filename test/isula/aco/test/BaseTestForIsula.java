@@ -6,7 +6,7 @@ import isula.aco.exception.InvalidInputException;
 
 import javax.naming.ConfigurationException;
 
-public class BaseAntColonyTest {
+public class BaseTestForIsula {
 
     protected static final int SOLUTION_LENGTH = 3;
     protected static final int SOLUTION_COST = 2;
@@ -18,7 +18,7 @@ public class BaseAntColonyTest {
     private ConfigurationProvider configurationProvider;
     private Environment environment;
 
-    public BaseAntColonyTest(ConfigurationProvider configurationProvider) throws
+    public BaseTestForIsula(ConfigurationProvider configurationProvider) throws
             InvalidInputException, ConfigurationException {
 
         this.configurationProvider = configurationProvider;

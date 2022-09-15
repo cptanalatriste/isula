@@ -33,8 +33,8 @@ public class OfflinePheromoneUpdate<C, E extends Environment> extends DaemonActi
 
         getAntColony().getHive()
                 .stream()
-                .filter((ant) -> ant.isSolutionReady(environment))
-                .forEach((ant) -> updatePheromoneForAntSolution(ant, getEnvironment(), (positionInSolution) -> {
+                .filter(ant -> ant.isSolutionReady(environment))
+                .forEach(ant -> updatePheromoneForAntSolution(ant, getEnvironment(), positionInSolution -> {
                     C solutionComponent = ant.getSolution().get(positionInSolution);
 
                     if (solutionComponent != null) {
@@ -50,7 +50,8 @@ public class OfflinePheromoneUpdate<C, E extends Environment> extends DaemonActi
                     return Double.MIN_VALUE;
                 }));
 
-        logger.fine("Pheromone matrix after update :" + Arrays.deepToString(environment.getPheromoneMatrix()));
+        logger.log(Level.FINE, "Pheromone matrix after update : {0}",
+                Arrays.deepToString(environment.getPheromoneMatrix()));
     }
 
     /**

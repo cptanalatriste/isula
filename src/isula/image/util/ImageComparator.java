@@ -54,7 +54,7 @@ public class ImageComparator {
         .getImageArrayFromFile(imageToValidateFile);
     if (referenceImage.length != imageToValidate.length
         || referenceImage[0].length != imageToValidate[0].length) {
-      throw new Exception("Images are not comparable");
+      throw new IllegalArgumentException("Images are not comparable");
     }
 
     for (int i = 0; i < referenceImage.length; i++) {

@@ -82,7 +82,7 @@ public class AntTest {
         AntPolicy<Integer, Environment> extractedPolicy = this.dummyAnt.getAntPolicies(
                 onlinePheromoneUpdatePolicy.getPolicyType(), 1).get(0);
         assertEquals(onlinePheromoneUpdatePolicy, extractedPolicy);
-        assertEquals(this.dummyAnt.getAntPolicies(AntPolicyType.NODE_SELECTION, -1).size(), 0);
+        assertEquals(0, this.dummyAnt.getAntPolicies(AntPolicyType.NODE_SELECTION, -1).size());
     }
 
     @Test

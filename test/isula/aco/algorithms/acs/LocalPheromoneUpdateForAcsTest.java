@@ -3,7 +3,7 @@ package isula.aco.algorithms.acs;
 import isula.aco.Ant;
 import isula.aco.Environment;
 import isula.aco.exception.InvalidInputException;
-import isula.aco.test.BaseAntColonyTest;
+import isula.aco.test.BaseTestForIsula;
 import isula.aco.test.DummyFactory;
 import org.junit.Test;
 
@@ -11,7 +11,7 @@ import javax.naming.ConfigurationException;
 
 import static junit.framework.Assert.assertEquals;
 
-public class LocalPheromoneUpdateForAcsTest extends BaseAntColonyTest {
+public class LocalPheromoneUpdateForAcsTest extends BaseTestForIsula {
 
 
     public LocalPheromoneUpdateForAcsTest() throws InvalidInputException, ConfigurationException {

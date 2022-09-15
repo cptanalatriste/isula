@@ -18,7 +18,7 @@ public class PheromoneDepositForAcs<C, E extends Environment>
         Ant<C, E> bestAnt = getAntColony().getBestPerformingAnt(getEnvironment());
         List<C> bestSolution = bestAnt.getSolution();
 
-        updatePheromoneForAntSolution(bestAnt, getEnvironment(), (componentIndex) -> {
+        updatePheromoneForAntSolution(bestAnt, getEnvironment(), componentIndex -> {
             C solutionComponent = bestSolution.get(componentIndex);
             return getNewPheromoneValue(bestAnt, componentIndex,
                     solutionComponent, configurationProvider);

@@ -66,7 +66,7 @@ public class ImagePixel {
   public List<ImagePixel> getNeighbourhood(double[][] imageGraph) {
     // TODO(cgavidia): There must be a more elegant way to do this
 
-    ArrayList<ImagePixel> neighbours = new ArrayList<ImagePixel>();
+    ArrayList<ImagePixel> neighbours = new ArrayList<>();
     if (coordinateForY - 1 >= 0) {
       neighbours.add(new ImagePixel(coordinateForX, coordinateForY - 1,
           imageGraph));

@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 public abstract class AntWithPartialSolution<C, E extends Environment> extends Ant<C, E> {
 
-    private static final Logger logger = Logger.getLogger(ConstructPartialSolution.class.getName());
+    private static final Logger logger = Logger.getLogger(AntWithPartialSolution.class.getName());
 
     private Collection<C> partialSolution = Collections.emptyList();
 
@@ -17,7 +17,7 @@ public abstract class AntWithPartialSolution<C, E extends Environment> extends A
     public void clear() {
         super.clear();
         this.partialSolution
-                .forEach((candidateIndex) -> this.visitNode(candidateIndex, this.getEnvironment()));
+                .forEach(candidateIndex -> this.visitNode(candidateIndex, this.getEnvironment()));
 
         logger.fine("Partial solution loaded: " + this.getSolution());
 

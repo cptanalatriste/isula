@@ -6,6 +6,7 @@ import isula.aco.DaemonActionType;
 import isula.aco.Environment;
 
 import java.util.Arrays;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -35,10 +36,11 @@ public class StartPheromoneMatrix<C, E extends Environment> extends
             logger.warning("An initial pheromone value of zero can affect the node selection process.");
         }
 
-        logger.info("Initial pheromone value: " + initialPheromoneValue);
+        logger.log(Level.INFO, "Initial pheromone value: {0}", initialPheromoneValue);
 
         getEnvironment().populatePheromoneMatrix(initialPheromoneValue);
-        logger.fine("Pheromone matrix after initilizatation :" + Arrays.deepToString(getEnvironment().getPheromoneMatrix()));
+        logger.log(Level.FINE, "Pheromone matrix after initilizatation : {0}",
+                Arrays.deepToString(getEnvironment().getPheromoneMatrix()));
     }
 
     protected double getInitialPheromoneValue(

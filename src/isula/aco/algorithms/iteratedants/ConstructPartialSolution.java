@@ -7,10 +7,10 @@ import isula.aco.Environment;
 import isula.aco.exception.SolutionConstructionException;
 import org.apache.commons.math3.distribution.EnumeratedIntegerDistribution;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -20,7 +20,7 @@ public abstract class ConstructPartialSolution<C, E extends Environment> extends
     private static Logger logger = Logger.getLogger(ConstructPartialSolution.class
             .getName());
 
-    public ConstructPartialSolution() {
+    protected ConstructPartialSolution() {
         super(AntPolicyType.AFTER_SOLUTION_IS_READY);
     }
 
@@ -43,7 +43,7 @@ public abstract class ConstructPartialSolution<C, E extends Environment> extends
         }
 
         List<Integer> indexesForRemoval = getComponentIndexesForRemoval(ant, getNumberOfComponentsToRemove());
-        logger.fine("indexesForRemoval: " + indexesForRemoval);
+        logger.log(Level.FINE, "indexesForRemoval: {0}", indexesForRemoval);
         return getNewPartialSolution(indexesForRemoval);
     }
 
@@ -55,7 +55,7 @@ public abstract class ConstructPartialSolution<C, E extends Environment> extends
         int[] componentIndexes = IntStream.range(0, currentSolution.size()).toArray();
 
         List<Double> pheromoneValues = IntStream.range(0, currentSolution.size()).
-                mapToDouble((solutionIndex) -> {
+                mapToDouble(solutionIndex -> {
                     C solutionComponent = currentSolution.get(solutionIndex);
                     return ant.getPheromoneTrailValue(solutionComponent, solutionIndex, ant.getEnvironment());
                 })
@@ -64,12 +64,12 @@ public abstract class ConstructPartialSolution<C, E extends Environment> extends
 
         Double totalPheromone = pheromoneValues.stream().reduce(0.0, Double::sum);
         List<Double> discreteProbabilities = pheromoneValues.stream()
-                .mapToDouble((pheromonePerComponent) -> pheromonePerComponent / totalPheromone)
+                .mapToDouble(pheromonePerComponent -> pheromonePerComponent / totalPheromone)
                 .boxed()
                 .collect(Collectors.toList());
 
         double[] arrayOfProbabilities = discreteProbabilities.stream()
-                .mapToDouble((probability) -> probability)
+                .mapToDouble(probability -> probability)
                 .toArray();
 
         double sumOfProbabilities = Arrays.stream(arrayOfProbabilities).sum();
@@ -88,7 +88,7 @@ public abstract class ConstructPartialSolution<C, E extends Environment> extends
                 .collect(Collectors.toList());
 
         return Arrays.stream(componentIndexes)
-                .filter((componentIndex) -> !componentsToPreserve.contains(componentIndex))
+                .filter(componentIndex -> !componentsToPreserve.contains(componentIndex))
                 .boxed()
                 .collect(Collectors.toList());
     }

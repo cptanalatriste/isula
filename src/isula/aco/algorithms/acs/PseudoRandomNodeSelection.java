@@ -34,6 +34,7 @@ public class PseudoRandomNodeSelection<C, E extends Environment> extends
 
     private static Logger logger = Logger.getLogger(PseudoRandomNodeSelection.class.getName());
 
+    private final Random random = new Random();
 
     @Override
     public boolean applyPolicy(E environment, ConfigurationProvider configuration) {
@@ -76,7 +77,6 @@ public class PseudoRandomNodeSelection<C, E extends Environment> extends
     protected boolean selectMostConvenient(AcsConfigurationProvider configurationProvider) {
         double bestChoiceProbability = configurationProvider
                 .getBestChoiceProbability();
-        Random random = new Random();
         double randomValue = random.nextDouble();
         return randomValue < bestChoiceProbability;
     }

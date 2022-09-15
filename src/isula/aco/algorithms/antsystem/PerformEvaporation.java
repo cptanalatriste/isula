@@ -5,6 +5,7 @@ import isula.aco.DaemonAction;
 import isula.aco.DaemonActionType;
 import isula.aco.Environment;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -30,7 +31,7 @@ public class PerformEvaporation<C, E extends Environment> extends
         double evaporationRatio = configurationProvider.getEvaporationRatio();
 
         logger.fine("Performing evaporation on all edges");
-        logger.fine("Evaporation ratio: " + evaporationRatio);
+        logger.log(Level.FINE, "Evaporation ratio: {0}", evaporationRatio);
 
         getEnvironment().applyFactorToPheromoneMatrix(evaporationRatio);
     }
