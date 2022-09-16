@@ -1,13 +1,13 @@
-package isula.aco.simpletsp;
+package smalltsp;
 
 import isula.aco.ConfigurationProvider;
 import isula.aco.algorithms.antsystem.OnlinePheromoneUpdate;
 
-public class SimpleTSPPheromoneUpdate extends OnlinePheromoneUpdate<Integer, SimpleTSPEnvironment> {
+public class SmallTspPheromoneUpdate extends OnlinePheromoneUpdate<Integer, SmallTspEnvironment> {
 
     @Override
     protected double getNewPheromoneValue(Integer solutionComponent, Integer positionInSolution,
-                                          SimpleTSPEnvironment environment,
+                                          SmallTspEnvironment environment,
                                           ConfigurationProvider configurationProvider) {
 
         Double currentValue = getAnt().getPheromoneTrailValue(solutionComponent, positionInSolution, environment);

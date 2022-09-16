@@ -1,26 +1,25 @@
-package isula.aco.simpletsp;
+package smalltsp;
 
 import isula.aco.Ant;
-import isula.aco.simpletsp.SimpleTSPEnvironment;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class SimpleTSPAnt extends Ant<Integer, SimpleTSPEnvironment> {
+public class SmallTspAnt extends Ant<Integer, SmallTspEnvironment> {
 
-    public SimpleTSPAnt() {
+    public SmallTspAnt() {
         this.setSolution(new ArrayList<>());
     }
 
     @Override
-    public boolean isSolutionReady(SimpleTSPEnvironment environment) {
+    public boolean isSolutionReady(SmallTspEnvironment environment) {
         return false;
     }
 
     @Override
-    public double getSolutionCost(SimpleTSPEnvironment environment, List<Integer> solution) {
+    public double getSolutionCost(SmallTspEnvironment environment, List<Integer> solution) {
 
         double solutionCost = 0.0;
 
@@ -39,7 +38,7 @@ public class SimpleTSPAnt extends Ant<Integer, SimpleTSPEnvironment> {
 
     @Override
     public Double getHeuristicValue(Integer solutionComponent, Integer positionInSolution,
-                                    SimpleTSPEnvironment environment) {
+                                    SmallTspEnvironment environment) {
         int[][] problemRepresentation = environment.getProblemRepresentation();
 
         int lastVisitedCity = this.getSolution().get(positionInSolution - 1);
@@ -49,7 +48,7 @@ public class SimpleTSPAnt extends Ant<Integer, SimpleTSPEnvironment> {
 
 
     @Override
-    public List<Integer> getNeighbourhood(SimpleTSPEnvironment environment) {
+    public List<Integer> getNeighbourhood(SmallTspEnvironment environment) {
         return IntStream.range(0, environment.getProblemRepresentation().length)
                 .boxed()
                 .collect(Collectors.toList());
@@ -57,7 +56,7 @@ public class SimpleTSPAnt extends Ant<Integer, SimpleTSPEnvironment> {
 
     @Override
     public Double getPheromoneTrailValue(Integer solutionComponent, Integer positionInSolution,
-                                         SimpleTSPEnvironment environment) {
+                                         SmallTspEnvironment environment) {
 
         if (positionInSolution > 0) {
             int previousComponent = this.getSolution().get(positionInSolution - 1);
@@ -71,7 +70,7 @@ public class SimpleTSPAnt extends Ant<Integer, SimpleTSPEnvironment> {
 
     @Override
     public void setPheromoneTrailValue(Integer solutionComponent, Integer positionInSolution,
-                                       SimpleTSPEnvironment environment, Double value) {
+                                       SmallTspEnvironment environment, Double value) {
 
         if (positionInSolution > 0) {
             int previousComponent = this.getSolution().get(positionInSolution - 1);

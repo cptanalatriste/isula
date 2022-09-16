@@ -1,8 +1,8 @@
-package isula.aco.simpletsp;
+package smalltsp;
 
 import isula.aco.Environment;
 
-public class SimpleTSPEnvironment extends Environment {
+public class SmallTspEnvironment extends Environment {
 
     public static final int[][] SAMPLE_PROBLEM = {{0, 10, 12, 11, 14},
             {10, 0, 13, 15, 8},

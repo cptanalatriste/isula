@@ -1,8 +1,8 @@
-package isula.aco.simpletsp;
+package smalltsp;
 
 import isula.aco.ConfigurationProvider;
 
-public class SimpleTSPConfiguration implements ConfigurationProvider {
+public class SmallTspConfiguration implements ConfigurationProvider {
 
     @Override
     public int getNumberOfAnts() {

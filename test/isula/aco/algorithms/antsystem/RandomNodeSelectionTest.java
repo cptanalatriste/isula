@@ -1,31 +1,32 @@
-package isula.aco.simpletsp;
+package isula.aco.algorithms.antsystem;
 
 import isula.aco.ConfigurationProvider;
-import isula.aco.algorithms.antsystem.RandomNodeSelection;
-import isula.aco.algorithms.antsystem.StartPheromoneMatrix;
 import org.junit.Test;
+import smalltsp.SmallTspAnt;
+import smalltsp.SmallTspConfiguration;
+import smalltsp.SmallTspEnvironment;
 
 import java.util.Map;
 
-import static isula.aco.simpletsp.SimpleTSPEnvironment.SAMPLE_PROBLEM;
 import static junit.framework.Assert.assertEquals;
+import static smalltsp.SmallTspEnvironment.SAMPLE_PROBLEM;
 
 public class RandomNodeSelectionTest {
 
     @Test
     public void getComponentsWithProbabilities() {
 
-        SimpleTSPAnt ant = new SimpleTSPAnt();
+        SmallTspAnt ant = new SmallTspAnt();
 
-        RandomNodeSelection<Integer, SimpleTSPEnvironment> antPolicy = new RandomNodeSelection<>();
+        RandomNodeSelection<Integer, SmallTspEnvironment> antPolicy = new RandomNodeSelection<>();
         antPolicy.setAnt(ant);
 
-        SimpleTSPEnvironment environment = new SimpleTSPEnvironment();
+        SmallTspEnvironment environment = new SmallTspEnvironment();
         environment.setProblemRepresentation(SAMPLE_PROBLEM);
 
-        ConfigurationProvider configuration = new SimpleTSPConfiguration();
+        ConfigurationProvider configuration = new SmallTspConfiguration();
 
-        StartPheromoneMatrix<Integer, SimpleTSPEnvironment> daemonAction = new StartPheromoneMatrix<>();
+        StartPheromoneMatrix<Integer, SmallTspEnvironment> daemonAction = new StartPheromoneMatrix<>();
         daemonAction.setEnvironment(environment);
         daemonAction.applyDaemonAction(configuration);
 
