@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>isula</groupId>
     <artifactId>isula</artifactId>
-    <version>2.1.3</version>
+    <version>2.1.6</version>
     <properties>
         <project.java.version>1.8</project.java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
