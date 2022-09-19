@@ -19,6 +19,7 @@ preferred-citation:
   - family-names: "Beltran Castanon"
     given-names: "Cesar"
     orcid: "https://orcid.org/0000-0002-0173-4140"
+  doi: "https://doi.org/10.1016/j.softx.2020.100400"
   journal: "SoftwareX"
   title: "Isula: A java framework for ant colony algorithms"
   volume: 11
