@@ -4,10 +4,11 @@ authors:
 - family-names: "Gavidia-Calderon"
   given-names: "Carlos"
   orcid: "https://orcid.org/0000-0002-6136-0566"
-- family-names: "Beltrán Castañón"
-  given-names: "César"
+- family-names: "Beltran Castanon"
+  given-names: "Cesar"
   orcid: "https://orcid.org/0000-0002-0173-4140"
 title: "Isula: A Java Framework for Ant Colony Optimization algorithms"
+version: 2.1.6
 url: "https://github.com/cptanalatriste/isula"
 preferred-citation:
   type: article
@@ -15,8 +16,8 @@ preferred-citation:
     - family-names: "Gavidia-Calderon"
       given-names: "Carlos"
       orcid: "https://orcid.org/0000-0002-6136-0566"
-    - family-names: "Beltrán Castañón"
-      given-names: "César"
+    - family-names: "Beltran Castanon"
+      given-names: "Cesar"
       orcid: "https://orcid.org/0000-0002-0173-4140"
   doi: "https://doi.org/10.1016/j.softx.2020.100400"
   journal: "SoftwareX"
