@@ -145,7 +145,7 @@ Here are some advanced examples of optimization problems solved with Isula-based
 * [The JavaDoc of every class on the framework](https://cptanalatriste.github.io/isula/apidocs/).
 * [Our paper in the SoftwareX journal](https://www.sciencedirect.com/science/article/pii/S2352711019300639), for an
   in-depth discussion of the framework and its features.
-* [A video of our tutorial at GECCO 2022](https://www.youtube.com/watch?v=gHB-7J_TDmk), where we describe how
+* [A video of our tutorial at GECCO 2022](https://www.youtube.com/watch?v=QLgHeVhYFS8), where we describe how
   to use Isula to solve the Unicost Set Covering Problem.
 * [A Medium article](https://medium.com/@cgavidia/the-travelling-sales-ant-problem-6a4f5d046a2b), discussing
   how to solve the Travelling Salesman Problem using brute-force and an Isula-based ACO algorithm.
